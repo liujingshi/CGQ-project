@@ -1,0 +1,48 @@
+package com.ljscode.base;
+
+import java.awt.*;
+
+/**
+ * 配置
+ */
+public class BaseConfig {
+
+    public static String Title = "低压涡轮盘心跳动测量系统"; // 标题
+    public static int FrameWidth = 1024; // 窗体宽度
+    public static int FrameHeight = 768; // 窗体高度
+
+    /**
+     * 根据窗体宽度进行计算
+     * @param scale 窗体宽度需要乘的值
+     * @return 计算后的数据
+     */
+    public static int ScaleWidth(double scale) {
+        return (int) (FrameWidth*scale);
+    }
+
+    /**
+     * 根据窗体高度进行计算
+     * @param scale 窗体高度需要乘的值
+     * @return 计算后的数据
+     */
+    public static int ScaleHeight(double scale) {
+        return (int) (FrameHeight*scale);
+    }
+
+    public static int TabBtnWidth = 100; // tab按钮宽度
+    public static int TabBtnHeight = 100; // tab按钮高度
+    public static int TabBtnIconWidth = 50; // tab按钮icon宽度
+    public static int TabBtnIconHeight = 50; // tab按钮icon高度
+    public static int[] TabBtnPadding = new int[] { 20, 25, 0, 25 }; //  // tab按钮内边距
+    public static float TabBtnFontSize = 14; // tab按钮字体大小
+    public static Color TabBtnColor = BaseColor.Blue; // tab按钮正常字体颜色
+    public static Color TabBtnHoverColor = BaseColor.Write; // tab按钮hover字体颜色
+    public static Color TabBtnBackground = BaseColor.Write; // tab按钮正常背景颜色
+    public static Color TabBtnHoverBackground = BaseColor.Blue; // tab按钮hover背景颜色
+
+    public static int InputHeight = 24; // 文本框的高度
+    public static int InputGroupWidth = 400; // 文本框组的宽度
+    public static int InputGroupSpaceSm = 32; // 文本框组间距
+    public static int InputGroupSpaceMd = 40; // 文本框组间距
+    public static int InputGroupSpaceLg = 48; // 文本框组间距
+}

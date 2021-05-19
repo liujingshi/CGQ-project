@@ -1,0 +1,63 @@
+package com.ljscode.component;
+
+import com.ljscode.data.ItemData;
+import com.ljscode.data.TestData;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
+public class DataTree extends JTree {
+
+    public DataTree(TestData data) {
+        super(createTreeNode(data));
+
+        this.addTreeSelectionListener(e -> {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.getLastSelectedPathComponent();
+
+            if (node == null )
+                return ;
+
+            Object object = node.getUserObject();
+            if (node.isLeaf()) {
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+                ItemData parentObj = (ItemData) parent.getUserObject();
+                System.out.println( "你选择了：" + parentObj.getName() + " - " + object.toString());
+            }
+        });
+    }
+
+    public DataTree(int left, int top, int width, int height, TestData data) {
+        this(data);
+        this.setBounds(left, top, width, height);
+    }
+
+    public void setTestData(TestData data) {
+        DefaultMutableTreeNode root = createTreeNode(data);
+        this.setModel(new DefaultTreeModel(root));
+    }
+
+    public static DefaultMutableTreeNode createTreeNode(TestData data) {
+        if (data == null)
+            return new DefaultMutableTreeNode("");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(data.getName());
+        DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(data.getData1());
+        node1.add(new DefaultMutableTreeNode(String.format("柱面数据(%s)", data.getData1().isCheckCylinder() ? "已测量" : "未测量")));
+        node1.add(new DefaultMutableTreeNode(String.format("端面数据(%s)", data.getData1().isCheckEndFace() ? "已测量" : "未测量")));
+        DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(data.getData2());
+        node2.add(new DefaultMutableTreeNode(String.format("柱面数据(%s)", data.getData2().isCheckCylinder() ? "已测量" : "未测量")));
+        node2.add(new DefaultMutableTreeNode(String.format("端面数据(%s)", data.getData2().isCheckEndFace() ? "已测量" : "未测量")));
+        DefaultMutableTreeNode node3 = new DefaultMutableTreeNode(data.getData3());
+        node3.add(new DefaultMutableTreeNode(String.format("柱面数据(%s)", data.getData3().isCheckCylinder() ? "已测量" : "未测量")));
+        node3.add(new DefaultMutableTreeNode(String.format("端面数据(%s)", data.getData3().isCheckEndFace() ? "已测量" : "未测量")));
+        DefaultMutableTreeNode node4 = new DefaultMutableTreeNode(data.getData4());
+        node4.add(new DefaultMutableTreeNode(String.format("柱面数据(%s)", data.getData4().isCheckCylinder() ? "已测量" : "未测量")));
+        node4.add(new DefaultMutableTreeNode(String.format("端面数据(%s)", data.getData4().isCheckEndFace() ? "已测量" : "未测量")));
+        root.add(node1);
+        root.add(node2);
+        root.add(node3);
+        root.add(node4);
+        return root;
+    }
+
+}
