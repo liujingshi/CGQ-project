@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jfreechart/jcommon-1.0.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/jfreechart-1.0.19/lib/jcommon-1.0.23.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jfreechart/jfreechart-1.0.19.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/usb4java-javax-1.3.0/lib/usb-api-1.0.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/usb4-javax/usb-api-1.0.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/usb4java-javax-1.3.0/lib/usb4java-javax-1.3.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/usb4-javax/usb4java-javax-1.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -46,7 +46,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/usb4java-1.3.0/lib/commons-lang3-3.8.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/usb4java/commons-lang3-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -55,7 +55,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/usb4java-1.3.0/lib/libusb4java-1.3.0-darwin-x86-64.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/usb4java/libusb4java-1.3.0-linux-aarch64.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -64,7 +64,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/usb4java-1.3.0/lib/libusb4java-1.3.0-win32-x86-64.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/usb4java/libusb4java-1.3.0-linux-x86-64.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -73,7 +73,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://D:/download/usb4java-1.3.0/lib/usb4java-1.3.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/usb4java/usb4java-1.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -22,7 +22,7 @@ public class Main {
             if (device != null) {
                 UsbConfiguration configuration = device.getActiveUsbConfiguration();
                 if (configuration.getUsbInterfaces().size() > 0) {
-                    UsbInterface iFace = configuration.getUsbInterface((byte) 1);
+                    UsbInterface iFace = configuration.getUsbInterface((byte) 0);
                     if (iFace.isClaimed()){
                         iFace.release();
                     }
@@ -31,7 +31,7 @@ public class Main {
                     UsbEndpoint sendUsbEndpoint = (UsbEndpoint)iFace.getUsbEndpoints().get(0);
                     if (!sendUsbEndpoint.getUsbEndpointDescriptor().toString().contains("OUT")) {
                         receivedUsbEndpoint = sendUsbEndpoint;
-                        sendUsbEndpoint = (UsbEndpoint)iFace.getUsbEndpoints().get(1);
+                        sendUsbEndpoint = (UsbEndpoint)iFace.getUsbEndpoints().get(0);
                     } else {
                         receivedUsbEndpoint = (UsbEndpoint)iFace.getUsbEndpoints().get(1);
                     }
