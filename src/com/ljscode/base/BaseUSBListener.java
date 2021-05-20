@@ -244,7 +244,7 @@ public class BaseUSBListener {
 
      */
 
-    public byte[] readFromPort(InputStream inStream) {
+    public static byte[] readFromPort(InputStream inStream) {
 
         byte[] bytes = null;
         try {
