@@ -14,8 +14,9 @@ public class Main {
      * @param args 参数
      */
     public static void main(String[] args) {
-        BaseUSBListener.AnalogReceivedData(); // 模拟读取USB数据
-        MainFrame mainFrame = new MainFrame(); // 创建主窗体对象
-        mainFrame.showMe(); // 显示主窗体
+//        BaseUSBListener.AnalogReceivedData(); // 模拟读取USB数据
+//        MainFrame mainFrame = new MainFrame(); // 创建主窗体对象
+//        mainFrame.showMe(); // 显示主窗体
+        BaseUSBListener.findSystemAllComPort();
     }
 }
