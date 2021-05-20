@@ -45,4 +45,7 @@ public class BaseConfig {
     public static int InputGroupSpaceSm = 32; // 文本框组间距
     public static int InputGroupSpaceMd = 40; // 文本框组间距
     public static int InputGroupSpaceLg = 48; // 文本框组间距
+
+    public static final String Cylinder = "Cylinder";
+    public static final String EndFace = "EndFace";
 }

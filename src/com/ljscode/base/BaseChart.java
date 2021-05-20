@@ -3,6 +3,7 @@ package com.ljscode.base;
 import com.ljscode.component.BarCustomRender;
 import com.ljscode.data.LeastSquareMethod;
 import com.ljscode.data.MathUtil;
+import com.ljscode.data.UnitData;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
@@ -134,22 +135,50 @@ public abstract class BaseChart {
         return chart;
     }
 
-    public static XYSeriesCollection CreateTestLineData(List<Double> rawData, List<Double> yData) {
-        LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawData);
+    public static XYSeriesCollection CreateTestLineData(List<UnitData> rawData, List<UnitData> yData, String mode) {
+        boolean hasYData = yData != null && yData.size() >= 360; // 判断yData是否存在
+        List<Double> rawDataList = new ArrayList<>();
+        List<Double> yDataList = new ArrayList<>();
+        for (int i = 0; i < 360; i++) {
+            UnitData item = UnitData.FindByDeg(rawData, i);
+            if (item != null) {
+                switch (mode) {
+                    case BaseConfig.Cylinder:
+                        rawDataList.add(item.getCylinder());
+                        break;
+                    case BaseConfig.EndFace:
+                        rawDataList.add(item.getEndFace());
+                        break;
+                }
+            }
+            if (hasYData) {
+                UnitData itemY = UnitData.FindByDeg(yData, i);
+                if (itemY != null) {
+                    yDataList.add(itemY.getEndFace());
+                }
+            }
+        }
+        LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawDataList);
+        LeastSquareMethod leastSquareMethodY = hasYData ? MathUtil.GetLeastSquareMethod(yDataList) : null;
         XYSeries rawGoals = new XYSeries("实时数据");
         XYSeries lsmGoals = new XYSeries("拟合数据");
+        XYSeries yGoals = new XYSeries("第1次测量数据");
         for (int i = 0; i < 360; i++) {
-            rawGoals.add(i, rawData.size() <= i ? 0 : rawData.get(i));
+            rawGoals.add(i, rawDataList.size() <= i ? 0 : rawDataList.get(i));
             lsmGoals.add(i, leastSquareMethod.fit(i));
+            if (hasYData)
+                yGoals.add(i, leastSquareMethodY.fit(i));
         }
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(rawGoals);
         dataset.addSeries(lsmGoals);
+        if (hasYData)
+            dataset.addSeries(yGoals);
         return dataset;
     }
 
-    public static JFreeChart CreateTestLineChart(String title, List<Double> rawData, List<Double> yData) {
-        XYSeriesCollection dataset = CreateTestLineData(rawData, yData);
+    public static JFreeChart CreateTestLineChart(String title, List<UnitData> rawData, List<UnitData> yData, String mode) {
+        XYSeriesCollection dataset = CreateTestLineData(rawData, yData, mode);
         JFreeChart chart = ChartFactory.createXYLineChart(title, "角度", "数据", dataset,
                 PlotOrientation.VERTICAL, true, true, false);
         XYPlot plot = SetXYChartFont(chart);
