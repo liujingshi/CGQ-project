@@ -11,6 +11,7 @@ public class EndFaceTabBtn extends TabBtn {
 
     /**
      * 构造方法
+     *
      * @param event 点击事件
      */
     public EndFaceTabBtn(BaseMouseListener<IconTextBtn> event) {

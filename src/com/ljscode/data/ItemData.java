@@ -3,18 +3,44 @@ package com.ljscode.data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 单次测量数据
+ */
 public class ItemData {
 
+    /**
+     * 数据名称
+     */
     private String name;
+    /**
+     * 第几次测量
+     */
     private int times;
+    /**
+     * 是否已经测量柱面数据
+     */
     private boolean isCheckCylinder;
+    /**
+     * 是否已经测量端面数据
+     */
     private boolean isCheckEndFace;
+    /**
+     * 数据
+     */
     private List<UnitData> data;
 
+    /**
+     * 构造方法
+     */
     public ItemData() {
         this.data = new ArrayList<>();
     }
 
+    /**
+     * 构造方法
+     *
+     * @param times 第几次测量
+     */
     public ItemData(int times) {
         this.times = times;
         this.name = String.format("第%d次测量数据", this.times);
@@ -23,6 +49,15 @@ public class ItemData {
         this.data = new ArrayList<>();
     }
 
+    /**
+     * 构造方法
+     *
+     * @param name            数据名称
+     * @param times           第几次测量
+     * @param isCheckCylinder 是否已经测量柱面数据
+     * @param isCheckEndFace  是否已经测量端面数据
+     * @param data            数据
+     */
     public ItemData(String name, int times, boolean isCheckCylinder, boolean isCheckEndFace, List<UnitData> data) {
         this.name = name;
         this.times = times;

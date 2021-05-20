@@ -7,7 +7,9 @@ import javax.swing.*;
  */
 public class BaseFrame extends JFrame {
 
-    // 是否为主窗体
+    /**
+     * 是否为主窗体
+     */
     private boolean isMainFrame = false;
 
     /**
@@ -19,8 +21,9 @@ public class BaseFrame extends JFrame {
 
     /**
      * 构造方法
-     * @param title 窗体标题
-     * @param width 窗体宽度
+     *
+     * @param title  窗体标题
+     * @param width  窗体宽度
      * @param height 窗体高度
      */
     public BaseFrame(String title, int width, int height) {

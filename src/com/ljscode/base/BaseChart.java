@@ -14,7 +14,6 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.DefaultPolarItemRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -29,8 +28,12 @@ import java.util.List;
  */
 public abstract class BaseChart {
 
+    /**
+     * 字体
+     */
     public static Font font;
 
+    // 实体化字体
     static {
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("res/font/Alibaba-PuHuiTi.ttf"));
@@ -41,75 +44,31 @@ public abstract class BaseChart {
         }
     }
 
+    /**
+     * 设置XYPlot字体
+     *
+     * @param chart JFreeChart
+     * @return XYPlot
+     */
     public static XYPlot SetXYChartFont(JFreeChart chart) {
-        chart.getTitle().setFont(font);
-        chart.getLegend().setItemFont(font);
-        XYPlot plot = chart.getXYPlot();
-        plot.getDomainAxis().setLabelFont(font);
-        plot.getDomainAxis().setTickLabelFont(font);
-        plot.getRangeAxis().setLabelFont(font);
-        plot.getRangeAxis().setTickLabelFont(font);
-        return plot;
-    }
-
-    public static CategoryPlot SetCategoryChartFont(JFreeChart chart) {
-        chart.getTitle().setFont(font);
-        chart.getLegend().setItemFont(font);
-        CategoryPlot plot = chart.getCategoryPlot();
-        plot.getDomainAxis().setLabelFont(font);
-        plot.getDomainAxis().setTickLabelFont(font);
-        plot.getRangeAxis().setLabelFont(font);
-        plot.getRangeAxis().setTickLabelFont(font);
+        chart.getTitle().setFont(font); // 设置标题字体
+        chart.getLegend().setItemFont(font); // 设置图例字体
+        XYPlot plot = chart.getXYPlot(); // 获取Plot
+        plot.getDomainAxis().setLabelFont(font); // 设置X轴标签字体
+        plot.getDomainAxis().setTickLabelFont(font); // 设置X轴刻度字体
+        plot.getRangeAxis().setLabelFont(font); // 设置Y轴标签字体
+        plot.getRangeAxis().setTickLabelFont(font); // 设置Y轴刻度字体
         return plot;
     }
 
     /**
-     * 创建折线图
+     * 创建传感器校准图
      *
-     * @param title      标题
-     * @param xAxisLabel x轴名称
-     * @param yAxisLabel y轴名称
-     * @param dataName   数据名称
-     * @param xData      x轴数据
-     * @param yData      y轴数据
-     * @return 图表 JFreeChart对象
+     * @param cylinder 柱面传感器数值
+     * @param endFace  端面传感器数值
+     * @param deg      角度传感器数值
+     * @return JFreeChart
      */
-    public static JFreeChart CreateXYLineChart(String title, String xAxisLabel, String yAxisLabel, String dataName,
-                                               List<Double> xData, List<Double> yData) {
-        XYSeries goals = new XYSeries(dataName);
-        for (int i = 0; i < xData.size(); i++) {
-            goals.add(xData.get(i), yData.get(i));
-        }
-        XYDataset dataset = new XYSeriesCollection(goals);
-        JFreeChart chart = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, dataset,
-                PlotOrientation.VERTICAL, true, true, false);
-        SetXYChartFont(chart);
-        return chart;
-    }
-
-    /**
-     * 创建柱状图
-     *
-     * @param title      标题
-     * @param xAxisLabel x轴名称
-     * @param yAxisLabel y轴名称
-     * @param dataName   数据名称
-     * @param category   x轴数据
-     * @param yData      y轴数据
-     * @return 图表 JFreeChart对象
-     */
-    public static JFreeChart CreateBarChart(String title, String xAxisLabel, String yAxisLabel, String dataName,
-                                            List<String> category, List<Double> yData) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (int i = 0; i < category.size(); i++) {
-            dataset.addValue(yData.get(i), dataName, category.get(i));
-        }
-        JFreeChart chart = ChartFactory.createBarChart(title, xAxisLabel, yAxisLabel, dataset,
-                PlotOrientation.VERTICAL, true, true, false);
-        SetCategoryChartFont(chart);
-        return chart;
-    }
-
     public static JFreeChart CreateCheckChart(double cylinder, double endFace, double deg) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.addValue(cylinder, "传感器校准", "柱面传感器");
@@ -135,6 +94,14 @@ public abstract class BaseChart {
         return chart;
     }
 
+    /**
+     * 创建检测折线图数据
+     *
+     * @param rawData 真实数据
+     * @param yData   第1次测量数据
+     * @param mode    模式(柱面/端面)
+     * @return XYSeriesCollection dataset
+     */
     public static XYSeriesCollection CreateTestLineData(List<UnitData> rawData, List<UnitData> yData, String mode) {
         boolean hasYData = yData != null && yData.size() >= 360; // 判断yData是否存在
         List<Double> rawDataList = new ArrayList<>();
@@ -158,7 +125,7 @@ public abstract class BaseChart {
                 }
             }
         }
-        LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawDataList);
+        LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawDataList); // 创建最小二乘法数据
         LeastSquareMethod leastSquareMethodY = hasYData ? MathUtil.GetLeastSquareMethod(yDataList) : null;
         XYSeries rawGoals = new XYSeries("实时数据");
         XYSeries lsmGoals = new XYSeries("拟合数据");
@@ -177,6 +144,15 @@ public abstract class BaseChart {
         return dataset;
     }
 
+    /**
+     * 创建检测折线图
+     *
+     * @param title   标题
+     * @param rawData 真实数据
+     * @param yData   第1次测量数据
+     * @param mode    模式(柱面/端面)
+     * @return JFreeChart
+     */
     public static JFreeChart CreateTestLineChart(String title, List<UnitData> rawData, List<UnitData> yData, String mode) {
         XYSeriesCollection dataset = CreateTestLineData(rawData, yData, mode);
         JFreeChart chart = ChartFactory.createXYLineChart(title, "角度", "数据", dataset,
@@ -186,6 +162,14 @@ public abstract class BaseChart {
         return chart;
     }
 
+    /**
+     * 创建综合雷达数据
+     *
+     * @param names      名称(s)
+     * @param r          半径
+     * @param rawDataset 真实数据集
+     * @return XYSeriesCollection dataset
+     */
     public static XYSeriesCollection CreateTestPolarData(List<String> names, double r, List<List<Double>> rawDataset) {
         List<LeastSquareMethod> leastSquareMethods = new ArrayList<>();
         List<XYSeries> goals = new ArrayList<>();
@@ -205,6 +189,15 @@ public abstract class BaseChart {
         return dataset;
     }
 
+    /**
+     * 创建综合雷达图
+     *
+     * @param title      标题
+     * @param names      名称(s)
+     * @param r          半径
+     * @param rawDataset 真实数据集
+     * @return JFreeChart
+     */
     public static JFreeChart CreateTestPolarChart(String title, List<String> names, double r, List<List<Double>> rawDataset) {
         XYSeriesCollection dataset = CreateTestPolarData(names, r, rawDataset);
         JFreeChart chart = ChartFactory.createPolarChart(title, dataset, true, true, false);

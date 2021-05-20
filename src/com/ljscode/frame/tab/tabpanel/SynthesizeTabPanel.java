@@ -5,6 +5,9 @@ import com.ljscode.component.TestPolarChart;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 综合数据面板
+ */
 public class SynthesizeTabPanel extends TabPanel {
 
     public SynthesizeTabPanel() {

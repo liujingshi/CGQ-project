@@ -9,12 +9,15 @@ import com.ljscode.data.UnitData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 柱面检测面板
+ */
 public class CylinderTabPanel extends TabPanel {
 
     private final TextLabel currentDataNameLabel;
-    private TestData data;
     private final List<UnitData> rawData;
     private final DataTree tree;
+    private TestData data;
     private TestLineChart lineChart;
 
     public CylinderTabPanel() {

@@ -10,6 +10,7 @@ public class OpenTabBtn extends TabBtn {
 
     /**
      * 构造方法
+     *
      * @param event 点击事件
      */
     public OpenTabBtn(BaseMouseListener<IconTextBtn> event) {

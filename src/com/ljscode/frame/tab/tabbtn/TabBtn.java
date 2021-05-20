@@ -11,12 +11,13 @@ public class TabBtn extends IconTextBtn {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param text 文本
-     * @param src 正常图片路径
+     *
+     * @param left     距左
+     * @param top      距顶
+     * @param text     文本
+     * @param src      正常图片路径
      * @param hoverSrc hover图片路径
-     * @param event 点击事件
+     * @param event    点击事件
      */
     public TabBtn(int left, int top, String text, String src, String hoverSrc, BaseMouseListener<IconTextBtn> event) {
         super(left, top, BaseConfig.TabBtnWidth, BaseConfig.TabBtnHeight, BaseConfig.TabBtnIconWidth, BaseConfig.TabBtnIconHeight,

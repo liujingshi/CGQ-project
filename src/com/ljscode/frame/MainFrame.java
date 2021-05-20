@@ -3,10 +3,10 @@ package com.ljscode.frame;
 import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
 import com.ljscode.base.BaseFrame;
-import com.ljscode.frame.btn.CloseBtn;
 import com.ljscode.component.Div;
 import com.ljscode.component.Img;
 import com.ljscode.component.TextLabel;
+import com.ljscode.frame.btn.CloseBtn;
 import com.ljscode.frame.tab.Tab;
 
 /**

@@ -12,9 +12,10 @@ public class TextLabel extends JLabel {
 
     /**
      * 构造方法
-     * @param text 文本
+     *
+     * @param text     文本
      * @param fontSize 字体大小
-     * @param color 文字颜色
+     * @param color    文字颜色
      */
     public TextLabel(String text, float fontSize, Color color) {
         super(text);
@@ -25,13 +26,14 @@ public class TextLabel extends JLabel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
-     * @param height 高度
-     * @param text 文本
+     *
+     * @param left     距左
+     * @param top      距顶
+     * @param width    宽度
+     * @param height   高度
+     * @param text     文本
      * @param fontSize 字体大小
-     * @param color 文字颜色
+     * @param color    文字颜色
      */
     public TextLabel(int left, int top, int width, int height, String text, float fontSize, Color color) {
         this(text, fontSize, color);
@@ -40,11 +42,12 @@ public class TextLabel extends JLabel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param text 文本
+     *
+     * @param left     距左
+     * @param top      距顶
+     * @param text     文本
      * @param fontSize 字体大小
-     * @param color 文字颜色
+     * @param color    文字颜色
      */
     public TextLabel(int left, int top, String text, float fontSize, Color color) {
         super(text);
@@ -52,14 +55,15 @@ public class TextLabel extends JLabel {
         this.setFont(font);
         this.setForeground(color);
         int length = text.length();
-        int width = (int)((fontSize + 3) * length);
-        int height = (int)(fontSize + 1);
+        int width = (int) ((fontSize + 3) * length);
+        int height = (int) (fontSize + 1);
         this.setBounds(left, top, width, height);
     }
 
     /**
      * 加载字体
-     * @param text 文本
+     *
+     * @param text     文本
      * @param fontSize 字体大小
      * @return 字体Font对象
      */
@@ -75,7 +79,7 @@ public class TextLabel extends JLabel {
             e.printStackTrace();
         }
         if (font == null) { // 如果字体加载出错则使用默认字体
-            font = new Font("宋体", Font.PLAIN, (int)fontSize);
+            font = new Font("宋体", Font.PLAIN, (int) fontSize);
         }
         return font;
     }

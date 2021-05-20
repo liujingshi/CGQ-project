@@ -7,36 +7,54 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+/**
+ * 数据树
+ */
 public class DataTree extends JTree {
 
+    /**
+     * 构造方法
+     *
+     * @param data 整个数据
+     */
     public DataTree(TestData data) {
         super(createTreeNode(data));
 
         this.addTreeSelectionListener(e -> {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.getLastSelectedPathComponent();
 
-            if (node == null )
-                return ;
+            if (node == null)
+                return;
 
             Object object = node.getUserObject();
             if (node.isLeaf()) {
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
                 ItemData parentObj = (ItemData) parent.getUserObject();
-                System.out.println( "你选择了：" + parentObj.getName() + " - " + object.toString());
+                System.out.println("你选择了：" + parentObj.getName() + " - " + object.toString());
             }
         });
     }
 
+    /**
+     * 构造方法
+     *
+     * @param left   距左
+     * @param top    距顶
+     * @param width  宽度
+     * @param height 高度
+     * @param data   整个数据
+     */
     public DataTree(int left, int top, int width, int height, TestData data) {
         this(data);
         this.setBounds(left, top, width, height);
     }
 
-    public void setTestData(TestData data) {
-        DefaultMutableTreeNode root = createTreeNode(data);
-        this.setModel(new DefaultTreeModel(root));
-    }
-
+    /**
+     * 创建树
+     *
+     * @param data 整个数据
+     * @return DefaultMutableTreeNode TreeNode
+     */
     public static DefaultMutableTreeNode createTreeNode(TestData data) {
         if (data == null)
             return new DefaultMutableTreeNode("");
@@ -58,6 +76,16 @@ public class DataTree extends JTree {
         root.add(node3);
         root.add(node4);
         return root;
+    }
+
+    /**
+     * 设置数据
+     *
+     * @param data 整个数据
+     */
+    public void setTestData(TestData data) {
+        DefaultMutableTreeNode root = createTreeNode(data);
+        this.setModel(new DefaultTreeModel(root));
     }
 
 }

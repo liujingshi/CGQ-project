@@ -17,6 +17,7 @@ public class Img extends JLabel {
 
     /**
      * 构造方法
+     *
      * @param src 图片路径
      */
     public Img(String src) {
@@ -25,11 +26,12 @@ public class Img extends JLabel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
+     *
+     * @param left   距左
+     * @param top    距顶
+     * @param width  宽度
      * @param height 高度
-     * @param src 图片路径
+     * @param src    图片路径
      */
     public Img(int left, int top, int width, int height, String src) {
         super();

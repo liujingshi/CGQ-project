@@ -14,13 +14,14 @@ public class IconBtn extends JLabel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
-     * @param height 高度
-     * @param src 正常图片路径
+     *
+     * @param left     距左
+     * @param top      距顶
+     * @param width    宽度
+     * @param height   高度
+     * @param src      正常图片路径
      * @param hoverSrc hover图片路径
-     * @param event 点击事件
+     * @param event    点击事件
      */
     public IconBtn(int left, int top, int width, int height, String src, String hoverSrc, BaseMouseListener<IconBtn> event) {
         super();

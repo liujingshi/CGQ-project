@@ -13,27 +13,43 @@ import java.awt.event.MouseListener;
  */
 public class Btn extends TextLabel {
 
+    /**
+     * 蓝色
+     */
     public static final String BLUE = "Blue";
+    /**
+     * 绿色
+     */
     public static final String GREEN = "Green";
 
+    /**
+     * 字体大小
+     */
     private static final float fontSize = 16L;
 
+    /**
+     * 颜色
+     */
     private Color color;
+    /**
+     * Hover颜色
+     */
     private Color hoverColor;
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param text 文本
+     *
+     * @param left  距左
+     * @param top   距顶
+     * @param text  文本
      * @param color 颜色(只能使用Btn.预设颜色)
      */
     public Btn(int left, int top, int width, int height, String text, String color, BaseMouseListener<Btn> event) {
         super(text, fontSize, BaseColor.Write);
         if (width <= 0)
-            width = (int)(text.length() * fontSize + 100);
+            width = (int) (text.length() * fontSize + 100);
         if (height <= 0)
-            height = (int)(text.length() * fontSize + 10);
+            height = (int) (text.length() * fontSize + 10);
         this.setBounds(left, top, width, height);
         this.setHorizontalAlignment(JLabel.CENTER);
         switch (color) {

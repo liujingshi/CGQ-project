@@ -6,6 +6,9 @@ import com.ljscode.component.Btn;
 import com.ljscode.component.InputGroup;
 import com.ljscode.component.TextLabel;
 
+/**
+ * 打开面板
+ */
 public class OpenTabPanel extends TabPanel {
 
     public OpenTabPanel() {

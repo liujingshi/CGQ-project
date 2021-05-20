@@ -1,14 +1,10 @@
 package com.ljscode.frame.tab.tabpanel;
 
-import com.ljscode.base.BaseColor;
-import com.ljscode.component.BarChart;
 import com.ljscode.component.CheckChart;
-import com.ljscode.component.TextLabel;
-import org.jfree.chart.JFreeChart;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * 校准传感器面板
+ */
 public class CheckTabPanel extends TabPanel {
 
     public CheckTabPanel() {

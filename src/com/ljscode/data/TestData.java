@@ -1,30 +1,68 @@
 package com.ljscode.data;
 
 import java.util.Date;
-import java.util.List;
 
+/**
+ * 整个数据
+ */
 public class TestData {
 
+    /**
+     * 数据名称
+     */
     private String name;
+    /**
+     * 创建时间
+     */
     private Date time;
+    /**
+     * 第1次测量数据
+     */
     private ItemData data1;
+    /**
+     * 第2次测量数据
+     */
     private ItemData data2;
+    /**
+     * 第3次测量数据
+     */
     private ItemData data3;
+    /**
+     * 第4次测量数据
+     */
     private ItemData data4;
 
-    public TestData(String name, Date time) {
+    /**
+     * 构造方法
+     *
+     * @param name 数据名称
+     */
+    public TestData(String name) {
         this();
         this.name = name;
-        this.time = time;
     }
 
+    /**
+     * 构造方法
+     */
     public TestData() {
+        time = new Date();
         data1 = new ItemData(1);
         data2 = new ItemData(2);
         data3 = new ItemData(3);
         data4 = new ItemData(4);
     }
 
+    /**
+     * 构造方法
+     *
+     * @param name  数据名称
+     * @param time  创建时间
+     * @param data1 第1次测量数据
+     * @param data2 第2次测量数据
+     * @param data3 第3次测量数据
+     * @param data4 第4次测量数据
+     */
     public TestData(String name, Date time, ItemData data1, ItemData data2, ItemData data3, ItemData data4) {
         this.name = name;
         this.time = time;

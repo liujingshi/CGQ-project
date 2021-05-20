@@ -19,9 +19,10 @@ public class Div extends JPanel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
+     *
+     * @param left   距左
+     * @param top    距顶
+     * @param width  宽度
      * @param height 高度
      */
     public Div(int left, int top, int width, int height) {
@@ -32,9 +33,10 @@ public class Div extends JPanel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
+     *
+     * @param left       距左
+     * @param top        距顶
+     * @param width      宽度
      * @param background 背景颜色
      */
     public Div(int left, int top, int width, int height, Color background) {
@@ -45,11 +47,12 @@ public class Div extends JPanel {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
+     *
+     * @param left       距左
+     * @param top        距顶
+     * @param width      宽度
      * @param background 背景颜色
-     * @param border 边框颜色
+     * @param border     边框颜色
      */
     public Div(int left, int top, int width, int height, Color background, Color border) {
         this(left, top, width, height, background);

@@ -27,6 +27,7 @@ public class Tab extends Div {
     private SynthesizeTabPanel synthesizeTabPanel; // 综合数据Tab面板
 
     private TestData currentData; // 当前数据
+
     /**
      * 构造方法
      */
@@ -48,6 +49,7 @@ public class Tab extends Div {
 
     /**
      * 初始化Tab按钮事件
+     *
      * @param body Tab面板
      */
     private void initTabBtnEvent(Div body) {
@@ -58,7 +60,7 @@ public class Tab extends Div {
         this.cylinderTabBtn = new CylinderTabBtn(this::onClickCylinderTab); // 柱面测量Tab
         EndFaceTabBtn endFaceTabBtn = new EndFaceTabBtn(this::onClickEndFaceTab); // 端面测量Tab
         SynthesizeTabBtn synthesizeTabBtn = new SynthesizeTabBtn(this::onClickSynthesizeTab); // 综合数据Tab
-        this.tabButtons = new TabBtn[] {newTabBtn, openTabBtn, outputTabBtn,
+        this.tabButtons = new TabBtn[]{newTabBtn, openTabBtn, outputTabBtn,
                 endFaceTabBtn, cylinderTabBtn, checkTabBtn, synthesizeTabBtn}; // 装载Tab到数组
         for (TabBtn tabBtn : this.tabButtons) { // 将Tab添加到body中
             body.add(tabBtn);
@@ -71,8 +73,8 @@ public class Tab extends Div {
         this.cylinderTabPanel = new CylinderTabPanel(); // 柱面测量Tab面板
         this.endFaceTabPanel = new EndFaceTabPanel(); // 端面测量Tab面板
         this.synthesizeTabPanel = new SynthesizeTabPanel(); // 综合数据Tab面板
-        this.tabPanels = new TabPanel[] { newTabPanel, openTabPanel, outputTabPanel,
-                endFaceTabPanel, cylinderTabPanel, checkTabPanel, synthesizeTabPanel }; // 装载Tab面板到数组
+        this.tabPanels = new TabPanel[]{newTabPanel, openTabPanel, outputTabPanel,
+                endFaceTabPanel, cylinderTabPanel, checkTabPanel, synthesizeTabPanel}; // 装载Tab面板到数组
         for (TabPanel tabPanel : this.tabPanels) { // 将Tab添加到body中
             body.add(tabPanel);
         }
@@ -82,6 +84,7 @@ public class Tab extends Div {
 
     /**
      * 切换tab
+     *
      * @param tab 要切换到的tab
      */
     private void changeTab(IconTextBtn tab, TabPanel tp) {
@@ -98,6 +101,7 @@ public class Tab extends Div {
 
     /**
      * 点击新建Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickNewTab(IconTextBtn tab) {
@@ -110,6 +114,7 @@ public class Tab extends Div {
 
     /**
      * 点击打开Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickOpenTab(IconTextBtn tab) {
@@ -118,6 +123,7 @@ public class Tab extends Div {
 
     /**
      * 点击导出Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickOutputTab(IconTextBtn tab) {
@@ -126,6 +132,7 @@ public class Tab extends Div {
 
     /**
      * 点击传感器校准Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickCheckTab(IconTextBtn tab) {
@@ -134,6 +141,7 @@ public class Tab extends Div {
 
     /**
      * 点击柱面测量Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickCylinderTab(IconTextBtn tab) {
@@ -147,6 +155,7 @@ public class Tab extends Div {
 
     /**
      * 点击端面测量Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickEndFaceTab(IconTextBtn tab) {
@@ -162,6 +171,7 @@ public class Tab extends Div {
 
     /**
      * 点击综合数据Tab事件
+     *
      * @param tab 点击的tab
      */
     private void onClickSynthesizeTab(IconTextBtn tab) {

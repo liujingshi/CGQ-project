@@ -24,25 +24,26 @@ public class IconTextBtn extends Div {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
-     * @param height 高度
-     * @param iconWidth 图片宽度
-     * @param iconHeight 图片高度
-     * @param paddingTop 顶端内边距
-     * @param paddingRight 右侧内边距
-     * @param paddingBottom 底部内边距
-     * @param paddingLeft 左侧内边距
-     * @param text 文本
-     * @param fontSize 文本字体大小
-     * @param color 正常文本颜色
-     * @param hoverColor hover文本颜色
-     * @param src 正常图片路径
-     * @param hoverSrc hover图片路径
-     * @param background 正常背景颜色
+     *
+     * @param left            距左
+     * @param top             距顶
+     * @param width           宽度
+     * @param height          高度
+     * @param iconWidth       图片宽度
+     * @param iconHeight      图片高度
+     * @param paddingTop      顶端内边距
+     * @param paddingRight    右侧内边距
+     * @param paddingBottom   底部内边距
+     * @param paddingLeft     左侧内边距
+     * @param text            文本
+     * @param fontSize        文本字体大小
+     * @param color           正常文本颜色
+     * @param hoverColor      hover文本颜色
+     * @param src             正常图片路径
+     * @param hoverSrc        hover图片路径
+     * @param background      正常背景颜色
      * @param hoverBackground hover背景颜色
-     * @param event 点击事件
+     * @param event           点击事件
      */
     public IconTextBtn(int left, int top, int width, int height, int iconWidth, int iconHeight,
                        int paddingTop, int paddingRight, int paddingBottom, int paddingLeft,

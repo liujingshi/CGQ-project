@@ -12,11 +12,12 @@ public class InputGroup extends Div {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
+     *
+     * @param left   距左
+     * @param top    距顶
+     * @param width  宽度
      * @param height 高度
-     * @param label 标签文本
+     * @param label  标签文本
      */
     public InputGroup(int left, int top, int width, int height, String label) {
         super(left, top, width, height, BaseColor.Write);
@@ -29,11 +30,12 @@ public class InputGroup extends Div {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
-     * @param height 高度
-     * @param label 标签文本
+     *
+     * @param left        距左
+     * @param top         距顶
+     * @param width       宽度
+     * @param height      高度
+     * @param label       标签文本
      * @param placeholder 默认提示文字
      */
     public InputGroup(int left, int top, int width, int height, String label, String placeholder) {
@@ -47,6 +49,7 @@ public class InputGroup extends Div {
 
     /**
      * 获取文本框的值
+     *
      * @return 文本框的值
      */
     public String getValue() {
@@ -55,6 +58,7 @@ public class InputGroup extends Div {
 
     /**
      * 设置文本框的值
+     *
      * @param value 值
      */
     public void setValue(String value) {
@@ -63,6 +67,7 @@ public class InputGroup extends Div {
 
     /**
      * 设置标签的文本
+     *
      * @param text 文本
      */
     public void setLabel(String text) {

@@ -25,9 +25,10 @@ public class Input extends JTextField {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
+     *
+     * @param left   距左
+     * @param top    距顶
+     * @param width  宽度
      * @param height 高度
      */
     public Input(int left, int top, int width, int height) {
@@ -36,7 +37,7 @@ public class Input extends JTextField {
         try {
             File alibabaPuHUiTi = new File("res/font/Alibaba-PuHuiTi.ttf"); // 打开ttf字体文件(阿里巴巴普惠体)
             font = Font.createFont(Font.TRUETYPE_FONT, alibabaPuHUiTi); // 创建字体对象
-            font = font.deriveFont((float)(height - 8)); // 设置字体大小
+            font = font.deriveFont((float) (height - 8)); // 设置字体大小
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
@@ -50,10 +51,11 @@ public class Input extends JTextField {
 
     /**
      * 构造方法
-     * @param left 距左
-     * @param top 距顶
-     * @param width 宽度
-     * @param height 高度
+     *
+     * @param left        距左
+     * @param top         距顶
+     * @param width       宽度
+     * @param height      高度
      * @param placeholder 默认提示文字
      */
     public Input(int left, int top, int width, int height, String placeholder) {
@@ -83,6 +85,7 @@ public class Input extends JTextField {
 
     /**
      * 获取输入框的值
+     *
      * @return 值
      */
     public String getValue() {
@@ -96,6 +99,7 @@ public class Input extends JTextField {
 
     /**
      * 设置输入框的值
+     *
      * @param text 文本
      */
     public void setValue(String text) {

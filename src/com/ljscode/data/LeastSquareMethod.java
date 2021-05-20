@@ -1,5 +1,8 @@
 package com.ljscode.data;
 
+/**
+ * 最小二乘法
+ */
 public class LeastSquareMethod {
 
     private final double[] x;
@@ -8,6 +11,13 @@ public class LeastSquareMethod {
     private final int n;
     private double[] coefficient;
 
+    /**
+     * 构造方法
+     *
+     * @param x x数据
+     * @param y y数据
+     * @param n 阶数
+     */
     public LeastSquareMethod(double[] x, double[] y, int n) {
         if (x == null || y == null || x.length < 2 || x.length != y.length || n < 2) {
             throw new IllegalArgumentException("IllegalArgumentException occurred.");
@@ -22,6 +32,14 @@ public class LeastSquareMethod {
         compute();
     }
 
+    /**
+     * 构造方法
+     *
+     * @param x      x数据
+     * @param y      y数据
+     * @param weight 权重
+     * @param n      阶数
+     */
     public LeastSquareMethod(double[] x, double[] y, double[] weight, int n) {
         if (x == null || y == null || weight == null || x.length < 2 || x.length != y.length
                 || x.length != weight.length || n < 2) {
@@ -34,10 +52,21 @@ public class LeastSquareMethod {
         compute();
     }
 
+    /**
+     * 获取参数
+     *
+     * @return 参数
+     */
     public double[] getCoefficient() {
         return coefficient;
     }
 
+    /**
+     * 根据x求y
+     *
+     * @param x x
+     * @return y
+     */
     public double fit(double x) {
         if (coefficient == null) {
             return 0;
@@ -49,10 +78,23 @@ public class LeastSquareMethod {
         return sum;
     }
 
+    /**
+     * 根据y求x
+     *
+     * @param y y
+     * @return x
+     */
     public double solve(double y) {
         return solve(y, 1.0d);
     }
 
+    /**
+     * 根据y求x
+     *
+     * @param y      y
+     * @param startX 起始x
+     * @return x
+     */
     public double solve(double y, double startX) {
         final double EPS = 0.0000001d;
         if (coefficient == null) {
@@ -78,6 +120,9 @@ public class LeastSquareMethod {
         return sum;
     }
 
+    /**
+     * 计算
+     */
     private void compute() {
         if (x == null || y == null || x.length <= 1 || x.length != y.length || x.length < n
                 || n < 2) {
@@ -105,6 +150,9 @@ public class LeastSquareMethod {
         coefficient = calcLinearEquation(a, b);
     }
 
+    /**
+     * 最小二乘法计算参数
+     */
     private double[] calcLinearEquation(double[][] a, double[] b) {
         if (a == null || b == null || a.length == 0 || a.length != b.length) {
             return null;

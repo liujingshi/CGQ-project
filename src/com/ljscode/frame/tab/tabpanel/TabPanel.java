@@ -9,11 +9,10 @@ import com.ljscode.component.Div;
  */
 public class TabPanel extends Div {
 
-    // 是否显示
-    private boolean isShow = false;
-
     protected int width;
     protected int height;
+    // 是否显示
+    private boolean isShow = false;
 
     /**
      * 构造方法
