@@ -5,8 +5,12 @@ import com.ljscode.base.BaseConfig;
 import com.ljscode.component.Div;
 import com.ljscode.component.IconTextBtn;
 import com.ljscode.data.TestData;
+import com.ljscode.data.UnitData;
 import com.ljscode.frame.tab.tabbtn.*;
 import com.ljscode.frame.tab.tabpanel.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Tab
@@ -27,6 +31,7 @@ public class Tab extends Div {
     private SynthesizeTabPanel synthesizeTabPanel; // 综合数据Tab面板
 
     private TestData currentData; // 当前数据
+    private List<UnitData> rawData;
 
     /**
      * 构造方法
@@ -66,12 +71,13 @@ public class Tab extends Div {
             body.add(tabBtn);
         }
 
+        rawData = new ArrayList<>();
         this.newTabPanel = new NewTabPanel(); // 新建Tab面板
         this.openTabPanel = new OpenTabPanel(); // 打开Tab面板
         this.outputTabPanel = new OutputTabPanel(); // 导出Tab面板
         this.checkTabPanel = new CheckTabPanel(); // 传感器校准Tab面板
-        this.cylinderTabPanel = new CylinderTabPanel(); // 柱面测量Tab面板
-        this.endFaceTabPanel = new EndFaceTabPanel(); // 端面测量Tab面板
+        this.cylinderTabPanel = new CylinderTabPanel(rawData); // 柱面测量Tab面板
+        this.endFaceTabPanel = new EndFaceTabPanel(rawData); // 端面测量Tab面板
         this.synthesizeTabPanel = new SynthesizeTabPanel(); // 综合数据Tab面板
         this.tabPanels = new TabPanel[]{newTabPanel, openTabPanel, outputTabPanel,
                 endFaceTabPanel, cylinderTabPanel, checkTabPanel, synthesizeTabPanel}; // 装载Tab面板到数组

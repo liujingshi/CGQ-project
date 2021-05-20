@@ -2,6 +2,7 @@ package com.ljscode.frame.tab.tabpanel;
 
 import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
+import com.ljscode.base.BaseUSBListener;
 import com.ljscode.component.*;
 import com.ljscode.data.TestData;
 import com.ljscode.data.UnitData;
@@ -20,8 +21,9 @@ public class CylinderTabPanel extends TabPanel {
     private TestData data;
     private TestLineChart lineChart;
 
-    public CylinderTabPanel() {
+    public CylinderTabPanel(List<UnitData> rawData) {
         super();
+        this.rawData = rawData;
         int rootX = 30;
         int rootY = 30;
         currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 16, BaseColor.Black);
@@ -31,10 +33,12 @@ public class CylinderTabPanel extends TabPanel {
         TipBox tipBox = new TipBox(rootX + 200, rootY + 60, 230, 80);
         this.add(tipBox);
         tipBox.setContent("旋钮1", true);
-        Btn newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "记录当前数据为新数据", Btn.BLUE, e -> {
+        Btn newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "顺时针旋转", Btn.BLUE, e -> {
+            BaseUSBListener.Rotate(true);
         });
         this.add(newBtn);
-        Btn oldBtn = new Btn(rootX + 200, rootY + 240, 230, 60, "使用当前数据替换选中数据", Btn.BLUE, e -> {
+        Btn oldBtn = new Btn(rootX + 200, rootY + 240, 230, 60, "逆时针旋转", Btn.BLUE, e -> {
+            BaseUSBListener.Rotate(false);
         });
         this.add(oldBtn);
         DataLabel degLabel = new DataLabel(rootX + 200, rootY + 450, 24, "角度", 36, 0, "°");
@@ -52,28 +56,17 @@ public class CylinderTabPanel extends TabPanel {
             lineChart = new TestLineChart(500, 30, 500, 400, "柱面数据实时图", rawData, null, BaseConfig.Cylinder);
             this.add(lineChart);
             new Thread(() -> {
-                float scale = 1;
                 while (true) {
-                    try {
-                        for (int i = 0; i <= 360; i++) {
-                            double data = (scale * Math.sin(Math.toRadians(i) + (Math.random() * scale / 8 - scale / 16)));
-                            UnitData item = UnitData.FindByDeg(rawData, i);
+                    BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
+                        if (!(deg < 0)) {
+                            UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)
-                                rawData.add(new UnitData(i, data, 0));
+                                rawData.add(new UnitData(deg, cylinder, 0));
                             else
-                                item.setCylinder(data);
-                            if (i % 3 == 0) {
-                                Thread.sleep(100);
-                                lineChart.reload(rawData, null, BaseConfig.Cylinder);
-                            }
+                                item.setCylinder(cylinder);
+                            lineChart.reload(rawData, null, BaseConfig.Cylinder);
                         }
-                        Thread.sleep(3000);
-                        scale -= 0.1;
-                        if (scale <= 0)
-                            scale = 1;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    });
                 }
             }).start();
         }

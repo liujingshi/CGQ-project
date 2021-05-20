@@ -2,6 +2,7 @@ package com.ljscode.frame.tab.tabpanel;
 
 import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
+import com.ljscode.base.BaseUSBListener;
 import com.ljscode.component.*;
 import com.ljscode.data.TestData;
 import com.ljscode.data.UnitData;
@@ -20,8 +21,9 @@ public class EndFaceTabPanel extends TabPanel {
     private TestData data;
     private TestLineChart lineChart;
 
-    public EndFaceTabPanel() {
+    public EndFaceTabPanel(List<UnitData> rawData) {
         super();
+        this.rawData = rawData;
         int rootX = 30;
         int rootY = 30;
         currentDataNameLabel = new TextLabel(rootX, rootY, "", 16, BaseColor.Black);
@@ -43,7 +45,6 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(dataLabel);
         DataLabel pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2F, "°");
         this.add(pxdLabel);
-        rawData = new ArrayList<>();
     }
 
     public void showChart() {
@@ -52,28 +53,17 @@ public class EndFaceTabPanel extends TabPanel {
                     rawData, data.getData1().getData(), BaseConfig.EndFace);
             this.add(lineChart);
             new Thread(() -> {
-                float scale = 1;
                 while (true) {
-                    try {
-                        for (int i = 0; i <= 360; i++) {
-                            double data = scale * Math.sin(Math.toRadians(i) + (Math.random() * scale / 4 - scale / 8));
-                            UnitData item = UnitData.FindByDeg(rawData, i);
+                    BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
+                        if (!(deg < 0)) {
+                            UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)
-                                rawData.add(new UnitData(i, 0, data));
+                                rawData.add(new UnitData(deg, 0, endFace));
                             else
-                                item.setCylinder(data);
-                            if (i % 6 == 0) {
-                                Thread.sleep(100);
-                                lineChart.reload(rawData, this.data.getData1().getData(), BaseConfig.EndFace);
-                            }
+                                item.setEndFace(endFace);
+                            lineChart.reload(rawData, this.data.getData1().isCheckEndFace() ? this.data.getData1().getData() : null, BaseConfig.EndFace);
                         }
-                        Thread.sleep(3000);
-                        scale -= 0.2;
-                        if (scale <= 0)
-                            scale = 1;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    });
                 }
             }).start();
         }
