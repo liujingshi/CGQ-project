@@ -45,14 +45,31 @@ public class EndFaceTabPanel extends TabPanel {
                 selectData.setData(rawData);
                 selectData.setCheckEndFace(true);
                 tree.setTestData(data);
+                selectData = null;
             }
         });
         this.add(newBtn);
+        Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
+            BaseUSBListener.RotateEndFace(1, false);
+        });
+        Btn left2 = new Btn(rootX + 290, rootY + 230, 80, 80, "2Left", Btn.GREEN, e -> {
+            BaseUSBListener.RotateEndFace(2, false);
+        });
+        Btn right1 = new Btn(rootX + 200, rootY + 320, 80, 80, "1Right", Btn.GREEN, e -> {
+            BaseUSBListener.RotateEndFace(1, true);
+        });
+        Btn right2 = new Btn(rootX + 290, rootY + 320, 80, 80, "2Right", Btn.GREEN, e -> {
+            BaseUSBListener.RotateEndFace(2, true);
+        });
+        this.add(left1);
+        this.add(left2);
+        this.add(right1);
+        this.add(right2);
         this.degLabel = new DataLabel(rootX + 200, rootY + 450, 24, "角度", 36, 0, "°");
         this.add(degLabel);
-        this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2F, "");
+        this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2, "");
         this.add(dataLabel);
-        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2F, "°");
+        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2, "°");
         this.add(pxdLabel);
     }
 

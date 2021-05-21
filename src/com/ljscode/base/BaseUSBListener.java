@@ -15,7 +15,10 @@ import java.util.List;
 
 public class BaseUSBListener {
 
-    private static final short VENDOR_ID = 0x08ee;
+    //    private static final short VENDOR_ID = 0x08ee;
+    private static final short VENDOR_ID = 0x03eb;
+//    private static final short VENDOR_ID = 0x04d9;
+//    private static final short VENDOR_ID = 0x04ca;
     //    private static final short PRODUCT_ID = 0xb100;
     private static UsbPipe pipe81, pipe01;
 
@@ -63,10 +66,13 @@ public class BaseUSBListener {
                     }
                     System.out.println("开始Claim");
                     iFace.claim((usbInterface -> true));
-                    UsbEndpoint receivedUsbEndpoint = iFace.getUsbEndpoint((byte) 0x01);
-                    //接收
+                    UsbEndpoint receivedUsbEndpoint = iFace.getUsbEndpoint((byte) 0x83);
+                    UsbEndpoint sendUsbEndpoint = iFace.getUsbEndpoint((byte) 0x04);
+
                     UsbPipe receivedUsbPipe = receivedUsbEndpoint.getUsbPipe();
                     receivedUsbPipe.open();
+                    UsbPipe sendUsbPipe = sendUsbEndpoint.getUsbPipe();
+                    sendUsbPipe.open();
 
                     receivedUsbPipe.addUsbPipeListener(new UsbPipeListener() {
                         @Override
@@ -78,45 +84,28 @@ public class BaseUSBListener {
                         public void dataEventOccurred(UsbPipeDataEvent usbPipeDataEvent) {
                             byte[] data = usbPipeDataEvent.getData();
                             int length = usbPipeDataEvent.getActualLength();
-                            System.out.println(length);
-                            for (int i = 0; i < length; i++) {
-                                System.out.print(Byte.toUnsignedInt(data[i]));
+                            if (length > 0) {
+                                System.out.println(length);
+                                for (int i = 0; i < length; i++) {
+                                    System.out.print(data[i]);
+                                }
+                                System.out.println();
+                            } else {
+                                System.out.print("NoData ");
                             }
-                            System.out.println();
                         }
                     });
 
                     new Thread(() -> {
                         while (true) {
                             try {
-                                Thread.sleep(2000);
-
-                                byte[] bytesToRead = new byte[64]; //Going to read 3 bytes into here
-                                UsbIrp irp = null;
-                                try {
-                                    irp = receivedUsbPipe.asyncSubmit(bytesToRead);
-//                                    irp.waitUntilComplete(1000);
-//                                    int length = irp.getActualLength();
-//                                    System.out.println(length);
-//                                    for (int i = 0; i < length; i++) {
-//                                        System.out.print(Byte.toUnsignedInt(bytesToRead[i]));
-//                                    }
-//                                    System.out.println();
-                                } catch (UsbException e) {
-                                    e.printStackTrace();
-                                }
-
-//                                UsbIrp irpRead = receivedUsbPipe.createUsbIrp();
-//                                irpRead.setData(bytesToRead);
-//                                try {
-//                                    receivedUsbPipe.asyncSubmit(irpRead); //Read some bytes
-//                                    irpRead.waitUntilComplete(1000); //Wait up to 1 second
-//                                    int length = irpRead.getLength();
-//                                    System.out.println(length);
-//                                } catch (UsbException e) {
-//                                    e.printStackTrace();
-//                                }
-                            } catch (InterruptedException e) {
+                                Thread.sleep(200);
+                                byte[] bytesToRead = new byte[1];
+                                bytesToRead[0] = '?';
+                                byte[] b = new byte[16];
+                                sendUsbPipe.asyncSubmit(bytesToRead);
+                                receivedUsbPipe.asyncSubmit(b);
+                            } catch (InterruptedException | UsbException e) {
                                 e.printStackTrace();
                             }
                         }
@@ -317,7 +306,7 @@ public class BaseUSBListener {
             while (true) {
                 for (double i = 0; i <= 360; i += 0.05) {
                     try {
-                        Thread.sleep(5);
+                        Thread.sleep(1);
                         double data1 = (cylinder2 + cylinder1 * Math.sin(Math.toRadians(i) + (Math.random() * cylinder1 / 8 - cylinder1 / 16)));
                         double data2 = (endFace2 + endFace1 * Math.sin(Math.toRadians(i) + (Math.random() * endFace1 / 8 - endFace1 / 16)));
                         degData = i;

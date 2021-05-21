@@ -44,14 +44,31 @@ public class CylinderTabPanel extends TabPanel {
                 selectData.setData(rawData);
                 selectData.setCheckCylinder(true);
                 tree.setTestData(data);
+                selectData = null;
             }
         });
         this.add(newBtn);
+        Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
+            BaseUSBListener.RotateCylinder(1, false);
+        });
+        Btn left2 = new Btn(rootX + 290, rootY + 230, 80, 80, "2Left", Btn.GREEN, e -> {
+            BaseUSBListener.RotateCylinder(2, false);
+        });
+        Btn right1 = new Btn(rootX + 200, rootY + 320, 80, 80, "1Right", Btn.GREEN, e -> {
+            BaseUSBListener.RotateCylinder(1, true);
+        });
+        Btn right2 = new Btn(rootX + 290, rootY + 320, 80, 80, "2Right", Btn.GREEN, e -> {
+            BaseUSBListener.RotateCylinder(2, true);
+        });
+        this.add(left1);
+        this.add(left2);
+        this.add(right1);
+        this.add(right2);
         this.degLabel = new DataLabel(rootX + 200, rootY + 450, 24, "角度", 36, 0, "°");
         this.add(degLabel);
-        this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2F, "");
+        this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2, "");
         this.add(dataLabel);
-        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2F, "°");
+        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "轴心距", -1.25F, 2, "°");
         this.add(pxdLabel);
     }
 
@@ -62,24 +79,19 @@ public class CylinderTabPanel extends TabPanel {
             this.add(lineChart);
             new Thread(() -> {
                 while (true) {
-                    try {
-                        Thread.sleep(50);
-                        BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
-                            if (!(deg < 0)) {
-                                degLabel.setData(deg);
-                                dataLabel.setData(cylinder);
-                                pxdLabel.setData(0);
-                                UnitData item = UnitData.FindByDeg(rawData, deg);
-                                if (item == null)
-                                    rawData.add(new UnitData(deg, cylinder, 0));
-                                else
-                                    item.setCylinder(cylinder);
-                                lineChart.reload(rawData, null, BaseConfig.Cylinder);
-                            }
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
+                        if (!(deg < 0)) {
+                            degLabel.setData(deg);
+                            dataLabel.setData(cylinder);
+                            pxdLabel.setData(0);
+                            UnitData item = UnitData.FindByDeg(rawData, deg);
+                            if (item == null)
+                                rawData.add(new UnitData(deg, cylinder, 0));
+                            else
+                                item.setCylinder(cylinder);
+                            lineChart.reload(rawData, null, BaseConfig.Cylinder);
+                        }
+                    });
                 }
             }).start();
         }

@@ -28,5 +28,7 @@ public abstract class MathUtil {
         return new LeastSquareMethod(xData, yData, ORDER);
     }
 
-
+//    public static int[] CalcRotate(LeastSquareMethod leastSquareMethod) {
+//        double[] coefficient = leastSquareMethod.getCoefficient();
+//    }
 }

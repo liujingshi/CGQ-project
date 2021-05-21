@@ -62,4 +62,8 @@ public class UnitData {
     public void setEndFace(double endFace) {
         this.endFace = endFace;
     }
+
+    public UnitData cloneMe() throws CloneNotSupportedException {
+        return (UnitData) super.clone();
+    }
 }

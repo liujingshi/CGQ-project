@@ -103,13 +103,25 @@ public class ItemData {
     }
 
     public void setData(List<UnitData> data) {
-        this.data = data;
+        this.data = new ArrayList<>();
+        for (UnitData item : data) {
+            this.data.add(new UnitData(item.getDeg(), item.getCylinder(), item.getEndFace()));
+        }
     }
 
     @Override
     public String toString() {
-        return String.format("%s(柱面%s,端面%s)", name,
-                isCheckCylinder ? "已测量" : "未测量",
-                isCheckEndFace ? "已测量" : "未测量");
+        return String.format("%s(%s|%s)", name,
+                isCheckCylinder ? "Y" : "N",
+                isCheckEndFace ? "Y" : "N");
+    }
+
+    public ItemData cloneMe() throws CloneNotSupportedException {
+        ItemData itemData = (ItemData) super.clone();
+        itemData.data = new ArrayList<>();
+        for (UnitData item : this.data) {
+            itemData.data.add(item.cloneMe());
+        }
+        return itemData;
     }
 }
