@@ -53,14 +53,14 @@ public class Btn extends TextLabel {
         this.setBounds(left, top, width, height);
         this.setHorizontalAlignment(JLabel.CENTER);
         switch (color) {
-            case Btn.BLUE -> {
+            case Btn.BLUE:
                 this.color = BaseColor.Blue;
                 this.hoverColor = BaseColor.HoverBlue;
-            }
-            case Btn.GREEN -> {
+            break;
+            case Btn.GREEN:
                 this.color = BaseColor.Green;
                 this.hoverColor = BaseColor.HoverGreen;
-            }
+            break;
         }
         this.setOpaque(true);
         this.setBackground(this.color);
