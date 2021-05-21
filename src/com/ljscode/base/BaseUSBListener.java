@@ -6,7 +6,9 @@ import javax.usb.*;
 import javax.usb.event.UsbPipeDataEvent;
 import javax.usb.event.UsbPipeErrorEvent;
 import javax.usb.event.UsbPipeListener;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -20,7 +22,10 @@ public class BaseUSBListener {
     private static double cylinderData;
     private static double endFaceData;
     private static double degData;
-    private static float scale = 1;
+    private static float cylinder1 = 5;
+    private static float cylinder2 = 5;
+    private static float endFace1 = 3;
+    private static float endFace2 = 3;
 
     private String cylinderCOM;
     private String endFaceCOM;
@@ -211,7 +216,7 @@ public class BaseUSBListener {
      * 往串口发送数据
      *
      * @param serialPort 串口对象
-     * @param orders      待发送数据
+     * @param orders     待发送数据
      */
     public static void sendDataToComPort(SerialPort serialPort, byte[] orders) {
         OutputStream outputStream = null;
@@ -235,13 +240,9 @@ public class BaseUSBListener {
     }
 
     /**
-
      * 读取数据
-
      *
-
      * @return 字节ArrayList
-
      */
 
     public static byte[] readFromPort(InputStream inStream) {
@@ -317,8 +318,8 @@ public class BaseUSBListener {
                 for (double i = 0; i <= 360; i += 0.05) {
                     try {
                         Thread.sleep(5);
-                        double data1 = (scale * Math.sin(Math.toRadians(i) + (Math.random() * scale / 8 - scale / 16)));
-                        double data2 = (scale * Math.sin(Math.toRadians(i) + (Math.random() * scale / 8 - scale / 16)));
+                        double data1 = (cylinder2 + cylinder1 * Math.sin(Math.toRadians(i) + (Math.random() * cylinder1 / 8 - cylinder1 / 16)));
+                        double data2 = (endFace2 + endFace1 * Math.sin(Math.toRadians(i) + (Math.random() * endFace1 / 8 - endFace1 / 16)));
                         degData = i;
                         cylinderData = data1;
                         endFaceData = data2;
@@ -330,8 +331,18 @@ public class BaseUSBListener {
         }).start();
     }
 
-    public static void Rotate(boolean isRight) {
-        scale = scale + (isRight ? 0.1F : -0.1F);
+    public static void RotateCylinder(int num, boolean isRight) {
+        switch (num) {
+            case 1 -> cylinder1 = cylinder1 + (isRight ? 0.2F : -0.2F);
+            case 2 -> cylinder2 = cylinder2 + (isRight ? 0.2F : -0.2F);
+        }
+    }
+
+    public static void RotateEndFace(int num, boolean isRight) {
+        switch (num) {
+            case 1 -> endFace1 = endFace1 + (isRight ? 0.2F : -0.2F);
+            case 2 -> endFace2 = endFace2 + (isRight ? 0.2F : -0.2F);
+        }
     }
 
     public UsbDevice findDevice(UsbHub hub, short vendorId, short productId) {

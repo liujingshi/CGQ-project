@@ -108,6 +108,8 @@ public class ItemData {
 
     @Override
     public String toString() {
-        return name;
+        return String.format("%s(柱面%s,端面%s)", name,
+                isCheckCylinder ? "已测量" : "未测量",
+                isCheckEndFace ? "已测量" : "未测量");
     }
 }

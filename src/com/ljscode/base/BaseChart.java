@@ -156,7 +156,7 @@ public abstract class BaseChart {
         JFreeChart chart = ChartFactory.createXYLineChart(title, "角度", "数据", dataset,
                 PlotOrientation.VERTICAL, true, true, false);
         XYPlot plot = SetXYChartFont(chart);
-        plot.getRangeAxis().setRange(-1, 1);
+        plot.getRangeAxis().setRange(-10, 10);
         return chart;
     }
 
