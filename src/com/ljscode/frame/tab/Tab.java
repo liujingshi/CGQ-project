@@ -182,6 +182,13 @@ public class Tab extends Div {
      */
     private void onClickSynthesizeTab(IconTextBtn tab) {
         changeTab(tab, synthesizeTabPanel);
+        if (currentData == null) { // 需要新建
+            onClickNewTab(newTabBtn);
+            tab.removeActive();
+            newTabBtn.setActiveTrue();
+        } else {
+            synthesizeTabPanel.setData(currentData);
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ljscode.component;
 
+import com.ljscode.base.BaseMouseListener;
 import com.ljscode.data.ItemData;
 import com.ljscode.data.TestData;
 
@@ -17,21 +18,25 @@ public class DataTree extends JTree {
      *
      * @param data 整个数据
      */
-    public DataTree(TestData data) {
+    public DataTree(TestData data, BaseMouseListener<ItemData> event) {
         super(createTreeNode(data));
 
         this.addTreeSelectionListener(e -> {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.getLastSelectedPathComponent();
 
-            if (node == null)
-                return;
-
-            Object object = node.getUserObject();
-            if (node.isLeaf()) {
-                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-                ItemData parentObj = (ItemData) parent.getUserObject();
-                System.out.println("你选择了：" + parentObj.getName() + " - " + object.toString());
+            if (node == null || node.isRoot()) {
+                event.mouseClicked(null);
+            } else {
+                Object object = node.getUserObject();
+                if (node.isLeaf()) {
+                    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+                    ItemData parentObj = (ItemData) parent.getUserObject();
+                    event.mouseClicked(parentObj);
+                } else {
+                    event.mouseClicked((ItemData) object);
+                }
             }
+
         });
     }
 
@@ -44,8 +49,8 @@ public class DataTree extends JTree {
      * @param height 高度
      * @param data   整个数据
      */
-    public DataTree(int left, int top, int width, int height, TestData data) {
-        this(data);
+    public DataTree(int left, int top, int width, int height, TestData data, BaseMouseListener<ItemData> event) {
+        this(data, event);
         this.setBounds(left, top, width, height);
     }
 

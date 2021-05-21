@@ -1,9 +1,7 @@
 package com.ljscode.base;
 
 import com.ljscode.component.BarCustomRender;
-import com.ljscode.data.LeastSquareMethod;
-import com.ljscode.data.MathUtil;
-import com.ljscode.data.UnitData;
+import com.ljscode.data.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
@@ -165,20 +163,32 @@ public abstract class BaseChart {
     /**
      * 创建综合雷达数据
      *
-     * @param names      名称(s)
-     * @param r          半径
-     * @param rawDataset 真实数据集
+     * @param data 数据
+     * @param r    半径
      * @return XYSeriesCollection dataset
      */
-    public static XYSeriesCollection CreateTestPolarData(List<String> names, double r, List<List<Double>> rawDataset) {
+    public static XYSeriesCollection CreateTestPolarData(TestData data, double r) {
         List<LeastSquareMethod> leastSquareMethods = new ArrayList<>();
         List<XYSeries> goals = new ArrayList<>();
-        for (int i = 0; i < rawDataset.size(); i++) {
-            goals.add(new XYSeries(names.get(i)));
-            leastSquareMethods.add(MathUtil.GetLeastSquareMethod(rawDataset.get(i)));
+        List<ItemData> itemData = new ArrayList<>();
+        if (data.getData1().isCheckCylinder())
+            itemData.add(data.getData1());
+        if (data.getData2().isCheckCylinder())
+            itemData.add(data.getData2());
+        if (data.getData3().isCheckCylinder())
+            itemData.add(data.getData3());
+        if (data.getData4().isCheckCylinder())
+            itemData.add(data.getData4());
+        for (ItemData item : itemData) {
+            goals.add(new XYSeries(item.getName()));
+            List<Double> rawData = new ArrayList<>();
+            for (UnitData unit : item.getData()) {
+                rawData.add(unit.getCylinder());
+            }
+            leastSquareMethods.add(MathUtil.GetLeastSquareMethod(rawData));
         }
         for (int i = 0; i < 360; i++) {
-            for (int j = 0; j < rawDataset.size(); j++) {
+            for (int j = 0; j < itemData.size(); j++) {
                 goals.get(j).add(i, r + leastSquareMethods.get(j).fit(i));
             }
         }
@@ -192,14 +202,13 @@ public abstract class BaseChart {
     /**
      * 创建综合雷达图
      *
-     * @param title      标题
-     * @param names      名称(s)
-     * @param r          半径
-     * @param rawDataset 真实数据集
+     * @param title 标题
+     * @param data  数据
+     * @param r     半径
      * @return JFreeChart
      */
-    public static JFreeChart CreateTestPolarChart(String title, List<String> names, double r, List<List<Double>> rawDataset) {
-        XYSeriesCollection dataset = CreateTestPolarData(names, r, rawDataset);
+    public static JFreeChart CreateTestPolarChart(String title, TestData data, double r) {
+        XYSeriesCollection dataset = CreateTestPolarData(data, r);
         JFreeChart chart = ChartFactory.createPolarChart(title, dataset, true, true, false);
         chart.getTitle().setFont(font);
         chart.getLegend().setItemFont(font);

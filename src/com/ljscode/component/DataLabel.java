@@ -11,8 +11,8 @@ public class DataLabel extends TextLabel {
 
     private String name;
     private String unit;
-    private float data;
-    private float fix;
+    private double data;
+    private double fix;
     private float fontSize;
 
     /**
@@ -26,7 +26,7 @@ public class DataLabel extends TextLabel {
      * @param fix      保留小数位数
      * @param unit     单位
      */
-    public DataLabel(int left, int top, float fontSize, String name, float data, float fix, String unit) {
+    public DataLabel(int left, int top, float fontSize, String name, double data, double fix, String unit) {
         super("", fontSize, BaseColor.Black);
         this.name = name;
         this.unit = unit;
@@ -49,7 +49,7 @@ public class DataLabel extends TextLabel {
      * @param unit     单位
      * @param color    颜色
      */
-    public DataLabel(int left, int top, float fontSize, String name, float data, float fix, String unit, Color color) {
+    public DataLabel(int left, int top, float fontSize, String name, double data, double fix, String unit, Color color) {
         this(left, top, fontSize, name, data, fix, unit);
         this.setForeground(color);
     }
@@ -75,12 +75,12 @@ public class DataLabel extends TextLabel {
         setDisplayText();
     }
 
-    public void setData(float data) {
+    public void setData(double data) {
         this.data = data;
         setDisplayText();
     }
 
-    public void setFix(float fix) {
+    public void setFix(double fix) {
         this.fix = fix;
         setDisplayText();
     }
