@@ -25,6 +25,7 @@ public class Tab extends Div {
     private NewTabPanel newTabPanel; // 新建Tab面板
     private OpenTabPanel openTabPanel; // 打开Tab面板
     private OutputTabPanel outputTabPanel; // 导出Tab面板
+    private SettingTabPanel settingTabPanel; // 设置Tab面板
     private CheckTabPanel checkTabPanel; // 传感器校准Tab面板
     private CylinderTabPanel cylinderTabPanel; // 柱面测量Tab面板
     private EndFaceTabPanel endFaceTabPanel; // 端面测量Tab面板
@@ -61,11 +62,12 @@ public class Tab extends Div {
         this.newTabBtn = new NewTabBtn(this::onClickNewTab); // 新建Tab
         OpenTabBtn openTabBtn = new OpenTabBtn(this::onClickOpenTab); // 打开Tab
         OutputTabBtn outputTabBtn = new OutputTabBtn(this::onClickOutputTab); // 导出Tab
+        SettingTabBtn settingTabBtn = new SettingTabBtn(this::onClickSettingTab); // 设置Tab
         CheckTabBtn checkTabBtn = new CheckTabBtn(this::onClickCheckTab); // 传感器校准Tab
         this.cylinderTabBtn = new CylinderTabBtn(this::onClickCylinderTab); // 柱面测量Tab
         EndFaceTabBtn endFaceTabBtn = new EndFaceTabBtn(this::onClickEndFaceTab); // 端面测量Tab
         SynthesizeTabBtn synthesizeTabBtn = new SynthesizeTabBtn(this::onClickSynthesizeTab); // 综合数据Tab
-        this.tabButtons = new TabBtn[]{newTabBtn, openTabBtn, outputTabBtn,
+        this.tabButtons = new TabBtn[]{newTabBtn, openTabBtn, outputTabBtn, settingTabBtn,
                 endFaceTabBtn, cylinderTabBtn, checkTabBtn, synthesizeTabBtn}; // 装载Tab到数组
         for (TabBtn tabBtn : this.tabButtons) { // 将Tab添加到body中
             body.add(tabBtn);
@@ -75,17 +77,18 @@ public class Tab extends Div {
         this.newTabPanel = new NewTabPanel(); // 新建Tab面板
         this.openTabPanel = new OpenTabPanel(); // 打开Tab面板
         this.outputTabPanel = new OutputTabPanel(); // 导出Tab面板
+        this.settingTabPanel = new SettingTabPanel(); // 设置Tab面板
         this.checkTabPanel = new CheckTabPanel(); // 传感器校准Tab面板
         this.cylinderTabPanel = new CylinderTabPanel(rawData); // 柱面测量Tab面板
         this.endFaceTabPanel = new EndFaceTabPanel(rawData); // 端面测量Tab面板
         this.synthesizeTabPanel = new SynthesizeTabPanel(); // 综合数据Tab面板
-        this.tabPanels = new TabPanel[]{newTabPanel, openTabPanel, outputTabPanel,
+        this.tabPanels = new TabPanel[]{newTabPanel, openTabPanel, outputTabPanel, settingTabPanel,
                 endFaceTabPanel, cylinderTabPanel, checkTabPanel, synthesizeTabPanel}; // 装载Tab面板到数组
         for (TabPanel tabPanel : this.tabPanels) { // 将Tab添加到body中
             body.add(tabPanel);
         }
 
-        onClickCheckTab(checkTabBtn); // 默认点击传感器校准
+        onClickSettingTab(settingTabBtn); // 默认点击传感器校准
     }
 
     /**
@@ -134,6 +137,15 @@ public class Tab extends Div {
      */
     private void onClickOutputTab(IconTextBtn tab) {
         changeTab(tab, outputTabPanel);
+    }
+
+    /**
+     * 点击设置Tab事件
+     *
+     * @param tab 点击的tab
+     */
+    private void onClickSettingTab(IconTextBtn tab) {
+        changeTab(tab, settingTabPanel);
     }
 
     /**

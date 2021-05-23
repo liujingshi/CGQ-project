@@ -2,6 +2,7 @@ package com.ljscode.base;
 
 import com.ljscode.component.BarCustomRender;
 import com.ljscode.data.*;
+import com.ljscode.util.MathUtil;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;

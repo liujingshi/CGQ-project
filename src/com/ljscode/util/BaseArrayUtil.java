@@ -1,6 +1,6 @@
-package com.ljscode.base;
+package com.ljscode.util;
 
-public class BaseArrayUtils {
+public class BaseArrayUtil {
     /**
      * 合并数组
      *

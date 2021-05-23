@@ -1,4 +1,6 @@
-package com.ljscode.data;
+package com.ljscode.util;
+
+import com.ljscode.data.LeastSquareMethod;
 
 import java.util.List;
 

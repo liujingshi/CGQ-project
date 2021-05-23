@@ -16,6 +16,10 @@ public class BaseConfig {
      */
     public static final String EndFace = "EndFace";
     /**
+     * 角度
+     */
+    public static final String Deg = "Deg";
+    /**
      * 标题
      */
     public static String Title = "低压涡轮盘心跳动测量系统"; // 标题

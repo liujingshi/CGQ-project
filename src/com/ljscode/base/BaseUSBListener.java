@@ -1,5 +1,6 @@
 package com.ljscode.base;
 
+import com.ljscode.util.BaseArrayUtil;
 import gnu.io.*;
 
 import javax.usb.*;
@@ -9,31 +10,29 @@ import javax.usb.event.UsbPipeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.TooManyListenersException;
+import java.util.*;
 
-public class BaseUSBListener {
+public abstract class BaseUSBListener {
 
-    //    private static final short VENDOR_ID = 0x08ee;
     private static final short VENDOR_ID = 0x03eb;
-    //    private static final short VENDOR_ID = 0x04d9;
-//    private static final short VENDOR_ID = 0x04ca;
-    //    private static final short PRODUCT_ID = 0xb100;
-    private static UsbPipe pipe81, pipe01;
 
-    private static double cylinderData;
-    private static double endFaceData;
-    private static double degData;
     private static float cylinder1 = 5;
     private static float cylinder2 = 5;
     private static float endFace1 = 3;
     private static float endFace2 = 3;
 
-    private String cylinderCOM;
-    private String endFaceCOM;
-    private String degCOM;
+    private static SerialPort port;
+    private static BaseReadUSBData event;
+
+    private static Dictionary<String, Integer> Mapping;
+    private static boolean Lock = false;
+
+    static {
+        Mapping = new Hashtable<>();
+        Mapping.put(BaseConfig.Cylinder, -1);
+        Mapping.put(BaseConfig.EndFace, -1);
+        Mapping.put(BaseConfig.Deg, -1);
+    }
 
     public static UsbDevice findMissileLauncher(UsbHub hub) {
         UsbDevice launcher = null;
@@ -224,7 +223,7 @@ public class BaseUSBListener {
             byte[] readBuffer = new byte[1];
             int bytesNum = in.read(readBuffer);
             while (bytesNum > 0) {
-                bytes = BaseArrayUtils.concat(bytes, readBuffer);
+                bytes = BaseArrayUtil.concat(bytes, readBuffer);
                 bytesNum = in.read(readBuffer);
             }
         } catch (IOException e) {
@@ -262,11 +261,22 @@ public class BaseUSBListener {
     }
 
     public static void ReadUSBData(BaseReadUSBData event) {
-        if (Math.abs(degData - (int) degData) <= 0.1) {
-            event.ReadUSBData(-1, -1, -1);
-        } else {
-            event.ReadUSBData((int) degData, cylinderData, endFaceData);
+//        if (Math.abs(degData - (int) degData) <= 0.1) {
+//            event.ReadUSBData(-1, -1, -1);
+//        } else {
+//            event.ReadUSBData((int) degData, cylinderData, endFaceData);
+//        }
+        while (Lock) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        Lock = true;
+        BaseUSBListener.event = event;
+        String order = "r,0,0x02,0x28,0xFF\r";
+        sendToPort(port, order.getBytes());
     }
 
     public static void AnalogReceivedData() {
@@ -277,9 +287,9 @@ public class BaseUSBListener {
                         Thread.sleep(1);
                         double data1 = (cylinder2 + cylinder1 * Math.sin(Math.toRadians(i) + (Math.random() * cylinder1 / 8 - cylinder1 / 16)));
                         double data2 = (endFace2 + endFace1 * Math.sin(Math.toRadians(i) + (Math.random() * endFace1 / 8 - endFace1 / 16)));
-                        degData = i;
-                        cylinderData = data1;
-                        endFaceData = data2;
+//                        degData = i;
+//                        cylinderData = data1;
+//                        endFaceData = data2;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -381,4 +391,50 @@ public class BaseUSBListener {
         }
     }
 
+    public static void AnalyzeData(StringBuffer data) {
+        String[] arr = data.toString().split(",");
+        if (arr[0].equals("r")) {
+//            String portA =
+        }
+    }
+
+    public static void InitUSELister() {
+        BaseUSBListener.addListener(port, () -> {
+            try {
+                byte[] data1 = BaseUSBListener.readFromPort(port);
+                StringBuffer rData = new StringBuffer();
+                for (byte d : data1) {
+                    rData.append((char) Byte.toUnsignedInt(d));
+                }
+                AnalyzeData(rData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+//                Lock = false;
+            }
+        });
+    }
+
+    public static void LinkBPX() {
+        List<String> mCommList = findPorts();
+        if (mCommList.size() < 1) {
+            System.out.println("没有搜索到有效串口！");
+        } else {
+            List<String> orders = new ArrayList<>();
+            orders.add("v\r");
+            orders.add("s,0\r");
+            orders.add("c\r");
+            try {
+                port = openPort(mCommList.get(0), 9600);
+                if (port != null) {
+                    InitUSELister();
+                    for (String order : orders) {
+                        sendToPort(port, order.getBytes());
+                    }
+                }
+            } catch (PortInUseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
