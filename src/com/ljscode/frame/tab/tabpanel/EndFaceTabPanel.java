@@ -101,7 +101,7 @@ public class EndFaceTabPanel extends TabPanel {
     public void changeData() {
         currentDataNameLabel.setText(data.getName());
         tree.setTestData(data);
-//        showChart();
+        showChart();
     }
 
     public TestData getData() {
