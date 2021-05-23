@@ -192,8 +192,11 @@ public abstract class BaseUSBListener {
         OutputStream out = null;
         try {
             out = serialPort.getOutputStream();
+            System.out.println("getOutput");
             out.write(order);
+            System.out.println("write");
             out.flush();
+            System.out.println("flush");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -261,24 +264,24 @@ public abstract class BaseUSBListener {
     }
 
     public static void ReadUSBData(BaseReadUSBData event) {
-        if (Math.abs(degData - (int) degData) <= 0.1) {
-            event.ReadUSBData(-1, -1, -1);
-        } else {
-            event.ReadUSBData((int) degData, cylinderData, endFaceData);
-        }
-//        new Thread(() -> {
-//            while (Lock) {
-//                try {
-//                    Thread.sleep(200);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            Lock = true;
-//            BaseUSBListener.event = event;
-//            String order = "r,0,0x02,0x28,0xFF\r";
-//            sendToPort(port, order.getBytes());
-//        }).start();
+//        if (Math.abs(degData - (int) degData) <= 0.1) {
+//            event.ReadUSBData(-1, -1, -1);
+//        } else {
+//            event.ReadUSBData((int) degData, cylinderData, endFaceData);
+//        }
+        new Thread(() -> {
+            while (Lock) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Lock = true;
+            BaseUSBListener.event = event;
+            String order = "r,0,0x02,0x28,0xFF\r";
+            sendToPort(port, order.getBytes());
+        }).start();
     }
 
     public static void AnalogReceivedData() {
@@ -394,6 +397,8 @@ public abstract class BaseUSBListener {
 
     public static void LinkBPX() {
         List<String> mCommList = findPorts();
+        System.out.println("findPort");
+        System.out.println(mCommList.size());
         if (mCommList.size() < 1) {
             System.out.println("没有搜索到有效串口！");
         } else {
@@ -403,10 +408,12 @@ public abstract class BaseUSBListener {
             orders.add("c\r");
             try {
                 port = openPort(mCommList.get(0), 9600);
+                System.out.println("opened");
                 if (port != null) {
                     InitUSELister();
                     for (String order : orders) {
                         sendToPort(port, order.getBytes());
+                        System.out.println("sended");
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {

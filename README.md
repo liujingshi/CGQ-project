@@ -1,2 +1,3 @@
-# CGQ-project
-CGQ-project
+# reademe
+
+raadme
