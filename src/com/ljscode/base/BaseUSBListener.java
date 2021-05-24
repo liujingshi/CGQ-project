@@ -192,11 +192,8 @@ public abstract class BaseUSBListener {
         OutputStream out = null;
         try {
             out = serialPort.getOutputStream();
-            System.out.println("getOutput");
             out.write(order);
-            System.out.println("write");
             out.flush();
-            System.out.println("flush");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -219,16 +216,18 @@ public abstract class BaseUSBListener {
      */
     public static byte[] readFromPort(SerialPort serialPort) {
         InputStream in = null;
-        byte[] bytes = {};
+//        byte[] bytes = {};
+        byte[] bytes = new byte[255];
         try {
             in = serialPort.getInputStream();
             // 缓冲区大小为一个字节
-            byte[] readBuffer = new byte[1];
-            int bytesNum = in.read(readBuffer);
-            while (bytesNum > 0) {
-                bytes = BaseArrayUtil.concat(bytes, readBuffer);
-                bytesNum = in.read(readBuffer);
-            }
+//            byte[] readBuffer = new byte[1];
+//            int bytesNum = in.read(readBuffer);
+            in.read(bytes);
+//            while (bytesNum > 0) {
+//                bytes = BaseArrayUtil.concat(bytes, readBuffer);
+//                bytesNum = in.read(readBuffer);
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -384,7 +383,8 @@ public abstract class BaseUSBListener {
                 byte[] data1 = BaseUSBListener.readFromPort(port);
                 StringBuffer rData = new StringBuffer();
                 for (byte d : data1) {
-                    rData.append((char) Byte.toUnsignedInt(d));
+                    if (Byte.toUnsignedInt(d) != 0)
+                        rData.append((char) Byte.toUnsignedInt(d));
                 }
                 AnalyzeData(rData);
             } catch (Exception e) {
@@ -397,8 +397,6 @@ public abstract class BaseUSBListener {
 
     public static void LinkBPX() {
         List<String> mCommList = findPorts();
-        System.out.println("findPort");
-        System.out.println(mCommList.size());
         if (mCommList.size() < 1) {
             System.out.println("没有搜索到有效串口！");
         } else {
@@ -408,12 +406,10 @@ public abstract class BaseUSBListener {
             orders.add("c\r");
             try {
                 port = openPort(mCommList.get(0), 9600);
-                System.out.println("opened");
                 if (port != null) {
                     InitUSELister();
                     for (String order : orders) {
                         sendToPort(port, order.getBytes());
-                        System.out.println("sended");
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
