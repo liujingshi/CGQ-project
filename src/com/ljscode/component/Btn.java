@@ -27,6 +27,8 @@ public class Btn extends TextLabel {
      */
     private static final float fontSize = 16L;
 
+    private static final Color disabledColor = BaseColor.PlaceholderGray;
+    private boolean disabled;
     /**
      * 颜色
      */
@@ -46,6 +48,7 @@ public class Btn extends TextLabel {
      */
     public Btn(int left, int top, int width, int height, String text, String color, BaseMouseListener<Btn> event) {
         super(text, fontSize, BaseColor.Write);
+        this.disabled = false;
         if (width <= 0)
             width = (int) (text.length() * fontSize + 100);
         if (height <= 0)
@@ -73,27 +76,46 @@ public class Btn extends TextLabel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                that.setLocation(left, top + 3);
+                if (isUnDisabled())
+                    that.setLocation(left, top + 3);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                that.setLocation(left, top);
-                event.mouseClicked(that);
+                if (isUnDisabled()) {
+                    that.setLocation(left, top);
+                    event.mouseClicked(that);
+                }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                that.setBackground(that.hoverColor);
-                that.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                if (isUnDisabled()) {
+                    that.setBackground(that.hoverColor);
+                    that.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                that.setBackground(that.color);
+                if (isUnDisabled())
+                    that.setBackground(that.color);
                 that.setCursor(Cursor.getDefaultCursor());
             }
         });
     }
 
+    public boolean isUnDisabled() {
+        return !disabled;
+    }
+
+    public void disabled() {
+        this.disabled = true;
+        this.setBackground(disabledColor);
+    }
+
+    public void unDisabled() {
+        this.disabled = false;
+        this.setBackground(this.color);
+    }
 }

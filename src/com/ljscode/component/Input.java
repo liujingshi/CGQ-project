@@ -1,6 +1,7 @@
 package com.ljscode.component;
 
 import com.ljscode.base.BaseColor;
+import com.ljscode.util.FontUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,17 +34,7 @@ public class Input extends JTextField {
      */
     public Input(int left, int top, int width, int height) {
         this();
-        Font font = null;
-        try {
-            File alibabaPuHUiTi = new File("res/font/Alibaba-PuHuiTi.ttf"); // 打开ttf字体文件(阿里巴巴普惠体)
-            font = Font.createFont(Font.TRUETYPE_FONT, alibabaPuHUiTi); // 创建字体对象
-            font = font.deriveFont((float) (height - 8)); // 设置字体大小
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-        }
-        if (font == null) { // 如果字体加载出错则使用默认字体
-            font = new Font("宋体", Font.PLAIN, height - 8);
-        }
+        Font font = FontUtil.LoadFont(height - 8);
         this.placeholder = "";
         this.setFont(font);
         this.setBounds(left, top, width, height);

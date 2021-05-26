@@ -131,7 +131,6 @@ public abstract class BaseChart {
                     yDataList.add(itemY.getEndFace());
                     break;
             }
-
         }
     }
 

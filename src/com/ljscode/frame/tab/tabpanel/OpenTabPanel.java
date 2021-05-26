@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class OpenTabPanel extends TabPanel {
 
+    private Btn openBtn;
     private TestData selectTestData;
     private BaseMouseListener<TestData> event;
 
@@ -41,22 +42,26 @@ public class OpenTabPanel extends TabPanel {
         this.add(dataName);
         ListView<TestData> list = new ListView<>(600, 30, 400, 460, select -> {
             this.selectTestData = select;
+            openBtn.unDisabled();
         });
         this.add(list);
         Btn searchBtn = new Btn(rootX, rootY + BaseConfig.InputGroupSpaceSm * 3 + BaseConfig.InputGroupSpaceMd,
                 0, 0, "查询", Btn.BLUE, e -> {
+            openBtn.disabled();
             String startTimeStr = startTime.getValue();
             String endTimeStr = endTime.getValue();
             String dataNameStr = dataName.getValue();
             SearchConfig searchConfig = new SearchConfig(dataNameStr, startTimeStr, endTimeStr);
             List<TestData> result = DatasetUtil.FindBySearchConfig(searchConfig);
             list.setListViewData(result);
+            openBtn.disabled();
         });
         this.add(searchBtn);
-        Btn openBtn = new Btn(600, 500, 0, 0, "打开", Btn.BLUE, e -> {
+        this.openBtn = new Btn(600, 500, 0, 0, "打开", Btn.BLUE, e -> {
             event.mouseClicked(selectTestData);
         });
         this.add(openBtn);
+        openBtn.disabled();
     }
 
     public void setEvent(BaseMouseListener<TestData> event) {

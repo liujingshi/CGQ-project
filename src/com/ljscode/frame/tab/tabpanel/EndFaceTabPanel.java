@@ -24,6 +24,7 @@ public class EndFaceTabPanel extends TabPanel {
     private final DataLabel degLabel;
     private final DataLabel dataLabel;
     private final DataLabel pxdLabel;
+    private Btn newBtn;
     private TestData data;
     private ItemData selectData;
     private TestLineChart lineChart;
@@ -37,11 +38,15 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(currentDataNameLabel);
         this.tree = new DataTree(rootX, rootY + 50, 180, 500, data, itemData -> {
             this.selectData = itemData;
+            this.newBtn.unDisabled();
         });
         this.add(tree);
+        tree.blur(e -> {
+            newBtn.disabled();
+        });
         this.tipBox = new TipBox(rootX + 200, rootY + 60, 230, 80);
         this.add(tipBox);
-        Btn newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
+        this.newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectData != null) {
                 selectData.setData(rawData);
                 selectData.setCheckEndFace(true);
@@ -51,6 +56,7 @@ public class EndFaceTabPanel extends TabPanel {
             }
         });
         this.add(newBtn);
+        newBtn.disabled();
         Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
             BaseUSBListener.RotateEndFace(1, false);
         });
@@ -113,6 +119,12 @@ public class EndFaceTabPanel extends TabPanel {
     public void setData(TestData data) {
         this.data = data;
         changeData();
+    }
+
+    @Override
+    public void showMe() {
+        super.showMe();
+        newBtn.disabled();
     }
 
 }

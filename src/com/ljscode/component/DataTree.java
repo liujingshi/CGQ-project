@@ -7,11 +7,15 @@ import com.ljscode.data.TestData;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 /**
  * 数据树
  */
 public class DataTree extends JTree {
+
+    private BaseMouseListener<TestData> event;
 
     /**
      * 构造方法
@@ -20,7 +24,6 @@ public class DataTree extends JTree {
      */
     public DataTree(TestData data, BaseMouseListener<ItemData> event) {
         super(createTreeNode(data));
-
         this.addTreeSelectionListener(e -> {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.getLastSelectedPathComponent();
 
@@ -91,6 +94,12 @@ public class DataTree extends JTree {
     public void setTestData(TestData data) {
         DefaultMutableTreeNode root = createTreeNode(data);
         this.setModel(new DefaultTreeModel(root));
+        if (event != null)
+            event.mouseClicked(null);
+    }
+
+    public void blur(BaseMouseListener<TestData> event) {
+        this.event = event;
     }
 
 }
