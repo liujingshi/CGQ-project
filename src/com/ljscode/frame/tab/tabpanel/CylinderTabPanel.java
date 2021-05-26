@@ -7,6 +7,7 @@ import com.ljscode.component.*;
 import com.ljscode.data.ItemData;
 import com.ljscode.data.TestData;
 import com.ljscode.data.UnitData;
+import com.ljscode.util.DatasetUtil;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class CylinderTabPanel extends TabPanel {
                 selectData.setCheckCylinder(true);
                 tree.setTestData(data);
                 selectData = null;
+                DatasetUtil.SaveOrUpdate(data);
             }
         });
         this.add(newBtn);

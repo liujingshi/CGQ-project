@@ -17,4 +17,5 @@ public class BaseArrayUtil {
         System.arraycopy(secondArray, 0, bytes, firstArray.length, secondArray.length);
         return bytes;
     }
+
 }

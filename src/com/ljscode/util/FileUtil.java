@@ -41,4 +41,11 @@ public abstract class FileUtil {
         }
     }
 
+    public static void DeleteFile(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
 }

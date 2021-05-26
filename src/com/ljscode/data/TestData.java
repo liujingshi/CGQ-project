@@ -1,5 +1,7 @@
 package com.ljscode.data;
 
+import com.ljscode.util.DatasetUtil;
+
 import java.util.Date;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Date;
  */
 public class TestData {
 
+    private String id;
     /**
      * 数据名称
      */
@@ -46,6 +49,7 @@ public class TestData {
      * 构造方法
      */
     public TestData() {
+        id = DatasetUtil.CreateNewId();
         time = new Date();
         data1 = new ItemData(1);
         data2 = new ItemData(2);
@@ -63,7 +67,8 @@ public class TestData {
      * @param data3 第3次测量数据
      * @param data4 第4次测量数据
      */
-    public TestData(String name, Date time, ItemData data1, ItemData data2, ItemData data3, ItemData data4) {
+    public TestData(String id, String name, Date time, ItemData data1, ItemData data2, ItemData data3, ItemData data4) {
+        this.id = id;
         this.name = name;
         this.time = time;
         this.data1 = data1;
@@ -118,5 +123,13 @@ public class TestData {
 
     public void setData4(ItemData data4) {
         this.data4 = data4;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

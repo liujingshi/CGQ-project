@@ -7,6 +7,7 @@ import com.ljscode.component.*;
 import com.ljscode.data.ItemData;
 import com.ljscode.data.TestData;
 import com.ljscode.data.UnitData;
+import com.ljscode.util.DatasetUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class EndFaceTabPanel extends TabPanel {
                 selectData.setCheckEndFace(true);
                 tree.setTestData(data);
                 selectData = null;
+                DatasetUtil.SaveOrUpdate(data);
             }
         });
         this.add(newBtn);

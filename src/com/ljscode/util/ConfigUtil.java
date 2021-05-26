@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class ConfigUtil {
 
-    private static final String PortConfigPath = "config/port.config.json";
+    private static final String PortConfigPath = "config/port.config";
 
     public static List<PortConfig> GetPortConfig() {
         String json = FileUtil.ReadFile(PortConfigPath);

@@ -263,24 +263,24 @@ public abstract class BaseUSBListener {
     }
 
     public static void ReadUSBData(BaseReadUSBData event) {
-//        if (Math.abs(degData - (int) degData) <= 0.1) {
-//            event.ReadUSBData(-1, -1, -1);
-//        } else {
-//            event.ReadUSBData((int) degData, cylinderData, endFaceData);
-//        }
-        new Thread(() -> {
-            while (Lock) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Lock = true;
-            BaseUSBListener.event = event;
-            String order = "r,0,0x02,0x28,0xFF\r";
-            sendToPort(port, order.getBytes());
-        }).start();
+        if (Math.abs(degData - (int) degData) <= 0.1) {
+            event.ReadUSBData(-1, -1, -1);
+        } else {
+            event.ReadUSBData((int) degData, cylinderData, endFaceData);
+        }
+//        new Thread(() -> {
+//            while (Lock) {
+//                try {
+//                    Thread.sleep(200);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            Lock = true;
+//            BaseUSBListener.event = event;
+//            String order = "r,0,0x02,0x28,0xFF\r";
+//            sendToPort(port, order.getBytes());
+//        }).start();
     }
 
     public static void AnalogReceivedData() {
