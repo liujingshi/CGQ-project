@@ -156,10 +156,9 @@ public abstract class BaseChart {
      * 创建综合雷达数据
      *
      * @param data 数据
-     * @param r    半径
      * @return XYSeriesCollection dataset
      */
-    public static XYSeriesCollection CreateTestPolarData(TestData data, double r) {
+    public static XYSeriesCollection CreateTestPolarData(TestData data) {
         List<LeastSquareMethod> leastSquareMethods = new ArrayList<>();
         List<XYSeries> goals = new ArrayList<>();
         List<ItemData> itemData = new ArrayList<>();
@@ -181,8 +180,20 @@ public abstract class BaseChart {
         }
         for (int i = 0; i < 360; i++) {
             for (int j = 0; j < itemData.size(); j++) {
-                goals.get(j).add(i, r + leastSquareMethods.get(j).fit(i));
+                goals.get(j).add(i, data.getR() + leastSquareMethods.get(j).fit(i));
             }
+        }
+        if (data.getInsideData().isCheckCylinder()) {
+            List<Double> rawData = new ArrayList<>();
+            for (UnitData unit : data.getInsideData().getData()) {
+                rawData.add(unit.getCylinder());
+            }
+            LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawData);
+            XYSeries goal = new XYSeries(data.getInsideData().getName());
+            for (int i = 0; i < 360; i++) {
+                goal.add(i, data.getInsideR() + leastSquareMethod.fit(i));
+            }
+            goals.add(goal);
         }
         XYSeriesCollection dataset = new XYSeriesCollection();
         for (XYSeries goal : goals) {
@@ -196,11 +207,10 @@ public abstract class BaseChart {
      *
      * @param title 标题
      * @param data  数据
-     * @param r     半径
      * @return JFreeChart
      */
-    public static JFreeChart CreateTestPolarChart(String title, TestData data, double r) {
-        XYSeriesCollection dataset = CreateTestPolarData(data, r);
+    public static JFreeChart CreateTestPolarChart(String title, TestData data) {
+        XYSeriesCollection dataset = CreateTestPolarData(data);
         JFreeChart chart = ChartFactory.createPolarChart(title, dataset, true, true, false);
         chart.getTitle().setFont(font);
         chart.getLegend().setItemFont(font);

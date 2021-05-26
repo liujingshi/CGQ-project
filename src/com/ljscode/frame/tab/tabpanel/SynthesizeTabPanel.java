@@ -16,12 +16,11 @@ public class SynthesizeTabPanel extends TabPanel {
     }
 
     public void showChart() {
-        float r = 20;
         if (polarChart == null) {
-            this.polarChart = new TestPolarChart(500, 30, 500, 500, "综合数据", data, r);
+            this.polarChart = new TestPolarChart(500, 30, 500, 500, "综合数据", data);
             this.add(polarChart);
         } else {
-            polarChart.reload(data, r);
+            polarChart.reload(data);
         }
 
     }

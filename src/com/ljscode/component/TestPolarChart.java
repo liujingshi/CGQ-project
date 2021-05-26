@@ -20,20 +20,18 @@ public class TestPolarChart extends ChartBox {
      * @param height 高度
      * @param title  标题
      * @param data   数据
-     * @param r      半径
      */
-    public TestPolarChart(int left, int top, int width, int height, String title, TestData data, double r) {
-        super(left, top, width, height, BaseChart.CreateTestPolarChart(title, data, r));
+    public TestPolarChart(int left, int top, int width, int height, String title, TestData data) {
+        super(left, top, width, height, BaseChart.CreateTestPolarChart(title, data));
     }
 
     /**
      * 重载数据
      *
      * @param data 数据
-     * @param r    半径
      */
-    public void reload(TestData data, double r) {
-        XYDataset dataset = BaseChart.CreateTestPolarData(data, r);
+    public void reload(TestData data) {
+        XYDataset dataset = BaseChart.CreateTestPolarData(data);
         JFreeChart chart = this.getChart();
         PolarPlot plot = (PolarPlot) chart.getPlot();
         plot.setDataset(dataset);

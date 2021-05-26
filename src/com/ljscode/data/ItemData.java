@@ -43,7 +43,10 @@ public class ItemData {
      */
     public ItemData(int times) {
         this.times = times;
-        this.name = String.format("第%d次测量数据", this.times);
+        if (times > 0)
+            this.name = String.format("第%d次测量数据", this.times);
+        else if (times == 0)
+            this.name = "内部测量数据";
         this.isCheckCylinder = false;
         this.isCheckEndFace = false;
         this.data = new ArrayList<>();

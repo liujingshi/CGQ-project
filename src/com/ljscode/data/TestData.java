@@ -20,6 +20,10 @@ public class TestData {
      */
     private Date time;
     /**
+     * 半径
+     */
+    private double r;
+    /**
      * 第1次测量数据
      */
     private ItemData data1;
@@ -35,15 +39,25 @@ public class TestData {
      * 第4次测量数据
      */
     private ItemData data4;
+    /**
+     * 内圆环半径
+     */
+    private double insideR;
+    /**
+     * 内圆环数据
+     */
+    private ItemData insideData;
 
     /**
      * 构造方法
      *
      * @param name 数据名称
      */
-    public TestData(String name) {
+    public TestData(String name, double r, double insideR) {
         this();
         this.name = name;
+        this.r = r;
+        this.insideR = insideR;
     }
 
     /**
@@ -56,26 +70,20 @@ public class TestData {
         data2 = new ItemData(2);
         data3 = new ItemData(3);
         data4 = new ItemData(4);
+        insideData = new ItemData(0);
     }
 
-    /**
-     * 构造方法
-     *
-     * @param name  数据名称
-     * @param time  创建时间
-     * @param data1 第1次测量数据
-     * @param data2 第2次测量数据
-     * @param data3 第3次测量数据
-     * @param data4 第4次测量数据
-     */
-    public TestData(String id, String name, Date time, ItemData data1, ItemData data2, ItemData data3, ItemData data4) {
+    public TestData(String id, String name, Date time, double r, ItemData data1, ItemData data2, ItemData data3, ItemData data4, double insideR, ItemData insideData) {
         this.id = id;
         this.name = name;
         this.time = time;
+        this.r = r;
         this.data1 = data1;
         this.data2 = data2;
         this.data3 = data3;
         this.data4 = data4;
+        this.insideR = insideR;
+        this.insideData = insideData;
     }
 
     public String getName() {
@@ -132,6 +140,30 @@ public class TestData {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public double getR() {
+        return r;
+    }
+
+    public void setR(double r) {
+        this.r = r;
+    }
+
+    public double getInsideR() {
+        return insideR;
+    }
+
+    public void setInsideR(double insideR) {
+        this.insideR = insideR;
+    }
+
+    public ItemData getInsideData() {
+        return insideData;
+    }
+
+    public void setInsideData(ItemData insideData) {
+        this.insideData = insideData;
     }
 
     @Override

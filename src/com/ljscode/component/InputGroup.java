@@ -2,6 +2,8 @@ package com.ljscode.component;
 
 import com.ljscode.base.BaseColor;
 
+import java.awt.event.KeyAdapter;
+
 /**
  * 输入框组(带标签的)
  */
@@ -62,7 +64,7 @@ public class InputGroup extends Div {
      * @param value 值
      */
     public void setValue(String value) {
-        this.input.setText(value);
+        this.input.setValue(value);
     }
 
     /**
@@ -80,5 +82,9 @@ public class InputGroup extends Div {
 
     public void setInput(Input input) {
         this.input = input;
+    }
+
+    public void limit(KeyAdapter keyAdapter) {
+        input.limit(keyAdapter);
     }
 }

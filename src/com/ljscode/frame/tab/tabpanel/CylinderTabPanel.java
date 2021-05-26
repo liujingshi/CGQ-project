@@ -93,6 +93,7 @@ public class CylinderTabPanel extends TabPanel {
                             degLabel.setData(deg);
                             dataLabel.setData(cylinder);
                             pxdLabel.setData(0);
+
                             UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)
                                 rawData.add(new UnitData(deg, cylinder, 0));

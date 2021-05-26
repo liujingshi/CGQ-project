@@ -79,10 +79,14 @@ public class DataTree extends JTree {
         DefaultMutableTreeNode node4 = new DefaultMutableTreeNode(data.getData4());
         node4.add(new DefaultMutableTreeNode(String.format("柱面数据(%s)", data.getData4().isCheckCylinder() ? "已测量" : "未测量")));
         node4.add(new DefaultMutableTreeNode(String.format("端面数据(%s)", data.getData4().isCheckEndFace() ? "已测量" : "未测量")));
+        DefaultMutableTreeNode node0 = new DefaultMutableTreeNode(data.getInsideData());
+        node0.add(new DefaultMutableTreeNode(String.format("柱面数据(%s)", data.getInsideData().isCheckCylinder() ? "已测量" : "未测量")));
+        node0.add(new DefaultMutableTreeNode(String.format("端面数据(%s)", data.getInsideData().isCheckEndFace() ? "已测量" : "未测量")));
         root.add(node1);
         root.add(node2);
         root.add(node3);
         root.add(node4);
+        root.add(node0);
         return root;
     }
 

@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.io.File;
 import java.io.IOException;
 
@@ -95,6 +96,11 @@ public class Input extends JTextField {
      */
     public void setValue(String text) {
         this.setText(text);
+        this.setForeground(BaseColor.Black);
+    }
+
+    public void limit(KeyAdapter keyAdapter) {
+        this.addKeyListener(keyAdapter);
     }
 
 }
