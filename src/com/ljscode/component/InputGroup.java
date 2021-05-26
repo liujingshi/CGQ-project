@@ -8,7 +8,7 @@ import com.ljscode.base.BaseColor;
 public class InputGroup extends Div {
 
     private final TextLabel textLabel;
-    private final Input input;
+    private Input input;
 
     /**
      * 构造方法
@@ -72,5 +72,13 @@ public class InputGroup extends Div {
      */
     public void setLabel(String text) {
         this.textLabel.setText(text);
+    }
+
+    public Input getInput() {
+        return input;
+    }
+
+    public void setInput(Input input) {
+        this.input = input;
     }
 }

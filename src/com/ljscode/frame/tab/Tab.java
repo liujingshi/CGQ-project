@@ -20,6 +20,7 @@ public class Tab extends Div {
     private TabBtn[] tabButtons; // tab按钮数组
     private NewTabBtn newTabBtn; // 新建Tab
     private CylinderTabBtn cylinderTabBtn; // 柱面测量Tab
+    private SynthesizeTabBtn synthesizeTabBtn;
 
     private TabPanel[] tabPanels; // tab面板数组
     private NewTabPanel newTabPanel; // 新建Tab面板
@@ -66,7 +67,7 @@ public class Tab extends Div {
         CheckTabBtn checkTabBtn = new CheckTabBtn(this::onClickCheckTab); // 传感器校准Tab
         this.cylinderTabBtn = new CylinderTabBtn(this::onClickCylinderTab); // 柱面测量Tab
         EndFaceTabBtn endFaceTabBtn = new EndFaceTabBtn(this::onClickEndFaceTab); // 端面测量Tab
-        SynthesizeTabBtn synthesizeTabBtn = new SynthesizeTabBtn(this::onClickSynthesizeTab); // 综合数据Tab
+        this.synthesizeTabBtn = new SynthesizeTabBtn(this::onClickSynthesizeTab); // 综合数据Tab
         this.tabButtons = new TabBtn[]{newTabBtn, openTabBtn, outputTabBtn, settingTabBtn,
                 endFaceTabBtn, cylinderTabBtn, checkTabBtn, synthesizeTabBtn}; // 装载Tab到数组
         for (TabBtn tabBtn : this.tabButtons) { // 将Tab添加到body中
@@ -128,6 +129,10 @@ public class Tab extends Div {
      */
     private void onClickOpenTab(IconTextBtn tab) {
         changeTab(tab, openTabPanel);
+        openTabPanel.setEvent(data -> {
+            this.currentData = data;
+            onClickSynthesizeTab(synthesizeTabBtn);
+        });
     }
 
     /**

@@ -77,7 +77,8 @@ public class CylinderTabPanel extends TabPanel {
 
     public void showChart() {
         if (lineChart == null) {
-            lineChart = new TestLineChart(500, 30, 500, 400, "柱面数据实时图", rawData, null, BaseConfig.Cylinder);
+            lineChart = new TestLineChart(500, 30, 500, 400, "柱面数据实时图", rawData,
+                    this.data.getData1().getData(), BaseConfig.Cylinder);
             this.add(lineChart);
             new Thread(() -> {
                 while (true) {
@@ -91,7 +92,7 @@ public class CylinderTabPanel extends TabPanel {
                                 rawData.add(new UnitData(deg, cylinder, 0));
                             else
                                 item.setCylinder(cylinder);
-                            lineChart.reload(rawData, null, BaseConfig.Cylinder);
+                            lineChart.reload(rawData, this.data.getData1().isCheckCylinder() ? this.data.getData1().getData() : null, BaseConfig.Cylinder);
                         }
                     });
                 }

@@ -3,9 +3,11 @@ package com.ljscode.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljscode.bean.MainData;
+import com.ljscode.bean.SearchConfig;
 import com.ljscode.data.TestData;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ public abstract class DatasetUtil {
 
     /**
      * 保存或更新
+     *
      * @param entity 数据
      */
     public static void SaveOrUpdate(TestData entity) {
@@ -47,6 +50,7 @@ public abstract class DatasetUtil {
 
     /**
      * 删除数据
+     *
      * @param id 数据id
      */
     public static void Delete(String id) {
@@ -63,10 +67,10 @@ public abstract class DatasetUtil {
 
     /**
      * 删除数据
+     *
      * @param entity 数据
      */
     public static void Delete(TestData entity) {
-        List<MainData> mainDataset = GetMainAll();
         Delete(entity.getId());
     }
 
@@ -184,5 +188,38 @@ public abstract class DatasetUtil {
             newId = UUID.randomUUID().toString();
         }
         return newId;
+    }
+
+    /**
+     * 通过搜索配置进行查询
+     *
+     * @param searchConfig 搜索配置
+     * @return 数据列表
+     */
+    public static List<TestData> FindBySearchConfig(SearchConfig searchConfig) {
+        List<MainData> mainDataset = GetMainAll();
+        mainDataset.removeIf(mainData -> {
+            boolean result = !mainData.getName().contains(searchConfig.getName());
+            String startTimeStr = searchConfig.getStartTimeStr();
+            if (!startTimeStr.equals("")) {
+                Date startTime = DateUtil.ToDate(startTimeStr);
+                if (startTime != null) {
+                    if (DateUtil.LessThan(mainData.getTime(), startTime)) {
+                        result = true;
+                    }
+                }
+            }
+            String endTimeStr = searchConfig.getEndTimeStr();
+            if (!endTimeStr.equals("")) {
+                Date endTime = DateUtil.ToDate(endTimeStr);
+                if (endTime != null) {
+                    if (DateUtil.GreaterThan(mainData.getTime(), endTime)) {
+                        result = true;
+                    }
+                }
+            }
+            return result;
+        });
+        return GetByMainDataset(mainDataset);
     }
 }

@@ -1,6 +1,7 @@
 package com.ljscode.data;
 
 import com.ljscode.util.DatasetUtil;
+import com.ljscode.util.DateUtil;
 
 import java.util.Date;
 
@@ -131,5 +132,10 @@ public class TestData {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("测量日期：%s 名称：%s", DateUtil.ToString(this.time), this.name);
     }
 }

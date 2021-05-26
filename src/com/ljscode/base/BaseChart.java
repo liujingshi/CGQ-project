@@ -2,6 +2,7 @@ package com.ljscode.base;
 
 import com.ljscode.component.BarCustomRender;
 import com.ljscode.data.*;
+import com.ljscode.util.FontUtil;
 import com.ljscode.util.MathUtil;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -30,18 +31,7 @@ public abstract class BaseChart {
     /**
      * 字体
      */
-    public static Font font;
-
-    // 实体化字体
-    static {
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("res/font/Alibaba-PuHuiTi.ttf"));
-            font = font.deriveFont(16L);
-        } catch (FontFormatException | IOException e) {
-            font = new Font("宋体", Font.BOLD, 16);
-            e.printStackTrace();
-        }
-    }
+    public static Font font = FontUtil.font;
 
     /**
      * 设置XYPlot字体
@@ -106,22 +96,9 @@ public abstract class BaseChart {
         List<Double> rawDataList = new ArrayList<>();
         List<Double> yDataList = new ArrayList<>();
         for (int i = 0; i < 360; i++) {
-            UnitData item = UnitData.FindByDeg(rawData, i);
-            if (item != null) {
-                switch (mode) {
-                    case BaseConfig.Cylinder:
-                        rawDataList.add(item.getCylinder());
-                        break;
-                    case BaseConfig.EndFace:
-                        rawDataList.add(item.getEndFace());
-                        break;
-                }
-            }
+            AddListByMode(rawData, mode, rawDataList, i);
             if (hasYData) {
-                UnitData itemY = UnitData.FindByDeg(yData, i);
-                if (itemY != null) {
-                    yDataList.add(itemY.getEndFace());
-                }
+                AddListByMode(yData, mode, yDataList, i);
             }
         }
         LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawDataList); // 创建最小二乘法数据
@@ -141,6 +118,21 @@ public abstract class BaseChart {
         if (hasYData)
             dataset.addSeries(yGoals);
         return dataset;
+    }
+
+    private static void AddListByMode(List<UnitData> yData, String mode, List<Double> yDataList, int i) {
+        UnitData itemY = UnitData.FindByDeg(yData, i);
+        if (itemY != null) {
+            switch (mode) {
+                case BaseConfig.Cylinder:
+                    yDataList.add(itemY.getCylinder());
+                    break;
+                case BaseConfig.EndFace:
+                    yDataList.add(itemY.getEndFace());
+                    break;
+            }
+
+        }
     }
 
     /**
