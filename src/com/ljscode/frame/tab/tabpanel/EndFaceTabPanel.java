@@ -23,7 +23,7 @@ public class EndFaceTabPanel extends TabPanel {
     private final TipBox tipBox;
     private final DataLabel degLabel;
     private final DataLabel dataLabel;
-    private final DataLabel pxdLabel;
+//    private final DataLabel pxdLabel;
     private Btn newBtn;
     private TestData data;
     private ItemData selectData;
@@ -46,6 +46,7 @@ public class EndFaceTabPanel extends TabPanel {
         });
         this.tipBox = new TipBox(rootX + 200, rootY + 60, 230, 80);
         this.add(tipBox);
+        tipBox.setContent("旋钮2", false);
         this.newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectData != null) {
                 selectData.setData(rawData);
@@ -77,8 +78,8 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(degLabel);
         this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2, "");
         this.add(dataLabel);
-        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2, "°");
-        this.add(pxdLabel);
+//        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2, "°");
+//        this.add(pxdLabel);
     }
 
     public void showChart() {
@@ -92,7 +93,7 @@ public class EndFaceTabPanel extends TabPanel {
                         if (!(deg < 0)) {
                             degLabel.setData(deg);
                             dataLabel.setData(endFace);
-                            pxdLabel.setData(0);
+//                            pxdLabel.setData(0);
                             UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)
                                 rawData.add(new UnitData(deg, 0, endFace));

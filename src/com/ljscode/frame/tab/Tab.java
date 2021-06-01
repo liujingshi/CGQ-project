@@ -142,6 +142,16 @@ public class Tab extends Div {
      */
     private void onClickOutputTab(IconTextBtn tab) {
         changeTab(tab, outputTabPanel);
+        outputTabPanel.setData(currentData);
+        outputTabPanel.setEvent(data -> {
+            this.currentData = data;
+            onClickSynthesizeTab(synthesizeTabBtn);
+        });
+//        if (currentData == null) { // 需要新建
+//            onClickNewTab(newTabBtn);
+//        } else {
+//            outputTabPanel.setData(currentData);
+//        }
     }
 
     /**

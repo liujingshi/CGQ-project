@@ -22,7 +22,7 @@ public class CylinderTabPanel extends TabPanel {
     private final TipBox tipBox;
     private final DataLabel degLabel;
     private final DataLabel dataLabel;
-    private final DataLabel pxdLabel;
+//    private final DataLabel pxdLabel;
     private Btn newBtn;
     private TestData data;
     private ItemData selectData;
@@ -45,6 +45,7 @@ public class CylinderTabPanel extends TabPanel {
         });
         this.tipBox = new TipBox(rootX + 200, rootY + 60, 230, 80);
         this.add(tipBox);
+        tipBox.setContent("旋钮1", false);
         this.newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectData != null) {
                 selectData.setData(rawData);
@@ -56,16 +57,16 @@ public class CylinderTabPanel extends TabPanel {
         });
         this.add(newBtn);
         newBtn.disabled();
-        Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
+        Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "旋钮1逆时针旋转", Btn.GREEN, e -> {
             BaseUSBListener.RotateCylinder(1, false);
         });
-        Btn left2 = new Btn(rootX + 290, rootY + 230, 80, 80, "2Left", Btn.GREEN, e -> {
+        Btn left2 = new Btn(rootX + 290, rootY + 230, 80, 80, "旋钮2逆时针旋转", Btn.GREEN, e -> {
             BaseUSBListener.RotateCylinder(2, false);
         });
-        Btn right1 = new Btn(rootX + 200, rootY + 320, 80, 80, "1Right", Btn.GREEN, e -> {
+        Btn right1 = new Btn(rootX + 200, rootY + 320, 80, 80, "旋钮1顺时针旋转", Btn.GREEN, e -> {
             BaseUSBListener.RotateCylinder(1, true);
         });
-        Btn right2 = new Btn(rootX + 290, rootY + 320, 80, 80, "2Right", Btn.GREEN, e -> {
+        Btn right2 = new Btn(rootX + 290, rootY + 320, 80, 80, "旋钮2顺时针旋转", Btn.GREEN, e -> {
             BaseUSBListener.RotateCylinder(2, true);
         });
         this.add(left1);
@@ -76,8 +77,8 @@ public class CylinderTabPanel extends TabPanel {
         this.add(degLabel);
         this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2, "");
         this.add(dataLabel);
-        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "轴心距", -1.25F, 2, "°");
-        this.add(pxdLabel);
+//        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "轴心距", -1.25F, 2, "°");
+//        this.add(pxdLabel);
     }
 
 
@@ -92,7 +93,7 @@ public class CylinderTabPanel extends TabPanel {
                         if (!(deg < 0)) {
                             degLabel.setData(deg);
                             dataLabel.setData(cylinder);
-                            pxdLabel.setData(0);
+//                            pxdLabel.setData(0);
 
                             UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)

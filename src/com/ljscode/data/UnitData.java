@@ -31,9 +31,17 @@ public class UnitData {
 
     public static UnitData FindByDeg(List<UnitData> dataset, double deg) {
         UnitData result = null;
-        for (UnitData data : dataset) {
-            if (Math.abs(data.getDeg() - deg) <= 0.0001) {
-                result = data;
+        try {
+            for (UnitData data : dataset) {
+                if (Math.abs(data.getDeg() - deg) <= 0.0001) {
+                    result = data;
+                }
+            }
+        } catch (Exception e) {
+            if (dataset.size() > 0) {
+                result = dataset.get(0);
+            } else {
+                result = new UnitData(deg, 0, 0);
             }
         }
         return result;
