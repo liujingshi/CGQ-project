@@ -22,7 +22,7 @@ public class CylinderTabPanel extends TabPanel {
     private final TipBox tipBox;
     private final DataLabel degLabel;
     private final DataLabel dataLabel;
-//    private final DataLabel pxdLabel;
+    private final DataLabel pxdLabel;
     private Btn newBtn;
     private TestData data;
     private ItemData selectData;
@@ -77,15 +77,15 @@ public class CylinderTabPanel extends TabPanel {
         this.add(degLabel);
         this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2, "");
         this.add(dataLabel);
-//        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "轴心距", -1.25F, 2, "°");
-//        this.add(pxdLabel);
+        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "轴心距", -1.25F, 2, "°");
+        this.add(pxdLabel);
     }
 
 
     public void showChart() {
         if (lineChart == null) {
             lineChart = new TestLineChart(500, 30, 500, 400, "柱面数据实时图", rawData,
-                    this.data.getData1().getData(), BaseConfig.Cylinder);
+                    this.data.getData1().getData(), BaseConfig.Cylinder, null, null);
             this.add(lineChart);
             new Thread(() -> {
                 while (true) {
@@ -93,14 +93,16 @@ public class CylinderTabPanel extends TabPanel {
                         if (!(deg < 0)) {
                             degLabel.setData(deg);
                             dataLabel.setData(cylinder);
-//                            pxdLabel.setData(0);
+                            pxdLabel.setData(0);
 
                             UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)
                                 rawData.add(new UnitData(deg, cylinder, 0));
                             else
                                 item.setCylinder(cylinder);
-                            lineChart.reload(rawData, this.data.getData1().isCheckCylinder() ? this.data.getData1().getData() : null, BaseConfig.Cylinder);
+                            lineChart.reload(rawData, this.data.getData1().isCheckCylinder() ? this.data.getData1().getData() : null, BaseConfig.Cylinder, adjust -> {
+                                tipBox.setContent(adjust.getText(), adjust.isRight());
+                            }, null);
                         }
                     });
                 }

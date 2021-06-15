@@ -1,8 +1,10 @@
 package com.ljscode.base;
 
 import com.ljscode.bean.PortConfig;
+import com.ljscode.data.LeastSquareMethod;
 import com.ljscode.util.BaseArrayUtil;
 import com.ljscode.util.ConfigUtil;
+import com.ljscode.util.MathUtil;
 import com.ljscode.util.ParseSystemUtil;
 import gnu.io.*;
 
@@ -33,6 +35,18 @@ public abstract class BaseUSBListener {
     private static boolean Lock = false;
 
     private final double currentDeg = 0;
+
+    public static void TestNice() {
+        List<Double> rawData = new ArrayList<>();
+        for (int i = 0; i < 360; i++) {
+            double data = cylinder2 + cylinder1 * Math.sin(Math.toRadians(i) + (Math.random() * cylinder1 / 8 - cylinder1 / 16));
+            rawData.add(data);
+        }
+        LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawData);
+        for (double item : leastSquareMethod.getCoefficient()) {
+            System.out.println(item * 100000);
+        }
+    }
 
     public static UsbDevice findMissileLauncher(UsbHub hub) {
         UsbDevice launcher = null;

@@ -1,6 +1,8 @@
 package com.ljscode.component;
 
 import com.ljscode.base.BaseChart;
+import com.ljscode.base.BaseMouseListener;
+import com.ljscode.bean.Adjust;
 import com.ljscode.data.UnitData;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
@@ -25,8 +27,9 @@ public class TestLineChart extends ChartBox {
      * @param yData   第1次测量数据
      * @param mode    模式 柱面/端面
      */
-    public TestLineChart(int left, int top, int width, int height, String title, List<UnitData> rawData, List<UnitData> yData, String mode) {
-        super(left, top, width, height, BaseChart.CreateTestLineChart(title, rawData, yData, mode));
+    public TestLineChart(int left, int top, int width, int height, String title, List<UnitData> rawData, List<UnitData> yData,
+                         String mode, BaseMouseListener<Adjust> event, BaseMouseListener<Adjust> event1) {
+        super(left, top, width, height, BaseChart.CreateTestLineChart(title, rawData, yData, mode, event, event1));
     }
 
     /**
@@ -36,8 +39,8 @@ public class TestLineChart extends ChartBox {
      * @param yData   第1次测量数据
      * @param mode    模式 柱面/端面
      */
-    public void reload(List<UnitData> rawData, List<UnitData> yData, String mode) {
-        XYSeriesCollection dataset = BaseChart.CreateTestLineData(rawData, yData, mode);
+    public void reload(List<UnitData> rawData, List<UnitData> yData, String mode, BaseMouseListener<Adjust> event, BaseMouseListener<Adjust> event1) {
+        XYSeriesCollection dataset = BaseChart.CreateTestLineData(rawData, yData, mode, event, event1);
         JFreeChart chart = this.getChart();
         XYPlot plot = chart.getXYPlot();
         plot.setDataset(dataset);

@@ -18,5 +18,6 @@ public class Main {
 //        BaseUSBListener.LinkBPX(); // 连接盒子
         MainFrame mainFrame = new MainFrame(); // 创建主窗体对象
         mainFrame.showMe(); // 显示主窗体
+//        BaseUSBListener.TestNice();
     }
 }

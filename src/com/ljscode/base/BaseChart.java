@@ -1,7 +1,11 @@
 package com.ljscode.base;
 
+import com.ljscode.bean.Adjust;
 import com.ljscode.component.BarCustomRender;
-import com.ljscode.data.*;
+import com.ljscode.data.ItemData;
+import com.ljscode.data.LeastSquareMethod;
+import com.ljscode.data.TestData;
+import com.ljscode.data.UnitData;
 import com.ljscode.util.FontUtil;
 import com.ljscode.util.MathUtil;
 import org.jfree.chart.ChartFactory;
@@ -18,8 +22,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +93,8 @@ public abstract class BaseChart {
      * @param mode    模式(柱面/端面)
      * @return XYSeriesCollection dataset
      */
-    public static XYSeriesCollection CreateTestLineData(List<UnitData> rawData, List<UnitData> yData, String mode) {
+    public static XYSeriesCollection CreateTestLineData(List<UnitData> rawData, List<UnitData> yData, String mode,
+                                                        BaseMouseListener<Adjust> event, BaseMouseListener<Adjust> event1) {
         boolean hasYData = yData != null && yData.size() >= 360; // 判断yData是否存在
         List<Double> rawDataList = new ArrayList<>();
         List<Double> yDataList = new ArrayList<>();
@@ -102,6 +105,28 @@ public abstract class BaseChart {
             }
         }
         LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawDataList); // 创建最小二乘法数据
+        double[] cs = leastSquareMethod.getCoefficient();
+        if (cs[0] * 100000 > 0 && cs[0] * 100000 > 100000) {
+            if (event != null)
+                event.mouseClicked(new Adjust("旋钮2", false));
+            if (event1 != null)
+                event1.mouseClicked(new Adjust("旋钮2", false));
+        } else if (cs[0] * 100000 < 0 && cs[0] * 100000 < -100000) {
+            if (event != null)
+                event.mouseClicked(new Adjust("旋钮2", true));
+            if (event1 != null)
+                event1.mouseClicked(new Adjust("旋钮2", true));
+        } else if (cs[2] * 100000 > 0 && cs[3] * 100000 < 0 && cs[4] * 100000 > 0 && cs[5] * 100000 < 0) {
+            if (event != null)
+                event.mouseClicked(new Adjust("旋钮1", false));
+            if (event1 != null)
+                event1.mouseClicked(new Adjust("旋钮1", false));
+        } else if (cs[2] * 100000 < 0 && cs[3] * 100000 > 0 && cs[4] * 100000 < 0 && cs[5] * 100000 > 0) {
+            if (event != null)
+                event.mouseClicked(new Adjust("旋钮1", true));
+            if (event1 != null)
+                event1.mouseClicked(new Adjust("旋钮1", true));
+        }
         LeastSquareMethod leastSquareMethodY = hasYData ? MathUtil.GetLeastSquareMethod(yDataList) : null;
         XYSeries rawGoals = new XYSeries("实时数据");
         XYSeries lsmGoals = new XYSeries("拟合数据");
@@ -143,8 +168,9 @@ public abstract class BaseChart {
      * @param mode    模式(柱面/端面)
      * @return JFreeChart
      */
-    public static JFreeChart CreateTestLineChart(String title, List<UnitData> rawData, List<UnitData> yData, String mode) {
-        XYSeriesCollection dataset = CreateTestLineData(rawData, yData, mode);
+    public static JFreeChart CreateTestLineChart(String title, List<UnitData> rawData, List<UnitData> yData, String mode,
+                                                 BaseMouseListener<Adjust> event, BaseMouseListener<Adjust> event1) {
+        XYSeriesCollection dataset = CreateTestLineData(rawData, yData, mode, event, event1);
         JFreeChart chart = ChartFactory.createXYLineChart(title, "角度", "数据", dataset,
                 PlotOrientation.VERTICAL, true, true, false);
         XYPlot plot = SetXYChartFont(chart);
