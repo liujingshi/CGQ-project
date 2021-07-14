@@ -20,14 +20,18 @@ public class EndFaceTabPanel extends TabPanel {
     private final TextLabel currentDataNameLabel;
     private final List<UnitData> rawData;
     private final DataTree tree;
-    private final TipBox tipBox;
+    private final TipBox e1TipBox;
+    private final TipBox c1TipBox;
+    private final TipBox e2TipBox;
+    private final TipBox c2TipBox;
     private final DataLabel degLabel;
-    private final DataLabel dataLabel;
-    private final DataLabel pxdLabel;
-    private Btn newBtn;
+    private final DataLabel eDataLabel;
+    private final DataLabel cDataLabel;
+    private Btn eNewBtn;
     private TestData data;
     private ItemData selectData;
-    private TestLineChart lineChart;
+    private TestLineChart eLineChart;
+    private TestLineChart cLineChart;
 
     public EndFaceTabPanel(List<UnitData> rawData) {
         super();
@@ -38,16 +42,25 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(currentDataNameLabel);
         this.tree = new DataTree(rootX, rootY + 50, 180, 500, data, itemData -> {
             this.selectData = itemData;
-            this.newBtn.unDisabled();
+            this.eNewBtn.unDisabled();
         });
         this.add(tree);
         tree.blur(e -> {
-            newBtn.disabled();
+            eNewBtn.disabled();
         });
-        this.tipBox = new TipBox(rootX + 200, rootY + 60, 230, 80);
-        this.add(tipBox);
-        tipBox.setContent("旋钮2", false);
-        this.newBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
+        this.e1TipBox = new TipBox(this.width - 600 - 16, rootY + 600, 230, 80);
+        this.add(e1TipBox);
+        e1TipBox.setContent("旋钮2", false);
+        this.c1TipBox = new TipBox(this.width / 2 - 300, rootY + 600, 230, 80);
+        this.add(c1TipBox);
+        c1TipBox.setContent("旋钮1", false);
+        this.e2TipBox = new TipBox(this.width - 600 - 16 + 235, rootY + 600, 230, 80);
+        this.add(e2TipBox);
+        e2TipBox.setContent("旋钮2", false);
+        this.c2TipBox = new TipBox(this.width / 2 - 300 + 235, rootY + 600, 230, 80);
+        this.add(c2TipBox);
+        c2TipBox.setContent("旋钮1", false);
+        this.eNewBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectData != null) {
                 selectData.setData(rawData);
                 selectData.setCheckEndFace(true);
@@ -56,8 +69,8 @@ public class EndFaceTabPanel extends TabPanel {
                 DatasetUtil.SaveOrUpdate(data);
             }
         });
-        this.add(newBtn);
-        newBtn.disabled();
+        this.add(eNewBtn);
+        eNewBtn.disabled();
         Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
             BaseUSBListener.RotateEndFace(1, false);
         });
@@ -76,32 +89,59 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(right2);
         this.degLabel = new DataLabel(rootX + 200, rootY + 450, 24, "角度", 36, 0, "°");
         this.add(degLabel);
-        this.dataLabel = new DataLabel(rootX + 400, rootY + 450, 24, "数据", 1.73F, 2, "");
-        this.add(dataLabel);
-        this.pxdLabel = new DataLabel(rootX + 600, rootY + 450, 24, "平行度", -1.25F, 2, "°");
-        this.add(pxdLabel);
+        this.eDataLabel = new DataLabel(this.width - 300 + 90, rootY + 550, 24, "数据", 1.73F, 2, "");
+        this.add(eDataLabel);
+        this.cDataLabel = new DataLabel((this.width - 180) / 2 - 100, rootY + 550, 24, "数据", 1.73F, 2, "");
+        this.add(cDataLabel);
     }
 
-    public void showChart() {
-        if (lineChart == null) {
-            lineChart = new TestLineChart(500, 30, 500, 400, "端面数据实时图",
+    public void showEChart() {
+        if (eLineChart == null) {
+            eLineChart = new TestLineChart(this.width - 600 - 16, 30, 600, 500, "端面数据实时图",
                     rawData, data.getData1().getData(), BaseConfig.EndFace, null, null);
-            this.add(lineChart);
+            this.add(eLineChart);
             new Thread(() -> {
                 while (true) {
                     BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
                         if (!(deg < 0)) {
                             degLabel.setData(deg);
-                            dataLabel.setData(endFace);
-                            pxdLabel.setData(0);
+                            eDataLabel.setData(endFace);
+
                             UnitData item = UnitData.FindByDeg(rawData, deg);
                             if (item == null)
                                 rawData.add(new UnitData(deg, 0, endFace));
                             else
                                 item.setEndFace(endFace);
-                            lineChart.reload(rawData, this.data.getData1().isCheckEndFace() ? this.data.getData1().getData() : null, BaseConfig.EndFace, null, adjust -> {
-                                tipBox.setContent(adjust.getText(), adjust.isRight());
+                            eLineChart.reload(rawData, this.data.getData1().isCheckEndFace() ? this.data.getData1().getData() : null, BaseConfig.EndFace, null, adjust -> {
+                                e1TipBox.setContent(adjust.getText(), adjust.isRight());
                             });
+                        }
+                    });
+                }
+            }).start();
+        }
+    }
+
+    public void showCChart() {
+        if (cLineChart == null) {
+            cLineChart = new TestLineChart((this.width - 600) / 2 - 100, 30, 600, 500, "柱面数据实时图", rawData,
+                    this.data.getData1().getData(), BaseConfig.Cylinder, null, null);
+            this.add(cLineChart);
+            new Thread(() -> {
+                while (true) {
+                    BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
+                        if (!(deg < 0)) {
+                            degLabel.setData(deg);
+                            cDataLabel.setData(cylinder);
+
+                            UnitData item = UnitData.FindByDeg(rawData, deg);
+                            if (item == null)
+                                rawData.add(new UnitData(deg, cylinder, 0));
+                            else
+                                item.setCylinder(cylinder);
+                            cLineChart.reload(rawData, this.data.getData1().isCheckCylinder() ? this.data.getData1().getData() : null, BaseConfig.Cylinder, adjust -> {
+                                c1TipBox.setContent(adjust.getText(), adjust.isRight());
+                            }, null);
                         }
                     });
                 }
@@ -112,7 +152,8 @@ public class EndFaceTabPanel extends TabPanel {
     public void changeData() {
         currentDataNameLabel.setText(data.getName());
         tree.setTestData(data);
-        showChart();
+        showEChart();
+        showCChart();
     }
 
     public TestData getData() {
@@ -127,7 +168,7 @@ public class EndFaceTabPanel extends TabPanel {
     @Override
     public void showMe() {
         super.showMe();
-        newBtn.disabled();
+        eNewBtn.disabled();
     }
 
 }

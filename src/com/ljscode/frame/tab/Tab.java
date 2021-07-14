@@ -69,7 +69,7 @@ public class Tab extends Div {
         EndFaceTabBtn endFaceTabBtn = new EndFaceTabBtn(this::onClickEndFaceTab); // 端面测量Tab
         this.synthesizeTabBtn = new SynthesizeTabBtn(this::onClickSynthesizeTab); // 综合数据Tab
         this.tabButtons = new TabBtn[]{newTabBtn, openTabBtn, outputTabBtn, settingTabBtn,
-                endFaceTabBtn, cylinderTabBtn, checkTabBtn, synthesizeTabBtn}; // 装载Tab到数组
+                endFaceTabBtn, checkTabBtn, synthesizeTabBtn}; // 装载Tab到数组
         for (TabBtn tabBtn : this.tabButtons) { // 将Tab添加到body中
             body.add(tabBtn);
         }
@@ -84,7 +84,7 @@ public class Tab extends Div {
         this.endFaceTabPanel = new EndFaceTabPanel(rawData); // 端面测量Tab面板
         this.synthesizeTabPanel = new SynthesizeTabPanel(); // 综合数据Tab面板
         this.tabPanels = new TabPanel[]{newTabPanel, openTabPanel, outputTabPanel, settingTabPanel,
-                endFaceTabPanel, cylinderTabPanel, checkTabPanel, synthesizeTabPanel}; // 装载Tab面板到数组
+                endFaceTabPanel,  checkTabPanel, synthesizeTabPanel}; // 装载Tab面板到数组
         for (TabPanel tabPanel : this.tabPanels) { // 将Tab添加到body中
             body.add(tabPanel);
         }

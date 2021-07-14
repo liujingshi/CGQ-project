@@ -15,7 +15,7 @@ public class EndFaceTabBtn extends TabBtn {
      * @param event 点击事件
      */
     public EndFaceTabBtn(BaseMouseListener<IconTextBtn> event) {
-        super(BaseConfig.FrameWidth - 200 - 5, 0, "端面测量",
+        super(BaseConfig.FrameWidth - 200 - 5, 0, "数据测量",
                 "res/img/icon/tab/end-face/end-face.png", "res/img/icon/tab/end-face/end-face-hover.png", event);
     }
 

@@ -15,7 +15,7 @@ public class CheckTabBtn extends TabBtn {
      * @param event 点击事件
      */
     public CheckTabBtn(BaseMouseListener<IconTextBtn> event) {
-        super(BaseConfig.FrameWidth - 400 - 5, 0, "传感器校准",
+        super(BaseConfig.FrameWidth - 300 - 5, 0, "传感器置零",
                 "res/img/icon/tab/check/check.png", "res/img/icon/tab/check/check-hover.png", event);
     }
 

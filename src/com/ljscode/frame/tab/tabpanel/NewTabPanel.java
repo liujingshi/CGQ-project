@@ -23,22 +23,32 @@ public class NewTabPanel extends TabPanel {
                 (this.height - BaseConfig.InputHeight - 240) / 2, BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "数据名称：", "请输入数据名称...");
         this.add(inputGroup);
-        InputGroup r = new InputGroup((this.width - BaseConfig.InputGroupWidth) / 2,
+        InputGroup tfGroup = new InputGroup((this.width - BaseConfig.InputGroupWidth) / 2,
                 (this.height - BaseConfig.InputHeight - 240) / 2 + BaseConfig.InputGroupSpaceMd,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
-                "外部半径：", "请输入外部半径...");
+                "测量台份：", "请输入测量台份...");
+        this.add(tfGroup);
+        InputGroup userGroup = new InputGroup((this.width - BaseConfig.InputGroupWidth) / 2,
+                (this.height - BaseConfig.InputHeight - 240) / 2 + BaseConfig.InputGroupSpaceMd * 2,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "操作人员：", "请输入操作人员...");
+        this.add(userGroup);
+        InputGroup r = new InputGroup((this.width - BaseConfig.InputGroupWidth) / 2,
+                (this.height - BaseConfig.InputHeight - 240) / 2 + BaseConfig.InputGroupSpaceMd * 3,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "装配次数：", "请输入第几次装配...");
         this.add(r);
         r.limit(new BaseOnlyInputNumber());
         InputGroup inr = new InputGroup((this.width - BaseConfig.InputGroupWidth) / 2,
-                (this.height - BaseConfig.InputHeight - 240) / 2 + BaseConfig.InputGroupSpaceMd * 2,
+                (this.height - BaseConfig.InputHeight - 240) / 2 + BaseConfig.InputGroupSpaceMd * 4,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
-                "内部半径：", "请输入内部半径...");
+                "理论半径：", "请输入理论半径...");
         this.add(inr);
         inr.limit(new BaseOnlyInputNumber());
         RadiusConfig radiusConfig = ConfigUtil.GetRadiusConfig();
         r.setValue(String.valueOf(radiusConfig.getR()));
         inr.setValue(String.valueOf(radiusConfig.getInsideR()));
-        Btn btn = new Btn((this.width - BaseConfig.InputGroupWidth) / 2, (this.height - BaseConfig.InputHeight) / 2,
+        Btn btn = new Btn((this.width - BaseConfig.InputGroupWidth) / 2, (this.height - BaseConfig.InputHeight) / 2 + BaseConfig.InputGroupSpaceMd * 3,
                 0, 0, "新建", Btn.BLUE, e -> {
             String value = inputGroup.getValue();
             String rStr = r.getValue();

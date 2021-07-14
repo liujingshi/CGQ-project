@@ -40,7 +40,7 @@ public class OpenTabPanel extends TabPanel {
         InputGroup dataName = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceSm * 2 + BaseConfig.InputGroupSpaceMd,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight, "数据名称：", "请输入数据名称...");
         this.add(dataName);
-        ListView<TestData> list = new ListView<>(600, 30, 400, 460, select -> {
+        ListView<TestData> list = new ListView<>(this.width - 16 - 400, 30, 400, 460, select -> {
             this.selectTestData = select;
             openBtn.unDisabled();
         });
@@ -57,7 +57,7 @@ public class OpenTabPanel extends TabPanel {
             openBtn.disabled();
         });
         this.add(searchBtn);
-        this.openBtn = new Btn(600, 500, 0, 0, "打开", Btn.BLUE, e -> {
+        this.openBtn = new Btn(this.width - 16 - 400, 500, 0, 0, "打开", Btn.BLUE, e -> {
             event.mouseClicked(selectTestData);
         });
         this.add(openBtn);

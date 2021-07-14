@@ -9,8 +9,8 @@ public class CheckTabPanel extends TabPanel {
 
     public CheckTabPanel() {
         super();
-        int rootX = 200;
-        int rootY = 50;
+        int rootX = (this.width - 600) / 2;
+        int rootY = (this.height - 500) / 2;
         CheckChart checkChart = createCheckBar(rootX, rootY);
         this.add(checkChart);
     }

@@ -44,7 +44,7 @@ public class SynthesizeTabPanel extends TabPanel {
 
     public void showChart() {
         if (polarChart == null) {
-            this.polarChart = new TestPolarChart(500, 30, 500, 500, "综合数据", data);
+            this.polarChart = new TestPolarChart(this.width - 16 - 500, 30, 500, 500, "综合数据", data);
             this.add(polarChart);
         } else {
             polarChart.reload(data);
