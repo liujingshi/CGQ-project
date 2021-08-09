@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.ljscode.bean.MainData;
+import com.ljscode.bean.MainDb;
 import com.ljscode.bean.SearchConfig;
 import com.ljscode.data.ResultModel;
-import com.ljscode.data.TestData;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,38 +16,38 @@ import java.util.UUID;
 /**
  * 数据库类
  */
-public abstract class DatasetUtil {
+public abstract class DbUtil {
 
-    private static final String mainPath = "dataset/main.dataset"; // 数据库主文件
-    private static final String dataPath = "dataset/data/"; // 每条数据所在文件路径
-    private static final String datasetSuffix = "dataset"; // 数据文件后缀
+    private static final String mainPath = "dataset/main.db"; // 数据库主文件
+    private static final String dataPath = "dataset/db/"; // 每条数据所在文件路径
+    private static final String datasetSuffix = "db"; // 数据文件后缀
 
     /**
      * 保存或更新
      *
      * @param entity 数据
      */
-    public static void SaveOrUpdate(TestData entity) {
-        List<MainData> mainDataset = GetMainAll();
-        MainData row = null;
-        for (MainData mainData : mainDataset) {
-            if (mainData.getId().equals(entity.getId())) {
+    public static void SaveOrUpdate(ResultModel entity) {
+        List<MainDb> mainDb = GetMainAll();
+        MainDb row = null;
+        for (MainDb mainData : mainDb) {
+            if (mainData.getDataId().equals(entity.getDataId())) {
                 row = mainData;
                 break;
             }
         }
-        String filePath = String.format("%s%s.%s", dataPath, entity.getId(), datasetSuffix);
+        String filePath = String.format("%s%s.%s", dataPath, entity.getDataId(), datasetSuffix);
         if (row == null) { // 新增
-            MainData newMainData = new MainData(entity.getId(), entity.getName(), entity.getTime());
-            mainDataset.add(newMainData);
+            MainDb newMainDb = new MainDb(entity.getDataId(), entity.getDataName(), entity.getCreateTime(), entity.getMeasuringStand(), entity.getOperator(), entity.getSurveyTimes());
+            mainDb.add(newMainDb);
         } else { // 修改
-            row.setName(entity.getName());
-            row.setTime(entity.getTime());
+            row.setDataName(entity.getDataName());
+            row.setCreateTime(entity.getCreateTime());
         }
         String dataJson = JSONObject.toJSONString(entity);
         FileUtil.WriteFile(filePath, dataJson);
-        String mainDatasetJson = JSONObject.toJSONString(mainDataset);
-        FileUtil.WriteFile(mainPath, mainDatasetJson);
+        String mainDbJson = JSONObject.toJSONString(mainDb);
+        FileUtil.WriteFile(mainPath, mainDbJson);
     }
 
     /**
@@ -57,10 +56,10 @@ public abstract class DatasetUtil {
      * @param id 数据id
      */
     public static void Delete(String id) {
-        List<MainData> mainDataset = GetMainAll();
-        for (MainData mainData : mainDataset) {
-            if (mainData.getId().equals(id)) {
-                mainDataset.remove(mainData);
+        List<MainDb> mainDb = GetMainAll();
+        for (MainDb mainData : mainDb) {
+            if (mainData.getDataId().equals(id)) {
+                mainDb.remove(mainData);
                 String filePath = String.format("%s%s.%s", dataPath, id, datasetSuffix);
                 FileUtil.DeleteFile(filePath);
                 break;
@@ -73,8 +72,8 @@ public abstract class DatasetUtil {
      *
      * @param entity 数据
      */
-    public static void Delete(TestData entity) {
-        Delete(entity.getId());
+    public static void Delete(ResultModel entity) {
+        Delete(entity.getDataId());
     }
 
     /**
@@ -82,9 +81,9 @@ public abstract class DatasetUtil {
      *
      * @return 全部索引
      */
-    public static List<MainData> GetMainAll() {
+    public static List<MainDb> GetMainAll() {
         String datasetJson = FileUtil.ReadFile(mainPath);
-        return JSON.parseArray(datasetJson, MainData.class);
+        return JSON.parseArray(datasetJson, MainDb.class);
     }
 
     /**
@@ -93,10 +92,10 @@ public abstract class DatasetUtil {
      * @param ids ids
      * @return 索引列表
      */
-    public static List<MainData> GetMainByIds(List<String> ids) {
-        List<MainData> mainDataset = GetMainAll();
-        mainDataset.removeIf(mainData -> !ids.contains(mainData.getId()));
-        return mainDataset;
+    public static List<MainDb> GetMainByIds(List<String> ids) {
+        List<MainDb> mainDb = GetMainAll();
+        mainDb.removeIf(mainData -> !ids.contains(mainData.getDataId()));
+        return mainDb;
     }
 
     /**
@@ -105,11 +104,11 @@ public abstract class DatasetUtil {
      * @param id id
      * @return 索引 找不到为null
      */
-    public static MainData GetMainById(String id) {
-        List<MainData> mainDataset = GetMainAll();
-        MainData result = null;
-        for (MainData mainData : mainDataset) {
-            if (mainData.getId().equals(id)) {
+    public static MainDb GetMainById(String id) {
+        List<MainDb> mainDb = GetMainAll();
+        MainDb result = null;
+        for (MainDb mainData : mainDb) {
+            if (mainData.getDataId().equals(id)) {
                 result = mainData;
                 break;
             }
@@ -120,18 +119,18 @@ public abstract class DatasetUtil {
     /**
      * 通过索引列表获取数据列表
      *
-     * @param mainDataset 索引列表
+     * @param mainDb 索引列表
      * @return 数据列表
      */
-    public static List<TestData> GetByMainDataset(List<MainData> mainDataset) {
-        List<TestData> testDataset = new ArrayList<>();
-        for (MainData mainData : mainDataset) {
-            String filePath = String.format("%s%s.%s", dataPath, mainData.getId(), datasetSuffix);
+    public static List<ResultModel> GetByMainDbset(List<MainDb> mainDb) {
+        List<ResultModel> testDataset = new ArrayList<>();
+        for (MainDb mainData : mainDb) {
+            String filePath = String.format("%s%s.%s", dataPath, mainData.getDataId(), datasetSuffix);
             String testDataJson = FileUtil.ReadFile(filePath);
             JSONObject obj = JSONObject.parseObject(testDataJson);
             JSONArray arr = obj.getJSONArray("data");
             String js = JSON.toJSONString(arr, SerializerFeature.WriteClassName);
-            testDataset.add(JSON.parseObject(js, TestData.class));
+            testDataset.add(JSON.parseObject(js, ResultModel.class));
         }
         return testDataset;
     }
@@ -141,9 +140,9 @@ public abstract class DatasetUtil {
      *
      * @return 全部数据
      */
-    public static List<TestData> GetAll() {
-        List<MainData> mainDataset = GetMainAll();
-        return GetByMainDataset(mainDataset);
+    public static List<ResultModel> GetAll() {
+        List<MainDb> mainDb = GetMainAll();
+        return GetByMainDbset(mainDb);
     }
 
     /**
@@ -152,9 +151,9 @@ public abstract class DatasetUtil {
      * @param ids ids
      * @return 数据列表
      */
-    public static List<TestData> GetByIds(List<String> ids) {
-        List<MainData> mainDataset = GetMainByIds(ids);
-        return GetByMainDataset(mainDataset);
+    public static List<ResultModel> GetByIds(List<String> ids) {
+        List<MainDb> mainDb = GetMainByIds(ids);
+        return GetByMainDbset(mainDb);
     }
 
     /**
@@ -163,13 +162,13 @@ public abstract class DatasetUtil {
      * @param id id
      * @return 数据
      */
-    public static TestData GetById(String id) {
-        MainData mainData = GetMainById(id);
+    public static ResultModel GetById(String id) {
+        MainDb mainData = GetMainById(id);
         if (mainData == null)
             return null;
-        String filePath = String.format("%s%s.%s", dataPath, mainData.getId(), datasetSuffix);
+        String filePath = String.format("%s%s.%s", dataPath, mainData.getDataId(), datasetSuffix);
         String testDataJson = FileUtil.ReadFile(filePath);
-        return JSON.parseObject(testDataJson, TestData.class);
+        return JSON.parseObject(testDataJson, ResultModel.class);
     }
 
     /**
@@ -179,7 +178,7 @@ public abstract class DatasetUtil {
      * @return 是否存在
      */
     public static boolean IsExistId(String id) {
-        MainData mainData = GetMainById(id);
+        MainDb mainData = GetMainById(id);
         return !(mainData == null);
     }
 
@@ -202,15 +201,15 @@ public abstract class DatasetUtil {
      * @param searchConfig 搜索配置
      * @return 数据列表
      */
-    public static List<TestData> FindBySearchConfig(SearchConfig searchConfig) {
-        List<MainData> mainDataset = GetMainAll();
-        mainDataset.removeIf(mainData -> {
-            boolean result = !mainData.getName().contains(searchConfig.getName());
+    public static List<ResultModel> FindBySearchConfig(SearchConfig searchConfig) {
+        List<MainDb> mainDb = GetMainAll();
+        mainDb.removeIf(mainData -> {
+            boolean result = !mainData.getDataName().contains(searchConfig.getName());
             String startTimeStr = searchConfig.getStartTimeStr();
             if (!startTimeStr.equals("")) {
                 Date startTime = DateUtil.ToDate(startTimeStr);
                 if (startTime != null) {
-                    if (DateUtil.LessThan(mainData.getTime(), startTime)) {
+                    if (DateUtil.LessThan(mainData.getCreateTime(), startTime)) {
                         result = true;
                     }
                 }
@@ -219,13 +218,13 @@ public abstract class DatasetUtil {
             if (!endTimeStr.equals("")) {
                 Date endTime = DateUtil.ToDate(endTimeStr);
                 if (endTime != null) {
-                    if (DateUtil.GreaterThan(mainData.getTime(), endTime)) {
+                    if (DateUtil.GreaterThan(mainData.getCreateTime(), endTime)) {
                         result = true;
                     }
                 }
             }
             return result;
         });
-        return GetByMainDataset(mainDataset);
+        return GetByMainDbset(mainDb);
     }
 }

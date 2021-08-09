@@ -43,10 +43,7 @@ public class ItemData {
      */
     public ItemData(int times) {
         this.times = times;
-        if (times > 0)
-            this.name = String.format("第%d次测量数据", this.times);
-        else if (times == 0)
-            this.name = "内部测量数据";
+        this.name = String.format("第%d次测量数据", this.times);
         this.isCheckCylinder = false;
         this.isCheckEndFace = false;
         this.data = new ArrayList<>();
@@ -114,9 +111,7 @@ public class ItemData {
 
     @Override
     public String toString() {
-        return String.format("%s(%s|%s)", name,
-                isCheckCylinder ? "Y" : "N",
-                isCheckEndFace ? "Y" : "N");
+        return name;
     }
 
     public ItemData cloneMe() throws CloneNotSupportedException {

@@ -4,6 +4,7 @@ import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
 import com.ljscode.bean.PortConfig;
 import com.ljscode.component.Btn;
+import com.ljscode.component.InputGroup;
 import com.ljscode.component.Select;
 import com.ljscode.component.TextLabel;
 import com.ljscode.util.ConfigUtil;
@@ -185,6 +186,22 @@ public class SettingTabPanel extends TabPanel {
             ConfigUtil.SetPortConfig(portConfigs);
         });
         this.add(saveBtn);
+        InputGroup dmllqjS = new InputGroup(rootX + 250, rootY,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "端面理论区间开始：", "请输入...");
+        this.add(dmllqjS);
+        InputGroup dmllqjE = new InputGroup(rootX + 250, rootY + BaseConfig.InputGroupSpaceMd,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "端面理论区间结束：", "请输入...");
+        this.add(dmllqjE);
+        InputGroup zmllqjS = new InputGroup(rootX + 250, rootY + BaseConfig.InputGroupSpaceMd * 2,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "柱面理论区间开始：", "请输入...");
+        this.add(zmllqjS);
+        InputGroup zmllqjE = new InputGroup(rootX + 250, rootY + BaseConfig.InputGroupSpaceMd * 3,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "柱面理论区间结束：", "请输入...");
+        this.add(zmllqjE);
     }
 
 }

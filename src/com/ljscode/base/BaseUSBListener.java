@@ -277,11 +277,7 @@ public abstract class BaseUSBListener {
     }
 
     public static void ReadUSBData(BaseReadUSBData event) {
-        if (Math.abs(degData - (int) degData) <= 0.1) {
-            event.ReadUSBData(-1, -1, -1);
-        } else {
-            event.ReadUSBData((int) degData, cylinderData, endFaceData);
-        }
+        event.ReadUSBData(degData, cylinderData, endFaceData);
 //        new Thread(() -> {
 //            while (Lock) {
 //                try {
@@ -300,7 +296,7 @@ public abstract class BaseUSBListener {
     public static void AnalogReceivedData() {
         new Thread(() -> {
             while (true) {
-                for (double i = 0; i <= 360; i += 0.05) {
+                for (double i = 0; i <= 360; i += 0.01) {
                     try {
                         Thread.sleep(1);
                         double data1 = (cylinder2 + cylinder1 * Math.sin(Math.toRadians(i) + (Math.random() * cylinder1 / 8 - cylinder1 / 16)));

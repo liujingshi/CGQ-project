@@ -3,8 +3,11 @@ package com.ljscode.component;
 import com.ljscode.base.BaseChart;
 import com.ljscode.base.BaseMouseListener;
 import com.ljscode.bean.Adjust;
+import com.ljscode.bean.LineChartInfo;
 import com.ljscode.data.UnitData;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -32,6 +35,10 @@ public class TestLineChart extends ChartBox {
         super(left, top, width, height, BaseChart.CreateTestLineChart(title, rawData, yData, mode, event, event1));
     }
 
+    public TestLineChart(int left, int top, int width, int height, LineChartInfo lineChartInfo) {
+        super(left, top, width, height, BaseChart.CreateLineChart(lineChartInfo));
+    }
+
     /**
      * 构造方法
      *
@@ -41,6 +48,13 @@ public class TestLineChart extends ChartBox {
      */
     public void reload(List<UnitData> rawData, List<UnitData> yData, String mode, BaseMouseListener<Adjust> event, BaseMouseListener<Adjust> event1) {
         XYSeriesCollection dataset = BaseChart.CreateTestLineData(rawData, yData, mode, event, event1);
+        JFreeChart chart = this.getChart();
+        XYPlot plot = chart.getXYPlot();
+        plot.setDataset(dataset);
+    }
+
+    public void reload(LineChartInfo lineChartInfo) {
+        XYSeriesCollection dataset = lineChartInfo.CreateLineData();
         JFreeChart chart = this.getChart();
         XYPlot plot = chart.getXYPlot();
         plot.setDataset(dataset);

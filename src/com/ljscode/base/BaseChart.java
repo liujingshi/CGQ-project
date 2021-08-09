@@ -1,6 +1,7 @@
 package com.ljscode.base;
 
 import com.ljscode.bean.Adjust;
+import com.ljscode.bean.LineChartInfo;
 import com.ljscode.component.BarCustomRender;
 import com.ljscode.data.ItemData;
 import com.ljscode.data.LeastSquareMethod;
@@ -24,6 +25,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 基础图表
@@ -178,6 +180,15 @@ public abstract class BaseChart {
         return chart;
     }
 
+    public static JFreeChart CreateLineChart(LineChartInfo lineChartInfo) {
+        XYSeriesCollection dataset = lineChartInfo.CreateLineData();
+        JFreeChart chart = ChartFactory.createXYLineChart(lineChartInfo.getTitle(), "角度", "数据", dataset,
+                PlotOrientation.VERTICAL, true, true, false);
+        XYPlot plot = SetXYChartFont(chart);
+        plot.getRangeAxis().setRange(lineChartInfo.getRangeLower(), lineChartInfo.getRangeUpper());
+        return chart;
+    }
+
     /**
      * 创建综合雷达数据
      *
@@ -188,18 +199,20 @@ public abstract class BaseChart {
         List<LeastSquareMethod> leastSquareMethods = new ArrayList<>();
         List<XYSeries> goals = new ArrayList<>();
         List<ItemData> itemData = new ArrayList<>();
-        if (data.getData1().isCheckCylinder())
+        if (data.getData1() != null && data.getData1().isCheckCylinder())
             itemData.add(data.getData1());
-        if (data.getData2().isCheckCylinder())
+        if (data.getData2() != null && data.getData2().isCheckCylinder())
             itemData.add(data.getData2());
-        if (data.getData3().isCheckCylinder())
+        if (data.getData3() != null && data.getData3().isCheckCylinder())
             itemData.add(data.getData3());
-        if (data.getData4().isCheckCylinder())
+        if (data.getData4() != null && data.getData4().isCheckCylinder())
             itemData.add(data.getData4());
-        for (ItemData item : itemData) {
-            goals.add(new XYSeries(item.getName()));
+        if (data.getData5() != null && data.getData5().isCheckCylinder())
+            itemData.add(data.getData5());
+        for (int i = 0; i < itemData.size(); i++) {
+            goals.add(new XYSeries(String.format("第%d级测量数据", i+1)));
             List<Double> rawData = new ArrayList<>();
-            for (UnitData unit : item.getData()) {
+            for (UnitData unit : itemData.get(i).getData()) {
                 rawData.add(unit.getCylinder());
             }
             leastSquareMethods.add(MathUtil.GetLeastSquareMethod(rawData));
@@ -209,15 +222,15 @@ public abstract class BaseChart {
                 goals.get(j).add(i, data.getR() + leastSquareMethods.get(j).fit(i));
             }
         }
-        if (data.getInsideData().isCheckCylinder()) {
+        if (data.getInsideData() != null && data.getInsideData().isCheckCylinder()) {
             List<Double> rawData = new ArrayList<>();
             for (UnitData unit : data.getInsideData().getData()) {
                 rawData.add(unit.getCylinder());
             }
             LeastSquareMethod leastSquareMethod = MathUtil.GetLeastSquareMethod(rawData);
-            XYSeries goal = new XYSeries(data.getInsideData().getName());
+            XYSeries goal = new XYSeries("椎壁测量数据");
             for (int i = 0; i < 360; i++) {
-                goal.add(i, data.getInsideR() + leastSquareMethod.fit(i));
+                goal.add(i, data.getR() + leastSquareMethod.fit(i));
             }
             goals.add(goal);
         }

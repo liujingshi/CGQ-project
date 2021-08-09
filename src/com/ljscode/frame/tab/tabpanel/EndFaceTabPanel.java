@@ -3,22 +3,23 @@ package com.ljscode.frame.tab.tabpanel;
 import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
 import com.ljscode.base.BaseUSBListener;
+import com.ljscode.bean.LineChartInfo;
 import com.ljscode.component.*;
-import com.ljscode.data.ItemData;
-import com.ljscode.data.TestData;
-import com.ljscode.data.UnitData;
+import com.ljscode.data.*;
 import com.ljscode.util.DatasetUtil;
+import com.ljscode.util.DbUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 端面检测面板
  */
 public class EndFaceTabPanel extends TabPanel {
 
+    private final List<Double> defaultDeg;
     private final TextLabel currentDataNameLabel;
-    private final List<UnitData> rawData;
+    private final LineChartInfo lineChartInfoCylinder;
+    private final LineChartInfo lineChartInfoEndFace;
     private final DataTree tree;
     private final TipBox e1TipBox;
     private final TipBox c1TipBox;
@@ -28,45 +29,79 @@ public class EndFaceTabPanel extends TabPanel {
     private final DataLabel eDataLabel;
     private final DataLabel cDataLabel;
     private Btn eNewBtn;
-    private TestData data;
-    private ItemData selectData;
+    private ResultModel data; // 数据
+    private ItemModel selectedItemData;
+    private DataModel selectedData;
+    private String mode; // 模式 item arr
     private TestLineChart eLineChart;
     private TestLineChart cLineChart;
 
-    public EndFaceTabPanel(List<UnitData> rawData) {
+    public EndFaceTabPanel() {
         super();
-        this.rawData = rawData;
+        defaultDeg = new ArrayList<>();
+        for (int cDeg = 0; cDeg < 36000; cDeg+=36) {
+            defaultDeg.add((double) cDeg / 100d);
+        }
+        this.lineChartInfoCylinder = new LineChartInfo("柱面数据实时图", -0.3, 0.3, -10, 10, data, "Cylinder");
+        this.lineChartInfoEndFace = new LineChartInfo("端面数据实时图", -0.3, 0.3, -10, 10, data, "EndFace");
         int rootX = 30;
         int rootY = 30;
         currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 16, BaseColor.Black);
         this.add(currentDataNameLabel);
-        this.tree = new DataTree(rootX, rootY + 50, 180, 500, data, itemData -> {
-            this.selectData = itemData;
+        this.tree = new DataTree(rootX, rootY + 50, 300, 500, data, selectedItemModel -> {
+            if (selectedItemModel == null) {
+                this.eNewBtn.disabled();
+            } else {
+                this.selectedItemData = selectedItemModel;
+                this.eNewBtn.unDisabled();
+                this.eNewBtn.setText("保存数据(覆盖选中)");
+            }
+            mode = "item";
+        }, selectedDataModel -> {
+            this.selectedData = selectedDataModel;
             this.eNewBtn.unDisabled();
+            this.eNewBtn.setText("新增数据");
+            mode = "arr";
         });
         this.add(tree);
         tree.blur(e -> {
             eNewBtn.disabled();
         });
-        this.e1TipBox = new TipBox(this.width - 600 - 16, rootY + 600, 230, 80);
+        this.e1TipBox = new TipBox(this.width - 1170, 652, 230, 80);
         this.add(e1TipBox);
-        e1TipBox.setContent("旋钮2", false);
-        this.c1TipBox = new TipBox(this.width / 2 - 300, rootY + 600, 230, 80);
+        e1TipBox.setContent("旋钮1", false);
+        this.c1TipBox = new TipBox(this.width - 554, 652, 230, 80);
         this.add(c1TipBox);
-        c1TipBox.setContent("旋钮1", false);
-        this.e2TipBox = new TipBox(this.width - 600 - 16 + 235, rootY + 600, 230, 80);
+        c1TipBox.setContent("旋钮2", true);
+        this.e2TipBox = new TipBox(this.width - 924, 652, 230, 80);
         this.add(e2TipBox);
-        e2TipBox.setContent("旋钮2", false);
-        this.c2TipBox = new TipBox(this.width / 2 - 300 + 235, rootY + 600, 230, 80);
+        e2TipBox.setContent("旋钮3", false);
+        this.c2TipBox = new TipBox(this.width - 308, 652, 230, 80);
         this.add(c2TipBox);
-        c2TipBox.setContent("旋钮1", false);
-        this.eNewBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
-            if (selectData != null) {
-                selectData.setData(rawData);
-                selectData.setCheckEndFace(true);
-                tree.setTestData(data);
-                selectData = null;
-                DatasetUtil.SaveOrUpdate(data);
+        c2TipBox.setContent("旋钮4", true);
+        this.eNewBtn = new Btn(this.width - 1478, 250, 230, 60, "保存数据", Btn.BLUE, e -> {
+            if (selectedItemData != null || selectedData != null) {
+                if (mode.equals("item") && selectedItemData != null) {
+                    selectedItemData.setRealDataCylinder(lineChartInfoCylinder.getRealData());
+                    selectedItemData.setRealDataEndFace(lineChartInfoEndFace.getRealData());
+                    selectedItemData.calcTheoryData();
+                    tree.setResultModel(data);
+                    selectedItemData = null;
+                    DbUtil.SaveOrUpdate(data);
+                } else if (mode.equals("arr") && selectedData != null) {
+                    ItemModel currentItemModel = selectedData.getCurrentDataItem();
+                    int nextIndex = 1;
+                    if (currentItemModel != null) {
+                        nextIndex = currentItemModel.getDataIndex() + 1;
+                    }
+                    ItemModel itemModel = new ItemModel(nextIndex);
+                    itemModel.setRealDataCylinder(lineChartInfoCylinder.getRealData());
+                    itemModel.setRealDataEndFace(lineChartInfoEndFace.getRealData());
+                    itemModel.calcTheoryData();
+                    selectedData.addDataItem(itemModel);
+                    tree.setResultModel(data);
+                    DbUtil.SaveOrUpdate(data);
+                }
             }
         });
         this.add(eNewBtn);
@@ -83,22 +118,21 @@ public class EndFaceTabPanel extends TabPanel {
         Btn right2 = new Btn(rootX + 290, rootY + 320, 80, 80, "2Right", Btn.GREEN, e -> {
             BaseUSBListener.RotateEndFace(2, true);
         });
-        this.add(left1);
-        this.add(left2);
-        this.add(right1);
-        this.add(right2);
-        this.degLabel = new DataLabel(rootX + 200, rootY + 450, 24, "角度", 36, 0, "°");
+//        this.add(left1);
+//        this.add(left2);
+//        this.add(right1);
+//        this.add(right2);
+        this.degLabel = new DataLabel(this.width - 704, 596, 24, "角度", 36, 0, "°");
         this.add(degLabel);
-        this.eDataLabel = new DataLabel(this.width - 300 + 90, rootY + 550, 24, "数据", 1.73F, 2, "");
+        this.eDataLabel = new DataLabel(this.width - 396, 596, 24, "数据", 1.73F, 2, "");
         this.add(eDataLabel);
-        this.cDataLabel = new DataLabel((this.width - 180) / 2 - 100, rootY + 550, 24, "数据", 1.73F, 2, "");
+        this.cDataLabel = new DataLabel(this.width - 1012, 596, 24, "数据", 1.73F, 2, "");
         this.add(cDataLabel);
     }
 
     public void showEChart() {
         if (eLineChart == null) {
-            eLineChart = new TestLineChart(this.width - 600 - 16, 30, 600, 500, "端面数据实时图",
-                    rawData, data.getData1().getData(), BaseConfig.EndFace, null, null);
+            eLineChart = new TestLineChart(this.width - 616, 30, 600, 500, lineChartInfoEndFace);
             this.add(eLineChart);
             new Thread(() -> {
                 while (true) {
@@ -107,14 +141,12 @@ public class EndFaceTabPanel extends TabPanel {
                             degLabel.setData(deg);
                             eDataLabel.setData(endFace);
 
-                            UnitData item = UnitData.FindByDeg(rawData, deg);
-                            if (item == null)
-                                rawData.add(new UnitData(deg, 0, endFace));
-                            else
-                                item.setEndFace(endFace);
-                            eLineChart.reload(rawData, this.data.getData1().isCheckEndFace() ? this.data.getData1().getData() : null, BaseConfig.EndFace, null, adjust -> {
-                                e1TipBox.setContent(adjust.getText(), adjust.isRight());
-                            });
+                            Optional<Double> xDeg = defaultDeg.stream().filter(t -> Math.abs(t - deg) <= 0.000001).findFirst();
+                            if (xDeg.isPresent()) {
+                                Double mapDeg = xDeg.get();
+                                lineChartInfoEndFace.getRealData().put(mapDeg, endFace);
+                                eLineChart.reload(lineChartInfoEndFace);
+                            }
                         }
                     });
                 }
@@ -124,8 +156,7 @@ public class EndFaceTabPanel extends TabPanel {
 
     public void showCChart() {
         if (cLineChart == null) {
-            cLineChart = new TestLineChart((this.width - 600) / 2 - 100, 30, 600, 500, "柱面数据实时图", rawData,
-                    this.data.getData1().getData(), BaseConfig.Cylinder, null, null);
+            cLineChart = new TestLineChart(this.width - 1232, 30, 600, 500, lineChartInfoCylinder);
             this.add(cLineChart);
             new Thread(() -> {
                 while (true) {
@@ -134,14 +165,12 @@ public class EndFaceTabPanel extends TabPanel {
                             degLabel.setData(deg);
                             cDataLabel.setData(cylinder);
 
-                            UnitData item = UnitData.FindByDeg(rawData, deg);
-                            if (item == null)
-                                rawData.add(new UnitData(deg, cylinder, 0));
-                            else
-                                item.setCylinder(cylinder);
-                            cLineChart.reload(rawData, this.data.getData1().isCheckCylinder() ? this.data.getData1().getData() : null, BaseConfig.Cylinder, adjust -> {
-                                c1TipBox.setContent(adjust.getText(), adjust.isRight());
-                            }, null);
+                            Optional<Double> xDeg = defaultDeg.stream().filter(t -> Math.abs(t - deg) <= 0.000001).findFirst();
+                            if (xDeg.isPresent()) {
+                                Double mapDeg = xDeg.get();
+                                lineChartInfoCylinder.getRealData().put(mapDeg, endFace);
+                                cLineChart.reload(lineChartInfoCylinder);
+                            }
                         }
                     });
                 }
@@ -150,17 +179,17 @@ public class EndFaceTabPanel extends TabPanel {
     }
 
     public void changeData() {
-        currentDataNameLabel.setText(data.getName());
-        tree.setTestData(data);
+        currentDataNameLabel.setText(data.getDataName());
+        tree.setResultModel(data);
         showEChart();
         showCChart();
     }
 
-    public TestData getData() {
+    public ResultModel getData() {
         return data;
     }
 
-    public void setData(TestData data) {
+    public void setData(ResultModel data) {
         this.data = data;
         changeData();
     }

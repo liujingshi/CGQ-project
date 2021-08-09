@@ -4,6 +4,7 @@ import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
 import com.ljscode.component.Div;
 import com.ljscode.component.IconTextBtn;
+import com.ljscode.data.ResultModel;
 import com.ljscode.data.TestData;
 import com.ljscode.data.UnitData;
 import com.ljscode.frame.tab.tabbtn.*;
@@ -20,6 +21,7 @@ public class Tab extends Div {
     private TabBtn[] tabButtons; // tab按钮数组
     private NewTabBtn newTabBtn; // 新建Tab
     private CylinderTabBtn cylinderTabBtn; // 柱面测量Tab
+    private EndFaceTabBtn endFaceTabBtn; // 柱面测量Tab
     private SynthesizeTabBtn synthesizeTabBtn;
 
     private TabPanel[] tabPanels; // tab面板数组
@@ -34,6 +36,8 @@ public class Tab extends Div {
 
     private TestData currentData; // 当前数据
     private List<UnitData> rawData;
+
+    private ResultModel resultModel;
 
     /**
      * 构造方法
@@ -66,7 +70,7 @@ public class Tab extends Div {
         SettingTabBtn settingTabBtn = new SettingTabBtn(this::onClickSettingTab); // 设置Tab
         CheckTabBtn checkTabBtn = new CheckTabBtn(this::onClickCheckTab); // 传感器校准Tab
         this.cylinderTabBtn = new CylinderTabBtn(this::onClickCylinderTab); // 柱面测量Tab
-        EndFaceTabBtn endFaceTabBtn = new EndFaceTabBtn(this::onClickEndFaceTab); // 端面测量Tab
+        this.endFaceTabBtn = new EndFaceTabBtn(this::onClickEndFaceTab); // 端面测量Tab
         this.synthesizeTabBtn = new SynthesizeTabBtn(this::onClickSynthesizeTab); // 综合数据Tab
         this.tabButtons = new TabBtn[]{newTabBtn, openTabBtn, outputTabBtn, settingTabBtn,
                 endFaceTabBtn, checkTabBtn, synthesizeTabBtn}; // 装载Tab到数组
@@ -81,7 +85,7 @@ public class Tab extends Div {
         this.settingTabPanel = new SettingTabPanel(); // 设置Tab面板
         this.checkTabPanel = new CheckTabPanel(); // 传感器校准Tab面板
         this.cylinderTabPanel = new CylinderTabPanel(rawData); // 柱面测量Tab面板
-        this.endFaceTabPanel = new EndFaceTabPanel(rawData); // 端面测量Tab面板
+        this.endFaceTabPanel = new EndFaceTabPanel(); // 端面测量Tab面板
         this.synthesizeTabPanel = new SynthesizeTabPanel(); // 综合数据Tab面板
         this.tabPanels = new TabPanel[]{newTabPanel, openTabPanel, outputTabPanel, settingTabPanel,
                 endFaceTabPanel,  checkTabPanel, synthesizeTabPanel}; // 装载Tab面板到数组
@@ -117,8 +121,8 @@ public class Tab extends Div {
     private void onClickNewTab(IconTextBtn tab) {
         changeTab(tab, newTabPanel);
         newTabPanel.setEvent(data -> {
-            this.currentData = data;
-            onClickCylinderTab(cylinderTabBtn);
+            this.resultModel = data;
+            onClickEndFaceTab(endFaceTabBtn);
         });
     }
 
@@ -193,12 +197,12 @@ public class Tab extends Div {
      */
     private void onClickEndFaceTab(IconTextBtn tab) {
         changeTab(tab, endFaceTabPanel);
-        if (currentData == null) { // 需要新建
+        if (resultModel == null) { // 需要新建
             onClickNewTab(newTabBtn);
             tab.removeActive();
             newTabBtn.setActiveTrue();
         } else {
-            endFaceTabPanel.setData(currentData);
+            endFaceTabPanel.setData(resultModel);
         }
     }
 

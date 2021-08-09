@@ -18,7 +18,7 @@ public class CylinderTabPanel extends TabPanel {
 
     private final TextLabel currentDataNameLabel;
     private final List<UnitData> rawData;
-    private final DataTree tree;
+//    private final DataTree tree;
     private final DataLabel degLabel;
     private Btn cNewBtn;
     private TestData data;
@@ -31,25 +31,25 @@ public class CylinderTabPanel extends TabPanel {
         int rootY = 30;
         currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 16, BaseColor.Black);
         this.add(currentDataNameLabel);
-        this.tree = new DataTree(rootX, rootY + 50, 180, 500, data, itemData -> {
-            this.selectData = itemData;
-            this.cNewBtn.unDisabled();
-        });
-        this.add(tree);
-        tree.blur(e -> {
-            cNewBtn.disabled();
-        });
-        this.cNewBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
-            if (selectData != null) {
-                selectData.setData(rawData);
-                selectData.setCheckCylinder(true);
-                tree.setTestData(data);
-                selectData = null;
-                DatasetUtil.SaveOrUpdate(data);
-            }
-        });
-        this.add(cNewBtn);
-        cNewBtn.disabled();
+//        this.tree = new DataTree(rootX, rootY + 50, 180, 500, data, itemData -> {
+//            this.selectData = itemData;
+//            this.cNewBtn.unDisabled();
+//        });
+//        this.add(tree);
+//        tree.blur(e -> {
+//            cNewBtn.disabled();
+//        });
+//        this.cNewBtn = new Btn(rootX + 200, rootY + 160, 230, 60, "保存数据", Btn.BLUE, e -> {
+//            if (selectData != null) {
+//                selectData.setData(rawData);
+//                selectData.setCheckCylinder(true);
+//                tree.setTestData(data);
+//                selectData = null;
+//                DatasetUtil.SaveOrUpdate(data);
+//            }
+//        });
+//        this.add(cNewBtn);
+//        cNewBtn.disabled();
         Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "旋钮1逆时针旋转", Btn.GREEN, e -> {
             BaseUSBListener.RotateCylinder(1, false);
         });
@@ -75,7 +75,7 @@ public class CylinderTabPanel extends TabPanel {
 
     public void changeData() {
         currentDataNameLabel.setText(data.getName());
-        tree.setTestData(data);
+//        tree.setTestData(data);
     }
 
     public TestData getData() {
