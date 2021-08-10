@@ -4,19 +4,47 @@ import com.ljscode.base.BaseColor;
 import com.ljscode.component.DataLabel;
 import com.ljscode.component.TestPolarChart;
 import com.ljscode.component.TextLabel;
+import com.ljscode.data.DataModel;
+import com.ljscode.data.ItemModel;
+import com.ljscode.data.ResultModel;
 import com.ljscode.data.TestData;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
+import java.util.List;
 
 /**
  * 综合数据面板
  */
 public class SynthesizeTabPanel extends TabPanel {
 
-    private TestData data;
+    private ResultModel data;
     private TestPolarChart polarChart;
     private final TextLabel currentDataNameLabel;
+    private final DataLabel yd1;
+    private final DataLabel pxd1;
+    private final DataLabel pmd1;
+    private final DataLabel txd1;
+    private final DataLabel yd2;
+    private final DataLabel pxd2;
+    private final DataLabel pmd2;
+    private final DataLabel txd2;
+    private final DataLabel yd3;
+    private final DataLabel pxd3;
+    private final DataLabel pmd3;
+    private final DataLabel txd3;
+    private final DataLabel yd4;
+    private final DataLabel pxd4;
+    private final DataLabel pmd4;
+    private final DataLabel txd4;
+    private final DataLabel yd5;
+    private final DataLabel pxd5;
+    private final DataLabel pmd5;
+    private final DataLabel txd5;
+    private final DataLabel yd0;
+    private final DataLabel pxd0;
+    private final DataLabel pmd0;
+    private final DataLabel txd0;
 
     public SynthesizeTabPanel() {
         super();
@@ -27,68 +55,68 @@ public class SynthesizeTabPanel extends TabPanel {
 
         TextLabel label1 = new TextLabel(30, 70, "第1级测量数据", 16, BaseColor.Black);
         this.add(label1);
-        DataLabel yd1 = new DataLabel(30, 100, 16, "圆度", 0, 0, "");
+        yd1 = new DataLabel(30, 100, 16, "圆度", 0, 0, "");
         this.add(yd1);
-        DataLabel pxd1 = new DataLabel(210, 100, 16, "平行度", 0, 0, "");
+        pxd1 = new DataLabel(210, 100, 16, "平行度", 0, 0, "");
         this.add(pxd1);
-        DataLabel pmd1 = new DataLabel(390, 100, 16, "平面度", 0, 0, "");
+        pmd1 = new DataLabel(390, 100, 16, "平面度", 0, 0, "");
         this.add(pmd1);
-        DataLabel txd1 = new DataLabel(570, 100, 16, "同心度", 0, 0, "");
+        txd1 = new DataLabel(570, 100, 16, "同心度", 0, 0, "");
         this.add(txd1);
 
         TextLabel label2 = new TextLabel(30, 140, "第2级测量数据", 16, BaseColor.Black);
         this.add(label2);
-        DataLabel yd2 = new DataLabel(30, 170, 16, "圆度", 0, 0, "");
+        yd2 = new DataLabel(30, 170, 16, "圆度", 0, 0, "");
         this.add(yd2);
-        DataLabel pxd2 = new DataLabel(210, 170, 16, "平行度", 0, 0, "");
+        pxd2 = new DataLabel(210, 170, 16, "平行度", 0, 0, "");
         this.add(pxd2);
-        DataLabel pmd2 = new DataLabel(390, 170, 16, "平面度", 0, 0, "");
+        pmd2 = new DataLabel(390, 170, 16, "平面度", 0, 0, "");
         this.add(pmd2);
-        DataLabel txd2 = new DataLabel(570, 170, 16, "同心度", 0, 0, "");
+        txd2 = new DataLabel(570, 170, 16, "同心度", 0, 0, "");
         this.add(txd2);
 
         TextLabel label3 = new TextLabel(30, 210, "第3级测量数据", 16, BaseColor.Black);
         this.add(label3);
-        DataLabel yd3 = new DataLabel(30, 240, 16, "圆度", 0, 0, "");
+        yd3 = new DataLabel(30, 240, 16, "圆度", 0, 0, "");
         this.add(yd3);
-        DataLabel pxd3 = new DataLabel(210, 240, 16, "平行度", 0, 0, "");
+        pxd3 = new DataLabel(210, 240, 16, "平行度", 0, 0, "");
         this.add(pxd3);
-        DataLabel pmd3 = new DataLabel(390, 240, 16, "平面度", 0, 0, "");
+        pmd3 = new DataLabel(390, 240, 16, "平面度", 0, 0, "");
         this.add(pmd3);
-        DataLabel txd3 = new DataLabel(570, 240, 16, "同心度", 0, 0, "");
+        txd3 = new DataLabel(570, 240, 16, "同心度", 0, 0, "");
         this.add(txd3);
 
         TextLabel label4 = new TextLabel(30, 280, "第4级测量数据", 16, BaseColor.Black);
         this.add(label4);
-        DataLabel yd4 = new DataLabel(30, 310, 16, "圆度", 0, 0, "");
+        yd4 = new DataLabel(30, 310, 16, "圆度", 0, 0, "");
         this.add(yd4);
-        DataLabel pxd4 = new DataLabel(210, 310, 16, "平行度", 0, 0, "");
+        pxd4 = new DataLabel(210, 310, 16, "平行度", 0, 0, "");
         this.add(pxd4);
-        DataLabel pmd4 = new DataLabel(390, 310, 16, "平面度", 0, 0, "");
+        pmd4 = new DataLabel(390, 310, 16, "平面度", 0, 0, "");
         this.add(pmd4);
-        DataLabel txd4 = new DataLabel(570, 310, 16, "同心度", 0, 0, "");
+        txd4 = new DataLabel(570, 310, 16, "同心度", 0, 0, "");
         this.add(txd4);
 
         TextLabel label5 = new TextLabel(30, 350, "第5级测量数据", 16, BaseColor.Black);
         this.add(label5);
-        DataLabel yd5 = new DataLabel(30, 380, 16, "圆度", 0, 0, "");
+        yd5 = new DataLabel(30, 380, 16, "圆度", 0, 0, "");
         this.add(yd5);
-        DataLabel pxd5 = new DataLabel(210, 380, 16, "平行度", 0, 0, "");
+        pxd5 = new DataLabel(210, 380, 16, "平行度", 0, 0, "");
         this.add(pxd5);
-        DataLabel pmd5 = new DataLabel(390, 380, 16, "平面度", 0, 0, "");
+        pmd5 = new DataLabel(390, 380, 16, "平面度", 0, 0, "");
         this.add(pmd5);
-        DataLabel txd5 = new DataLabel(570, 380, 16, "同心度", 0, 0, "");
+        txd5 = new DataLabel(570, 380, 16, "同心度", 0, 0, "");
         this.add(txd5);
 
         TextLabel label0 = new TextLabel(30, 420, "椎壁测量数据", 16, BaseColor.Black);
         this.add(label0);
-        DataLabel yd0 = new DataLabel(30, 450, 16, "圆度", 0, 0, "");
+        yd0 = new DataLabel(30, 450, 16, "圆度", 0, 0, "");
         this.add(yd0);
-        DataLabel pxd0 = new DataLabel(210, 450, 16, "平行度", 0, 0, "");
+        pxd0 = new DataLabel(210, 450, 16, "平行度", 0, 0, "");
         this.add(pxd0);
-        DataLabel pmd0 = new DataLabel(390, 450, 16, "平面度", 0, 0, "");
+        pmd0 = new DataLabel(390, 450, 16, "平面度", 0, 0, "");
         this.add(pmd0);
-        DataLabel txd0 = new DataLabel(570, 450, 16, "同心度", 0, 0, "");
+        txd0 = new DataLabel(570, 450, 16, "同心度", 0, 0, "");
         this.add(txd0);
 
         // 表头（列名）
@@ -112,7 +140,7 @@ public class SynthesizeTabPanel extends TabPanel {
 
     public void showChart() {
         if (polarChart == null) {
-            this.polarChart = new TestPolarChart(this.width - 16 - 500, 30, 500, 500, "综合数据", data);
+            this.polarChart = new TestPolarChart(this.width - 16 - 500, 30, 500, 500, data);
             this.add(polarChart);
         } else {
             polarChart.reload(data);
@@ -120,17 +148,79 @@ public class SynthesizeTabPanel extends TabPanel {
 
     }
 
+    public void setAllData() {
+        DataModel level1Data = data.getLevel1Data();
+        if (level1Data != null) {
+            ItemModel level1ItemData = level1Data.getCurrentDataItem();
+            if (level1ItemData != null) {
+                for (DataModel dataItem : data.getData()) {
+                    if (dataItem.getDataIndex() != 1) {
+                        ItemModel itemModel = dataItem.getCurrentDataItem();
+                        if (itemModel != null) {
+                            itemModel.calcFormError(level1ItemData.getRealDataCylinder(), level1ItemData.getRealDataEndFace());
+                        }
+                    }
+                }
+            }
+        } else {
+            for (DataModel dataItem : data.getData()) {
+                ItemModel itemModel = dataItem.getCurrentDataItem();
+                if (itemModel != null) {
+                    itemModel.calcFormError(null, null);
+                }
+            }
+        }
+        for (DataModel dataItem : data.getData()) {
+            ItemModel itemModel = dataItem.getCurrentDataItem();
+            if (itemModel != null) {
+                switch (dataItem.getDataIndex()) {
+                    case 1:
+                        yd1.setData(itemModel.getRoundness());
+                        pmd1.setData(itemModel.getFlatness());
+                        txd1.setData(itemModel.getAxisFrom());
+                        pxd1.setData(itemModel.getParallelism());
+                    case 2:
+                        yd2.setData(itemModel.getRoundness());
+                        pmd2.setData(itemModel.getFlatness());
+                        txd2.setData(itemModel.getAxisFrom());
+                        pxd2.setData(itemModel.getParallelism());
+                    case 3:
+                        yd3.setData(itemModel.getRoundness());
+                        pmd3.setData(itemModel.getFlatness());
+                        txd3.setData(itemModel.getAxisFrom());
+                        pxd3.setData(itemModel.getParallelism());
+                    case 4:
+                        yd4.setData(itemModel.getRoundness());
+                        pmd4.setData(itemModel.getFlatness());
+                        txd4.setData(itemModel.getAxisFrom());
+                        pxd4.setData(itemModel.getParallelism());
+                    case 5:
+                        yd5.setData(itemModel.getRoundness());
+                        pmd5.setData(itemModel.getFlatness());
+                        txd5.setData(itemModel.getAxisFrom());
+                        pxd5.setData(itemModel.getParallelism());
+                    case 6:
+                        yd0.setData(itemModel.getRoundness());
+                        pmd0.setData(itemModel.getFlatness());
+                        txd0.setData(itemModel.getAxisFrom());
+                        pxd0.setData(itemModel.getParallelism());
+                }
+            }
+        }
+    }
+
     public void changeData() {
-        currentDataNameLabel.setText(data.getName());
+        currentDataNameLabel.setText(data.getDataName());
         showChart();
     }
 
-    public TestData getData() {
+    public ResultModel getData() {
         return data;
     }
 
-    public void setData(TestData data) {
+    public void setData(ResultModel data) {
         this.data = data;
         changeData();
+        setAllData();
     }
 }

@@ -25,8 +25,8 @@ public class LineChartInfo extends BaseBean {
 
     public XYSeriesCollection CreateLineData() {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries rangeStartGoals = new XYSeries("理论区间");
-        XYSeries rangeEndGoals = new XYSeries("理论区间");
+        XYSeries rangeStartGoals = new XYSeries("理论区间起");
+        XYSeries rangeEndGoals = new XYSeries("理论区间止");
         XYSeries realGoals = new XYSeries("真实数据");
         XYSeries goodGoals = new XYSeries("拟合数据");
         for (Map.Entry<Double, Double> entry : realData.entrySet()) {

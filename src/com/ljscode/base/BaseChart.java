@@ -3,10 +3,7 @@ package com.ljscode.base;
 import com.ljscode.bean.Adjust;
 import com.ljscode.bean.LineChartInfo;
 import com.ljscode.component.BarCustomRender;
-import com.ljscode.data.ItemData;
-import com.ljscode.data.LeastSquareMethod;
-import com.ljscode.data.TestData;
-import com.ljscode.data.UnitData;
+import com.ljscode.data.*;
 import com.ljscode.util.FontUtil;
 import com.ljscode.util.MathUtil;
 import org.jfree.chart.ChartFactory;
@@ -251,6 +248,16 @@ public abstract class BaseChart {
     public static JFreeChart CreateTestPolarChart(String title, TestData data) {
         XYSeriesCollection dataset = CreateTestPolarData(data);
         JFreeChart chart = ChartFactory.createPolarChart(title, dataset, true, true, false);
+        return setPolarFont(chart);
+    }
+
+    public static JFreeChart CreatePolarChart(ResultModel resultModel) {
+        XYSeriesCollection dataset = resultModel.CreatePolarData();
+        JFreeChart chart = ChartFactory.createPolarChart("综合数据", dataset, true, true, false);
+        return setPolarFont(chart);
+    }
+
+    private static JFreeChart setPolarFont(JFreeChart chart) {
         chart.getTitle().setFont(font);
         chart.getLegend().setItemFont(font);
         PolarPlot plot = (PolarPlot) chart.getPlot();

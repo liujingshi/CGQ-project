@@ -1,6 +1,7 @@
 package com.ljscode.component;
 
 import com.ljscode.base.BaseChart;
+import com.ljscode.data.ResultModel;
 import com.ljscode.data.TestData;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PolarPlot;
@@ -25,6 +26,10 @@ public class TestPolarChart extends ChartBox {
         super(left, top, width, height, BaseChart.CreateTestPolarChart(title, data));
     }
 
+    public TestPolarChart(int left, int top, int width, int height, ResultModel data) {
+        super(left, top, width, height, BaseChart.CreatePolarChart(data));
+    }
+
     /**
      * 重载数据
      *
@@ -32,6 +37,13 @@ public class TestPolarChart extends ChartBox {
      */
     public void reload(TestData data) {
         XYDataset dataset = BaseChart.CreateTestPolarData(data);
+        JFreeChart chart = this.getChart();
+        PolarPlot plot = (PolarPlot) chart.getPlot();
+        plot.setDataset(dataset);
+    }
+
+    public void reload(ResultModel data) {
+        XYDataset dataset = data.CreatePolarData();
         JFreeChart chart = this.getChart();
         PolarPlot plot = (PolarPlot) chart.getPlot();
         plot.setDataset(dataset);

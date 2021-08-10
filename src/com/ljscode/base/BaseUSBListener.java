@@ -22,9 +22,9 @@ public abstract class BaseUSBListener {
     private static final short VENDOR_ID = 0x03eb;
 
     private static float cylinder1 = 5;
-    private static float cylinder2 = 5;
+    private static float cylinder2 = 0;
     private static float endFace1 = 3;
-    private static float endFace2 = 3;
+    private static float endFace2 = 0;
 
     private static double degData;
     private static double cylinderData;

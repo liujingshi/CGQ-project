@@ -132,6 +132,7 @@ public class EndFaceTabPanel extends TabPanel {
 
     public void showEChart() {
         if (eLineChart == null) {
+            lineChartInfoEndFace.setResultModel(data);
             eLineChart = new TestLineChart(this.width - 616, 30, 600, 500, lineChartInfoEndFace);
             this.add(eLineChart);
             new Thread(() -> {
@@ -145,7 +146,10 @@ public class EndFaceTabPanel extends TabPanel {
                             if (xDeg.isPresent()) {
                                 Double mapDeg = xDeg.get();
                                 lineChartInfoEndFace.getRealData().put(mapDeg, endFace);
-                                eLineChart.reload(lineChartInfoEndFace);
+                                if (lineChartInfoCylinder.getRealData().size() >= 600) {
+                                    lineChartInfoEndFace.calcGoodData();
+                                    eLineChart.reload(lineChartInfoEndFace);
+                                }
                             }
                         }
                     });
@@ -156,6 +160,7 @@ public class EndFaceTabPanel extends TabPanel {
 
     public void showCChart() {
         if (cLineChart == null) {
+            lineChartInfoCylinder.setResultModel(data);
             cLineChart = new TestLineChart(this.width - 1232, 30, 600, 500, lineChartInfoCylinder);
             this.add(cLineChart);
             new Thread(() -> {
@@ -169,7 +174,10 @@ public class EndFaceTabPanel extends TabPanel {
                             if (xDeg.isPresent()) {
                                 Double mapDeg = xDeg.get();
                                 lineChartInfoCylinder.getRealData().put(mapDeg, endFace);
-                                cLineChart.reload(lineChartInfoCylinder);
+                                if (lineChartInfoCylinder.getRealData().size() >= 600) {
+                                    lineChartInfoCylinder.calcGoodData();
+                                    cLineChart.reload(lineChartInfoCylinder);
+                                }
                             }
                         }
                     });

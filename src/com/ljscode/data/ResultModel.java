@@ -1,11 +1,11 @@
 package com.ljscode.data;
 
 import com.ljscode.util.DatasetUtil;
+import com.ljscode.util.MathUtil;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ResultModel {
 
@@ -17,6 +17,21 @@ public class ResultModel {
     private String operator; // 操作人员
     private int surveyTimes; // 测量次数
     private List<DataModel> data; // 数据
+
+    public XYSeriesCollection CreatePolarData() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        for (DataModel dataModel : data) {
+            ItemModel itemModel = dataModel.getCurrentDataItem();
+            if (itemModel != null) {
+                XYSeries goals = new XYSeries(dataModel.getDataName());
+                for (Map.Entry<Double, Double> entry : itemModel.getTheoryDataCylinder().entrySet()) {
+                    goals.add(entry.getKey(), (Double) (entry.getValue() + theoryRadius));
+                }
+                dataset.addSeries(goals);
+            }
+        }
+        return dataset;
+    }
 
     public ResultModel() {
         dataId = DatasetUtil.CreateNewId();

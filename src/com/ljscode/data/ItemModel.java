@@ -67,6 +67,10 @@ public class ItemModel {
         realDataEndFace = new HashMap<>();
         leastSquareMethodParamEndFace = new ArrayList<>();
         theoryDataEndFace = new HashMap<>();
+        roundness = 0;
+        flatness = 0;
+        axisFrom = 0;
+        parallelism = 0;
     }
 
     public ItemModel(int dataIndex) {
