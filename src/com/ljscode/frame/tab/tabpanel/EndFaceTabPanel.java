@@ -3,6 +3,7 @@ package com.ljscode.frame.tab.tabpanel;
 import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
 import com.ljscode.base.BaseUSBListener;
+import com.ljscode.base.BaseUSBReader;
 import com.ljscode.bean.LineChartInfo;
 import com.ljscode.component.*;
 import com.ljscode.data.*;
@@ -124,9 +125,9 @@ public class EndFaceTabPanel extends TabPanel {
 //        this.add(right2);
         this.degLabel = new DataLabel(this.width - 704, 596, 24, "角度", 36, 0, "°");
         this.add(degLabel);
-        this.eDataLabel = new DataLabel(this.width - 396, 596, 24, "数据", 1.73F, 2, "");
+        this.eDataLabel = new DataLabel(this.width - 396, 596, 24, "数据", 1.73F, 2, "μm");
         this.add(eDataLabel);
-        this.cDataLabel = new DataLabel(this.width - 1012, 596, 24, "数据", 1.73F, 2, "");
+        this.cDataLabel = new DataLabel(this.width - 1012, 596, 24, "数据", 1.73F, 2, "μm");
         this.add(cDataLabel);
     }
 
@@ -137,7 +138,7 @@ public class EndFaceTabPanel extends TabPanel {
             this.add(eLineChart);
             new Thread(() -> {
                 while (true) {
-                    BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
+                    BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
                         if (!(deg < 0)) {
                             degLabel.setData(deg);
                             eDataLabel.setData(endFace);
@@ -165,7 +166,7 @@ public class EndFaceTabPanel extends TabPanel {
             this.add(cLineChart);
             new Thread(() -> {
                 while (true) {
-                    BaseUSBListener.ReadUSBData((deg, cylinder, endFace) -> {
+                    BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
                         if (!(deg < 0)) {
                             degLabel.setData(deg);
                             cDataLabel.setData(cylinder);

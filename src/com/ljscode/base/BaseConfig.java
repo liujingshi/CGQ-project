@@ -8,6 +8,14 @@ import java.awt.*;
 public class BaseConfig {
 
     /**
+     * BPX
+     */
+    public static final String BPX = "BPX";
+    /**
+     * PLC
+     */
+    public static final String PLC = "PLC";
+    /**
      * 柱面
      */
     public static final String Cylinder = "Cylinder";
@@ -80,6 +88,10 @@ public class BaseConfig {
      * 文本框组的宽度
      */
     public static int InputGroupWidth = 400; // 文本框组的宽度
+    /**
+     * 文本框组的宽度
+     */
+    public static int InputGroupWidthSm = 200; // 文本框组的宽度
     /**
      * 文本框组间距(小)
      */

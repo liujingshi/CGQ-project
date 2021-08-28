@@ -2,7 +2,12 @@ package com.ljscode.frame.tab.tabpanel;
 
 import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseConfig;
+import com.ljscode.base.BaseMouseListener;
+import com.ljscode.base.BaseOnlyInputNumber;
+import com.ljscode.bean.ComConfig;
 import com.ljscode.bean.PortConfig;
+import com.ljscode.bean.RangeConfig;
+import com.ljscode.bean.UsbConfig;
 import com.ljscode.component.Btn;
 import com.ljscode.component.InputGroup;
 import com.ljscode.component.Select;
@@ -16,192 +21,280 @@ import java.util.List;
  */
 public class SettingTabPanel extends TabPanel {
 
+    private UsbConfig usbConfig;
+    private RangeConfig rangeConfig;
+    private BaseMouseListener<String> event;
+    private final int rootX;
+    private final int rootY;
+
     public SettingTabPanel() {
         super();
-        List<PortConfig> portConfigs = ConfigUtil.GetPortConfig();
-        PortConfig aPortConfig = null;
-        PortConfig bPortConfig = null;
-        PortConfig cPortConfig = null;
-        PortConfig dPortConfig = null;
-        for (PortConfig portConfig : portConfigs) {
-            switch (portConfig.getName()) {
-                case "A":
-                    aPortConfig = portConfig;
-                    break;
-                case "B":
-                    bPortConfig = portConfig;
-                    break;
-                case "C":
-                    cPortConfig = portConfig;
-                    break;
-                case "D":
-                    dPortConfig = portConfig;
-                    break;
-            }
-        }
-        int rootX = 50;
-        int rootY = 50;
-        String[] options = {"无", "角度传感器", "柱面传感器", "端面传感器"};
-        TextLabel aLabel = new TextLabel(rootX, rootY, "A", 16, BaseColor.Black);
-        this.add(aLabel);
-        PortConfig finalAPortConfig = aPortConfig;
-        Select aSelect = new Select(rootX + 20, rootY, 200, 20, options, index -> {
-            switch (index) {
-                case 0:
-                    finalAPortConfig.setDevice("");
-                    break;
-                case 1:
-                    finalAPortConfig.setDevice(BaseConfig.Deg);
-                    break;
-                case 2:
-                    finalAPortConfig.setDevice(BaseConfig.Cylinder);
-                    break;
-                case 3:
-                    finalAPortConfig.setDevice(BaseConfig.EndFace);
-                    break;
-            }
-        });
-        this.add(aSelect);
-        TextLabel bLabel = new TextLabel(rootX, rootY + 40, "B", 16, BaseColor.Black);
-        this.add(bLabel);
-        PortConfig finalBPortConfig = bPortConfig;
-        Select bSelect = new Select(rootX + 20, rootY + 40, 200, 20, options, index -> {
-            switch (index) {
-                case 0:
-                    finalBPortConfig.setDevice("");
-                    break;
-                case 1:
-                    finalBPortConfig.setDevice(BaseConfig.Deg);
-                    break;
-                case 2:
-                    finalBPortConfig.setDevice(BaseConfig.Cylinder);
-                    break;
-                case 3:
-                    finalBPortConfig.setDevice(BaseConfig.EndFace);
-                    break;
-            }
-        });
-        this.add(bSelect);
-        TextLabel cLabel = new TextLabel(rootX, rootY + 80, "C", 16, BaseColor.Black);
-        this.add(cLabel);
-        PortConfig finalCPortConfig = cPortConfig;
-        Select cSelect = new Select(rootX + 20, rootY + 80, 200, 20, options, index -> {
-            switch (index) {
-                case 0:
-                    finalCPortConfig.setDevice("");
-                    break;
-                case 1:
-                    finalCPortConfig.setDevice(BaseConfig.Deg);
-                    break;
-                case 2:
-                    finalCPortConfig.setDevice(BaseConfig.Cylinder);
-                    break;
-                case 3:
-                    finalCPortConfig.setDevice(BaseConfig.EndFace);
-                    break;
-            }
-        });
-        this.add(cSelect);
-        TextLabel dLabel = new TextLabel(rootX, rootY + 120, "D", 16, BaseColor.Black);
-        this.add(dLabel);
-        PortConfig finalDPortConfig = dPortConfig;
-        Select dSelect = new Select(rootX + 20, rootY + 120, 200, 20, options, index -> {
-            switch (index) {
-                case 0:
-                    finalDPortConfig.setDevice("");
-                    break;
-                case 1:
-                    finalDPortConfig.setDevice(BaseConfig.Deg);
-                    break;
-                case 2:
-                    finalDPortConfig.setDevice(BaseConfig.Cylinder);
-                    break;
-                case 3:
-                    finalDPortConfig.setDevice(BaseConfig.EndFace);
-                    break;
-            }
-        });
-        this.add(dSelect);
-        switch (aPortConfig.getDevice()) {
-            case "":
-                aSelect.setSelectedIndex(0);
-                break;
-            case BaseConfig.Deg:
-                aSelect.setSelectedIndex(1);
-                break;
-            case BaseConfig.Cylinder:
-                aSelect.setSelectedIndex(2);
-                break;
-            case BaseConfig.EndFace:
-                aSelect.setSelectedIndex(3);
-                break;
-        }
-        switch (bPortConfig.getDevice()) {
-            case "":
-                bSelect.setSelectedIndex(0);
-                break;
-            case BaseConfig.Deg:
-                bSelect.setSelectedIndex(1);
-                break;
-            case BaseConfig.Cylinder:
-                bSelect.setSelectedIndex(2);
-                break;
-            case BaseConfig.EndFace:
-                bSelect.setSelectedIndex(3);
-                break;
-        }
-        switch (cPortConfig.getDevice()) {
-            case "":
-                cSelect.setSelectedIndex(0);
-                break;
-            case BaseConfig.Deg:
-                cSelect.setSelectedIndex(1);
-                break;
-            case BaseConfig.Cylinder:
-                cSelect.setSelectedIndex(2);
-                break;
-            case BaseConfig.EndFace:
-                cSelect.setSelectedIndex(3);
-                break;
-        }
-        switch (dPortConfig.getDevice()) {
-            case "":
-                dSelect.setSelectedIndex(0);
-                break;
-            case BaseConfig.Deg:
-                dSelect.setSelectedIndex(1);
-                break;
-            case BaseConfig.Cylinder:
-                dSelect.setSelectedIndex(2);
-                break;
-            case BaseConfig.EndFace:
-                dSelect.setSelectedIndex(3);
-                break;
-        }
+        rootX = 50;
+        rootY = 50;
+        setPortConfig();
+        setRangeConfig();
         TextLabel tip = new TextLabel(rootX, rootY + 220, "保存成功！", 16, BaseColor.Green);
         tip.setVisible(false);
         this.add(tip);
-        Btn saveBtn = new Btn(rootX, rootY + 160, -1, -1, "保存", Btn.BLUE, e -> {
+        Btn saveBtn = new Btn(rootX, this.getHeight() - 60, -1, -1, "保存", Btn.BLUE, e -> {
             tip.setVisible(true);
-            ConfigUtil.SetPortConfig(portConfigs);
+            ConfigUtil.SetUsbConfig(usbConfig);
+            event.mouseClicked("");
+            ConfigUtil.SetRangeConfig(rangeConfig);
         });
         this.add(saveBtn);
-        InputGroup dmllqjS = new InputGroup(rootX + 250, rootY,
+    }
+
+    public void setPortConfig() {
+        usbConfig = ConfigUtil.GetUsbConfig();
+        String[] portOptions = {"请选择...", "A", "B", "C", "D"};
+        String[] usbOptions = {"请选择...", "USB1", "USB2", "USB3", "USB4"};
+        TextLabel cylinderLabel = new TextLabel(rootX, rootY, "柱面传感器", 16, BaseColor.Black);
+        this.add(cylinderLabel);
+        TextLabel endFaceLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd, "端面传感器", 16, BaseColor.Black);
+        this.add(endFaceLabel);
+        TextLabel bpxLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd * 2, "BPX黑盒", 16, BaseColor.Black);
+        this.add(bpxLabel);
+        TextLabel degLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd * 3, "角度编码器", 16, BaseColor.Black);
+        this.add(degLabel);
+        Select cylinderSelect = new Select(rootX + 120, rootY, 200, 20, portOptions, index -> {
+            switch (index) {
+                case 0:
+                    usbConfig.setCylinder("");
+                    break;
+                case 1:
+                    usbConfig.setCylinder("A");
+                    break;
+                case 2:
+                    usbConfig.setCylinder("B");
+                    break;
+                case 3:
+                    usbConfig.setCylinder("C");
+                    break;
+                case 4:
+                    usbConfig.setCylinder("D");
+                    break;
+            }
+        });
+        this.add(cylinderSelect);
+        Select endFaceSelect = new Select(rootX + 120, rootY + BaseConfig.InputGroupSpaceMd, 200, 20, portOptions, index -> {
+            switch (index) {
+                case 0:
+                    usbConfig.setEndFace("");
+                    break;
+                case 1:
+                    usbConfig.setEndFace("A");
+                    break;
+                case 2:
+                    usbConfig.setEndFace("B");
+                    break;
+                case 3:
+                    usbConfig.setEndFace("C");
+                    break;
+                case 4:
+                    usbConfig.setEndFace("D");
+                    break;
+            }
+        });
+        this.add(endFaceSelect);
+        Select bpxSelect = new Select(rootX + 120, rootY + BaseConfig.InputGroupSpaceMd * 2, 200, 20, usbOptions, index -> {
+            switch (index) {
+                case 0:
+                    usbConfig.setBpx("");
+                    break;
+                case 1:
+                    usbConfig.setBpx("USB1");
+                    break;
+                case 2:
+                    usbConfig.setBpx("USB2");
+                    break;
+                case 3:
+                    usbConfig.setBpx("USB3");
+                    break;
+                case 4:
+                    usbConfig.setBpx("USB4");
+                    break;
+            }
+        });
+        this.add(bpxSelect);
+        Select degSelect = new Select(rootX + 120, rootY + BaseConfig.InputGroupSpaceMd * 3, 200, 20, usbOptions, index -> {
+            switch (index) {
+                case 0:
+                    usbConfig.setDeg("");
+                    break;
+                case 1:
+                    usbConfig.setDeg("USB1");
+                    break;
+                case 2:
+                    usbConfig.setDeg("USB2");
+                    break;
+                case 3:
+                    usbConfig.setDeg("USB3");
+                    break;
+                case 4:
+                    usbConfig.setDeg("USB4");
+                    break;
+            }
+        });
+        this.add(degSelect);
+        switch (usbConfig.getCylinder()) {
+            case "":
+                cylinderSelect.setSelectedIndex(0);
+                break;
+            case "A":
+                cylinderSelect.setSelectedIndex(1);
+                break;
+            case "B":
+                cylinderSelect.setSelectedIndex(2);
+                break;
+            case "C":
+                cylinderSelect.setSelectedIndex(3);
+                break;
+            case "D":
+                cylinderSelect.setSelectedIndex(4);
+                break;
+        }
+        switch (usbConfig.getEndFace()) {
+            case "":
+                endFaceSelect.setSelectedIndex(0);
+                break;
+            case "A":
+                endFaceSelect.setSelectedIndex(1);
+                break;
+            case "B":
+                endFaceSelect.setSelectedIndex(2);
+                break;
+            case "C":
+                endFaceSelect.setSelectedIndex(3);
+                break;
+            case "D":
+                endFaceSelect.setSelectedIndex(4);
+                break;
+        }
+        switch (usbConfig.getBpx()) {
+            case "":
+                bpxSelect.setSelectedIndex(0);
+                break;
+            case "USB1":
+                bpxSelect.setSelectedIndex(1);
+                break;
+            case "USB2":
+                bpxSelect.setSelectedIndex(2);
+                break;
+            case "USB3":
+                bpxSelect.setSelectedIndex(3);
+                break;
+            case "USB4":
+                bpxSelect.setSelectedIndex(4);
+                break;
+        }
+        switch (usbConfig.getDeg()) {
+            case "":
+                degSelect.setSelectedIndex(0);
+                break;
+            case "USB1":
+                degSelect.setSelectedIndex(1);
+                break;
+            case "USB2":
+                degSelect.setSelectedIndex(2);
+                break;
+            case "USB3":
+                degSelect.setSelectedIndex(3);
+                break;
+            case "USB4":
+                degSelect.setSelectedIndex(4);
+                break;
+        }
+    }
+
+    public void setRangeConfig() {
+        rangeConfig = ConfigUtil.GetRangeConfig();
+        InputGroup cylinderInputStart = new InputGroup(rootX + 400, rootY,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
-                "端面理论区间开始：", "请输入...");
-        this.add(dmllqjS);
-        InputGroup dmllqjE = new InputGroup(rootX + 250, rootY + BaseConfig.InputGroupSpaceMd,
+                "柱面理论期间（微米）：", "请输入...");
+        cylinderInputStart.limit(new BaseOnlyInputNumber());
+        cylinderInputStart.setValue(Double.toString(rangeConfig.getCylinderStart()));
+        this.add(cylinderInputStart);
+        InputGroup cylinderInputEnd = new InputGroup(rootX + 820, rootY,
+                BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
+                "~", "请输入...");
+        cylinderInputEnd.limit(new BaseOnlyInputNumber());
+        cylinderInputEnd.setValue(Double.toString(rangeConfig.getCylinderEnd()));
+        this.add(cylinderInputEnd);
+        InputGroup endFaceInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
-                "端面理论区间结束：", "请输入...");
-        this.add(dmllqjE);
-        InputGroup zmllqjS = new InputGroup(rootX + 250, rootY + BaseConfig.InputGroupSpaceMd * 2,
+                "端面理论期间（微米）：", "请输入...");
+        endFaceInputStart.limit(new BaseOnlyInputNumber());
+        endFaceInputStart.setValue(Double.toString(rangeConfig.getEndFaceStart()));
+        this.add(endFaceInputStart);
+        InputGroup endFaceInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd,
+                BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
+                "~", "请输入...");
+        endFaceInputEnd.limit(new BaseOnlyInputNumber());
+        endFaceInputEnd.setValue(Double.toString(rangeConfig.getEndFaceEnd()));
+        this.add(endFaceInputEnd);
+        InputGroup roundnessInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 2,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
-                "柱面理论区间开始：", "请输入...");
-        this.add(zmllqjS);
-        InputGroup zmllqjE = new InputGroup(rootX + 250, rootY + BaseConfig.InputGroupSpaceMd * 3,
+                "圆度理论期间（微米）：", "请输入...");
+        roundnessInputStart.limit(new BaseOnlyInputNumber());
+        roundnessInputStart.setValue(Double.toString(rangeConfig.getRoundnessStart()));
+        this.add(roundnessInputStart);
+        InputGroup roundnessInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 2,
+                BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
+                "~", "请输入...");
+        roundnessInputEnd.limit(new BaseOnlyInputNumber());
+        roundnessInputEnd.setValue(Double.toString(rangeConfig.getRoundnessEnd()));
+        this.add(roundnessInputEnd);
+        InputGroup flatnessInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 3,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
-                "柱面理论区间结束：", "请输入...");
-        this.add(zmllqjE);
+                "平面度理论期间（微米）：", "请输入...");
+        flatnessInputStart.limit(new BaseOnlyInputNumber());
+        flatnessInputStart.setValue(Double.toString(rangeConfig.getFlatnessStart()));
+        this.add(flatnessInputStart);
+        InputGroup flatnessInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 3,
+                BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
+                "~", "请输入...");
+        flatnessInputEnd.limit(new BaseOnlyInputNumber());
+        flatnessInputEnd.setValue(Double.toString(rangeConfig.getFlatnessEnd()));
+        this.add(flatnessInputEnd);
+        InputGroup axisFromInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 4,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "同轴度理论期间（微米）：", "请输入...");
+        axisFromInputStart.limit(new BaseOnlyInputNumber());
+        axisFromInputStart.setValue(Double.toString(rangeConfig.getAxisFromStart()));
+        this.add(axisFromInputStart);
+        InputGroup axisFromInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 4,
+                BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
+                "~", "请输入...");
+        axisFromInputEnd.limit(new BaseOnlyInputNumber());
+        axisFromInputEnd.setValue(Double.toString(rangeConfig.getAxisFromEnd()));
+        this.add(axisFromInputEnd);
+        InputGroup parallelismInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 5,
+                BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
+                "平行度理论期间（微米）：", "请输入...");
+        parallelismInputStart.limit(new BaseOnlyInputNumber());
+        parallelismInputStart.setValue(Double.toString(rangeConfig.getParallelismStart()));
+        this.add(parallelismInputStart);
+        InputGroup parallelismInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 5,
+                BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
+                "~", "请输入...");
+        parallelismInputEnd.limit(new BaseOnlyInputNumber());
+        parallelismInputEnd.setValue(Double.toString(rangeConfig.getParallelismEnd()));
+        this.add(parallelismInputEnd);
+        event = that -> {
+            rangeConfig.setCylinderStart(Double.parseDouble(cylinderInputStart.getValue()));
+            rangeConfig.setCylinderEnd(Double.parseDouble(cylinderInputEnd.getValue()));
+            rangeConfig.setEndFaceStart(Double.parseDouble(endFaceInputStart.getValue()));
+            rangeConfig.setEndFaceEnd(Double.parseDouble(endFaceInputEnd.getValue()));
+            rangeConfig.setRoundnessStart(Double.parseDouble(roundnessInputStart.getValue()));
+            rangeConfig.setRoundnessEnd(Double.parseDouble(roundnessInputEnd.getValue()));
+            rangeConfig.setFlatnessStart(Double.parseDouble(flatnessInputStart.getValue()));
+            rangeConfig.setFlatnessEnd(Double.parseDouble(flatnessInputEnd.getValue()));
+            rangeConfig.setAxisFromStart(Double.parseDouble(axisFromInputStart.getValue()));
+            rangeConfig.setAxisFromEnd(Double.parseDouble(axisFromInputEnd.getValue()));
+            rangeConfig.setParallelismStart(Double.parseDouble(parallelismInputStart.getValue()));
+            rangeConfig.setParallelismEnd(Double.parseDouble(parallelismInputEnd.getValue()));
+        };
     }
 
 }

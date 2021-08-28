@@ -15,6 +15,7 @@ import javax.usb.event.UsbPipeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.*;
 
 public abstract class BaseUSBListener {
@@ -31,6 +32,7 @@ public abstract class BaseUSBListener {
     private static double endFaceData;
 
     private static SerialPort port;
+    private static SerialPort portPLC;
     private static BaseReadUSBData event;
     private static boolean Lock = false;
 
@@ -144,7 +146,8 @@ public abstract class BaseUSBListener {
         ArrayList<String> portNameList = new ArrayList<String>();
         // 将可用串口名添加到List并返回该List
         while (portList.hasMoreElements()) {
-            String portName = portList.nextElement().getName();
+            CommPortIdentifier element = portList.nextElement();
+            String portName = element.getName();
             portNameList.add(portName);
         }
         return portNameList;
@@ -426,6 +429,76 @@ public abstract class BaseUSBListener {
                             e.printStackTrace();
                         }
                     }
+                }
+            } catch (PortInUseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void AnalyzePLCData(StringBuffer data) {
+        String[] nArr = data.toString().split(" ");
+        String data0x = nArr[3] + nArr[4] + nArr[5] + nArr[6];
+        String data2x = ParseSystemUtil.hexString2binaryString(data0x); // 补码
+        String data2xY = ""; // 源码
+        boolean isNegative = false;
+        if (data2x.charAt(0) == '1') {
+            StringBuilder tmp = new StringBuilder();
+            tmp.append("0");
+            for (int i = 1; i < data2x.length(); i++) {
+                tmp.append(data2x.charAt(i) == '1' ? '0' : '1');
+            }
+            data2xY = tmp.toString();
+            isNegative = true;
+        } else {
+            data2xY = data2x;
+        }
+        int data10x1 = Integer.parseInt(data2xY, 2);
+        if (data10x1 <= 4096 && data10x1 >= -0.96)
+            System.out.println(data10x1);
+        if (event != null) {}
+//            event.ReadUSBData(deg, cylinder, endFace);
+    }
+
+    public static void InitPLCLister() {
+        BaseUSBListener.addListener(portPLC, () -> {
+            try {
+                byte[] data1 = BaseUSBListener.readFromPort(portPLC);
+                StringBuffer rData = new StringBuffer();
+                for (byte d : data1) {
+//                    if (Byte.toUnsignedInt(d) != 0)
+                        rData.append(String.format("%02x ", d));
+                }
+                AnalyzePLCData(rData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                Lock = false;
+            }
+        });
+    }
+
+    public static void LinkPLC() {
+        List<String> mCommList = findPorts();
+        if (mCommList.size() < 1) {
+            System.out.println("没有搜索到有效串口！");
+        } else {
+            try {
+                portPLC = openPort(mCommList.get(0), 9600);
+//                String order = "0103000000044409";
+                byte[] order = new byte[]{(byte)0x01, (byte)0x03, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x04, (byte)0x44, (byte)0x09};
+                if (portPLC != null) {
+                    InitPLCLister();
+                    new Thread(() -> {
+                        while (true) {
+                            try {
+                                Thread.sleep(1000);
+                                sendToPort(portPLC, order);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                 }
             } catch (PortInUseException e) {
                 e.printStackTrace();

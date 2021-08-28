@@ -1,6 +1,9 @@
 package com.ljscode.frame.tab.tabpanel;
 
+import com.ljscode.base.BaseUSBReader;
 import com.ljscode.component.CheckChart;
+
+import java.util.Optional;
 
 /**
  * 校准传感器面板
@@ -21,10 +24,9 @@ public class CheckTabPanel extends TabPanel {
             while (true) {
                 try {
                     Thread.sleep(200);
-                    double cylinder = Math.random() * 1 + 1;
-                    double endFace = Math.random() * 1 - 2;
-                    double deg = Math.random() * 2 - 1;
-                    checkChart.reload(cylinder, endFace, deg);
+                    BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
+                        checkChart.reload(cylinder, endFace, deg);
+                    });
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

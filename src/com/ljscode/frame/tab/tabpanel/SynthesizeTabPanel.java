@@ -55,68 +55,68 @@ public class SynthesizeTabPanel extends TabPanel {
 
         TextLabel label1 = new TextLabel(30, 70, "第1级测量数据", 16, BaseColor.Black);
         this.add(label1);
-        yd1 = new DataLabel(30, 100, 16, "圆度", 0, 0, "");
+        yd1 = new DataLabel(30, 100, 16, "圆度", 0, 3, "μm");
         this.add(yd1);
-        pxd1 = new DataLabel(210, 100, 16, "平行度", 0, 0, "");
+        pxd1 = new DataLabel(210, 100, 16, "平行度", 0, 3, "μm");
         this.add(pxd1);
-        pmd1 = new DataLabel(390, 100, 16, "平面度", 0, 0, "");
+        pmd1 = new DataLabel(390, 100, 16, "平面度", 0, 3, "μm");
         this.add(pmd1);
-        txd1 = new DataLabel(570, 100, 16, "同心度", 0, 0, "");
+        txd1 = new DataLabel(570, 100, 16, "同心度", 0, 3, "μm");
         this.add(txd1);
 
         TextLabel label2 = new TextLabel(30, 140, "第2级测量数据", 16, BaseColor.Black);
         this.add(label2);
-        yd2 = new DataLabel(30, 170, 16, "圆度", 0, 0, "");
+        yd2 = new DataLabel(30, 170, 16, "圆度", 0, 3, "μm");
         this.add(yd2);
-        pxd2 = new DataLabel(210, 170, 16, "平行度", 0, 0, "");
+        pxd2 = new DataLabel(210, 170, 16, "平行度", 0, 3, "μm");
         this.add(pxd2);
-        pmd2 = new DataLabel(390, 170, 16, "平面度", 0, 0, "");
+        pmd2 = new DataLabel(390, 170, 16, "平面度", 0, 3, "μm");
         this.add(pmd2);
-        txd2 = new DataLabel(570, 170, 16, "同心度", 0, 0, "");
+        txd2 = new DataLabel(570, 170, 16, "同心度", 0, 3, "μm");
         this.add(txd2);
 
         TextLabel label3 = new TextLabel(30, 210, "第3级测量数据", 16, BaseColor.Black);
         this.add(label3);
-        yd3 = new DataLabel(30, 240, 16, "圆度", 0, 0, "");
+        yd3 = new DataLabel(30, 240, 16, "圆度", 0, 3, "μm");
         this.add(yd3);
-        pxd3 = new DataLabel(210, 240, 16, "平行度", 0, 0, "");
+        pxd3 = new DataLabel(210, 240, 16, "平行度", 0, 3, "μm");
         this.add(pxd3);
-        pmd3 = new DataLabel(390, 240, 16, "平面度", 0, 0, "");
+        pmd3 = new DataLabel(390, 240, 16, "平面度", 0, 3, "μm");
         this.add(pmd3);
-        txd3 = new DataLabel(570, 240, 16, "同心度", 0, 0, "");
+        txd3 = new DataLabel(570, 240, 16, "同心度", 0, 3, "μm");
         this.add(txd3);
 
         TextLabel label4 = new TextLabel(30, 280, "第4级测量数据", 16, BaseColor.Black);
         this.add(label4);
-        yd4 = new DataLabel(30, 310, 16, "圆度", 0, 0, "");
+        yd4 = new DataLabel(30, 310, 16, "圆度", 0, 3, "μm");
         this.add(yd4);
-        pxd4 = new DataLabel(210, 310, 16, "平行度", 0, 0, "");
+        pxd4 = new DataLabel(210, 310, 16, "平行度", 0, 3, "μm");
         this.add(pxd4);
-        pmd4 = new DataLabel(390, 310, 16, "平面度", 0, 0, "");
+        pmd4 = new DataLabel(390, 310, 16, "平面度", 0, 3, "μm");
         this.add(pmd4);
-        txd4 = new DataLabel(570, 310, 16, "同心度", 0, 0, "");
+        txd4 = new DataLabel(570, 310, 16, "同心度", 0, 3, "μm");
         this.add(txd4);
 
         TextLabel label5 = new TextLabel(30, 350, "第5级测量数据", 16, BaseColor.Black);
         this.add(label5);
-        yd5 = new DataLabel(30, 380, 16, "圆度", 0, 0, "");
+        yd5 = new DataLabel(30, 380, 16, "圆度", 0, 3, "μm");
         this.add(yd5);
-        pxd5 = new DataLabel(210, 380, 16, "平行度", 0, 0, "");
+        pxd5 = new DataLabel(210, 380, 16, "平行度", 0, 3, "μm");
         this.add(pxd5);
-        pmd5 = new DataLabel(390, 380, 16, "平面度", 0, 0, "");
+        pmd5 = new DataLabel(390, 380, 16, "平面度", 0, 3, "μm");
         this.add(pmd5);
-        txd5 = new DataLabel(570, 380, 16, "同心度", 0, 0, "");
+        txd5 = new DataLabel(570, 380, 16, "同心度", 0, 3, "μm");
         this.add(txd5);
 
         TextLabel label0 = new TextLabel(30, 420, "椎壁测量数据", 16, BaseColor.Black);
         this.add(label0);
-        yd0 = new DataLabel(30, 450, 16, "圆度", 0, 0, "");
+        yd0 = new DataLabel(30, 450, 16, "圆度", 0, 3, "μm");
         this.add(yd0);
-        pxd0 = new DataLabel(210, 450, 16, "平行度", 0, 0, "");
+        pxd0 = new DataLabel(210, 450, 16, "平行度", 0, 3, "μm");
         this.add(pxd0);
-        pmd0 = new DataLabel(390, 450, 16, "平面度", 0, 0, "");
+        pmd0 = new DataLabel(390, 450, 16, "平面度", 0, 3, "μm");
         this.add(pmd0);
-        txd0 = new DataLabel(570, 450, 16, "同心度", 0, 0, "");
+        txd0 = new DataLabel(570, 450, 16, "同心度", 0, 3, "μm");
         this.add(txd0);
 
         // 表头（列名）
