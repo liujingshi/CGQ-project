@@ -1,9 +1,6 @@
 package com.ljscode.frame.tab.tabpanel;
 
-import com.ljscode.base.BaseColor;
-import com.ljscode.base.BaseConfig;
-import com.ljscode.base.BaseMouseListener;
-import com.ljscode.base.BaseOnlyInputNumber;
+import com.ljscode.base.*;
 import com.ljscode.bean.ComConfig;
 import com.ljscode.bean.PortConfig;
 import com.ljscode.bean.RangeConfig;
@@ -33,16 +30,30 @@ public class SettingTabPanel extends TabPanel {
         rootY = 50;
         setPortConfig();
         setRangeConfig();
-        TextLabel tip = new TextLabel(rootX, rootY + 220, "保存成功！", 16, BaseColor.Green);
+        TextLabel tip = new TextLabel(rootX, rootY + 220, 340, 17, "保存成功！", 16, BaseColor.Green);
         tip.setVisible(false);
         this.add(tip);
         Btn saveBtn = new Btn(rootX, this.getHeight() - 60, -1, -1, "保存", Btn.BLUE, e -> {
+            tip.setText("保存成功！");
+            tip.setForeground(BaseColor.Green);
             tip.setVisible(true);
             ConfigUtil.SetUsbConfig(usbConfig);
             event.mouseClicked("");
             ConfigUtil.SetRangeConfig(rangeConfig);
         });
         this.add(saveBtn);
+        Btn linkBtn = new Btn(rootX + 200, this.getHeight() - 60, -1, -1, "连接", Btn.BLUE, e -> {
+            if (BaseUSBReader.Link(true)) {
+                tip.setText("连接成功！");
+                tip.setForeground(BaseColor.Green);
+                tip.setVisible(true);
+            } else {
+                tip.setText("连接失败，请检查设置以及设备连接情况！");
+                tip.setForeground(BaseColor.Red);
+                tip.setVisible(true);
+            }
+        });
+        this.add(linkBtn);
     }
 
     public void setPortConfig() {

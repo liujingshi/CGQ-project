@@ -9,8 +9,10 @@ import com.ljscode.component.InputGroup;
 import com.ljscode.component.ListView;
 import com.ljscode.component.TextLabel;
 import com.datepicker.DatePicker;
+import com.ljscode.data.ResultModel;
 import com.ljscode.data.TestData;
 import com.ljscode.util.DatasetUtil;
+import com.ljscode.util.DbUtil;
 
 import java.util.List;
 
@@ -20,8 +22,8 @@ import java.util.List;
 public class OpenTabPanel extends TabPanel {
 
     private Btn openBtn;
-    private TestData selectTestData;
-    private BaseMouseListener<TestData> event;
+    private ResultModel selectTestData;
+    private BaseMouseListener<ResultModel> event;
 
     public OpenTabPanel() {
         super();
@@ -40,7 +42,7 @@ public class OpenTabPanel extends TabPanel {
         InputGroup dataName = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceSm * 2 + BaseConfig.InputGroupSpaceMd,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight, "数据名称：", "请输入数据名称...");
         this.add(dataName);
-        ListView<TestData> list = new ListView<>(this.width - 16 - 400, 30, 400, 460, select -> {
+        ListView<ResultModel> list = new ListView<>(this.width - 16 - 400, 30, 400, 460, select -> {
             this.selectTestData = select;
             openBtn.unDisabled();
         });
@@ -52,7 +54,7 @@ public class OpenTabPanel extends TabPanel {
             String endTimeStr = endTime.getValue();
             String dataNameStr = dataName.getValue();
             SearchConfig searchConfig = new SearchConfig(dataNameStr, startTimeStr, endTimeStr);
-            List<TestData> result = DatasetUtil.FindBySearchConfig(searchConfig);
+            List<ResultModel> result = DbUtil.FindBySearchConfig(searchConfig);
             list.setListViewData(result);
             openBtn.disabled();
         });
@@ -64,7 +66,7 @@ public class OpenTabPanel extends TabPanel {
         openBtn.disabled();
     }
 
-    public void setEvent(BaseMouseListener<TestData> event) {
+    public void setEvent(BaseMouseListener<ResultModel> event) {
         this.event = event;
     }
 

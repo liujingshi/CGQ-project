@@ -12,7 +12,7 @@ public class DataModel {
     private String dataName; // 数据名称 第1级盘测量数据
     private Date createTime; // 创建时间
     private int dataIndex; // 数据排序
-    private List<ItemModel> dataItems; // 数据项
+    private ArrayList<ItemModel> dataItems; // 数据项
 
     // 创建数据项
     public ItemModel createDataItem() {
@@ -27,7 +27,7 @@ public class DataModel {
         dataItems = new ArrayList<>();
     }
 
-    public DataModel(String dataId, String dataName, Date createTime, int dataIndex, List<ItemModel> dataItems) {
+    public DataModel(String dataId, String dataName, Date createTime, int dataIndex, ArrayList<ItemModel> dataItems) {
         this.dataId = dataId;
         this.dataName = dataName;
         this.createTime = createTime;
@@ -67,19 +67,11 @@ public class DataModel {
         this.dataIndex = dataIndex;
     }
 
-    public List<ItemModel> getDataItems() {
+    public ArrayList<ItemModel> getDataItems() {
         return dataItems;
     }
 
-    public ItemModel getCurrentDataItem() {
-        if (dataItems.size() > 0) {
-            return dataItems.get(dataItems.size() - 1);
-        } else {
-            return null;
-        }
-    }
-
-    public void setDataItems(List<ItemModel> dataItems) {
+    public void setDataItems(ArrayList<ItemModel> dataItems) {
         this.dataItems = dataItems;
     }
 

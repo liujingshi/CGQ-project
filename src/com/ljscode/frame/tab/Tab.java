@@ -134,7 +134,7 @@ public class Tab extends Div {
     private void onClickOpenTab(IconTextBtn tab) {
         changeTab(tab, openTabPanel);
         openTabPanel.setEvent(data -> {
-            this.currentData = data;
+            this.resultModel = data;
             onClickSynthesizeTab(synthesizeTabBtn);
         });
     }

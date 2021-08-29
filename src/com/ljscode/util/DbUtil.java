@@ -127,10 +127,11 @@ public abstract class DbUtil {
         for (MainDb mainData : mainDb) {
             String filePath = String.format("%s%s.%s", dataPath, mainData.getDataId(), datasetSuffix);
             String testDataJson = FileUtil.ReadFile(filePath);
-            JSONObject obj = JSONObject.parseObject(testDataJson);
-            JSONArray arr = obj.getJSONArray("data");
-            String js = JSON.toJSONString(arr, SerializerFeature.WriteClassName);
-            testDataset.add(JSON.parseObject(js, ResultModel.class));
+            testDataset.add(JSON.parseObject(testDataJson, ResultModel.class));
+//            JSONObject obj = JSONObject.parseObject(testDataJson);
+//            JSONArray arr = obj.getJSONArray("data");
+//            String js = JSON.toJSONString(arr, SerializerFeature.WriteClassName);
+//            testDataset.add(JSON.parseObject(js, ResultModel.class));
         }
         return testDataset;
     }

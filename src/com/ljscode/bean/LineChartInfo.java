@@ -3,6 +3,7 @@ package com.ljscode.bean;
 import com.ljscode.data.DataModel;
 import com.ljscode.data.LeastSquareMethod;
 import com.ljscode.data.ResultModel;
+import com.ljscode.util.BeanUtil;
 import com.ljscode.util.DatasetUtil;
 import com.ljscode.util.MathUtil;
 import org.jfree.data.xy.XYSeries;
@@ -17,10 +18,10 @@ public class LineChartInfo extends BaseBean {
     private double rangeEnd; // 理论区间结束
     private double rangeLower; // y轴范围低
     private double rangeUpper; // y轴范围高
-    private Map<Double, Double> realData; // 实时数据
+    private HashMap<Double, Double> realData; // 实时数据
     private ResultModel resultModel; // 当前数据
-    private Map<Double, Double> goodData; // 理想数据
-    private List<Double> leastSquareMethodParam; // 最小二乘法参数
+    private HashMap<Double, Double> goodData; // 理想数据
+    private ArrayList<Double> leastSquareMethodParam; // 最小二乘法参数
     private String mode; // 柱面 端面 EndFace
 
     public XYSeriesCollection CreateLineData() {
@@ -40,12 +41,12 @@ public class LineChartInfo extends BaseBean {
         dataset.addSeries(realGoals);
         dataset.addSeries(goodGoals);
         DataModel level1Data = resultModel.getLevel1Data();
-        if (level1Data != null && level1Data.getCurrentDataItem() != null) {
+        if (level1Data != null && BeanUtil.GetCurrentItemModel(level1Data) != null) {
             Map<Double, Double> level1GoodData = null;
             if (mode.equals("EndFace")) {
-                level1GoodData = level1Data.getCurrentDataItem().getTheoryDataEndFace();
+                level1GoodData = BeanUtil.GetCurrentItemModel(level1Data).getTheoryDataEndFace();
             } else {
-                level1GoodData = level1Data.getCurrentDataItem().getTheoryDataCylinder();
+                level1GoodData = BeanUtil.GetCurrentItemModel(level1Data).getTheoryDataCylinder();
             }
             if (level1GoodData != null && level1GoodData.size() > 0) {
                 XYSeries level1Goals = new XYSeries(level1Data.getDataName());
@@ -88,7 +89,7 @@ public class LineChartInfo extends BaseBean {
         this.mode = mode;
     }
 
-    public LineChartInfo(String title, double rangeStart, double rangeEnd, double rangeLower, double rangeUpper, Map<Double, Double> realData, ResultModel resultModel, Map<Double, Double> goodData, List<Double> leastSquareMethodParam, String mode) {
+    public LineChartInfo(String title, double rangeStart, double rangeEnd, double rangeLower, double rangeUpper, HashMap<Double, Double> realData, ResultModel resultModel, HashMap<Double, Double> goodData, ArrayList<Double> leastSquareMethodParam, String mode) {
         this.title = title;
         this.rangeStart = rangeStart;
         this.rangeEnd = rangeEnd;
@@ -142,11 +143,11 @@ public class LineChartInfo extends BaseBean {
         this.rangeUpper = rangeUpper;
     }
 
-    public Map<Double, Double> getRealData() {
+    public HashMap<Double, Double> getRealData() {
         return realData;
     }
 
-    public void setRealData(Map<Double, Double> realData) {
+    public void setRealData(HashMap<Double, Double> realData) {
         this.realData = realData;
         calcGoodData();
     }
@@ -159,19 +160,19 @@ public class LineChartInfo extends BaseBean {
         this.resultModel = resultModel;
     }
 
-    public Map<Double, Double> getGoodData() {
+    public HashMap<Double, Double> getGoodData() {
         return goodData;
     }
 
-    public void setGoodData(Map<Double, Double> goodData) {
+    public void setGoodData(HashMap<Double, Double> goodData) {
         this.goodData = goodData;
     }
 
-    public List<Double> getLeastSquareMethodParam() {
+    public ArrayList<Double> getLeastSquareMethodParam() {
         return leastSquareMethodParam;
     }
 
-    public void setLeastSquareMethodParam(List<Double> leastSquareMethodParam) {
+    public void setLeastSquareMethodParam(ArrayList<Double> leastSquareMethodParam) {
         this.leastSquareMethodParam = leastSquareMethodParam;
     }
 

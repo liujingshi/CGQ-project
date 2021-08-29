@@ -13,6 +13,7 @@ public abstract class ConfigUtil {
     private static final String ComConfigPath = "config/com.config";
     private static final String UsbConfigPath = "config/usb.config";
     private static final String RangeConfigPath = "config/range.config";
+    private static final String ZeroConfigPath = "config/zero.config";
 
     public static List<PortConfig> GetPortConfig() {
         String json = FileUtil.ReadFile(PortConfigPath);
@@ -62,5 +63,15 @@ public abstract class ConfigUtil {
     public static void SetRangeConfig(RangeConfig obj) {
         String json = JSONObject.toJSONString(obj);
         FileUtil.WriteFile(RangeConfigPath, json);
+    }
+
+    public static ZeroConfig GetZeroConfig() {
+        String json = FileUtil.ReadFile(ZeroConfigPath);
+        return JSON.parseObject(json, ZeroConfig.class);
+    }
+
+    public static void SetZeroConfig(ZeroConfig obj) {
+        String json = JSONObject.toJSONString(obj);
+        FileUtil.WriteFile(ZeroConfigPath, json);
     }
 }

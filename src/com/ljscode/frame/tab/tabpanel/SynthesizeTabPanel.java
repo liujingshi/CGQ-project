@@ -8,6 +8,7 @@ import com.ljscode.data.DataModel;
 import com.ljscode.data.ItemModel;
 import com.ljscode.data.ResultModel;
 import com.ljscode.data.TestData;
+import com.ljscode.util.BeanUtil;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -151,11 +152,11 @@ public class SynthesizeTabPanel extends TabPanel {
     public void setAllData() {
         DataModel level1Data = data.getLevel1Data();
         if (level1Data != null) {
-            ItemModel level1ItemData = level1Data.getCurrentDataItem();
+            ItemModel level1ItemData = BeanUtil.GetCurrentItemModel(level1Data);
             if (level1ItemData != null) {
                 for (DataModel dataItem : data.getData()) {
                     if (dataItem.getDataIndex() != 1) {
-                        ItemModel itemModel = dataItem.getCurrentDataItem();
+                        ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataItem);
                         if (itemModel != null) {
                             itemModel.calcFormError(level1ItemData.getRealDataCylinder(), level1ItemData.getRealDataEndFace());
                         }
@@ -164,14 +165,14 @@ public class SynthesizeTabPanel extends TabPanel {
             }
         } else {
             for (DataModel dataItem : data.getData()) {
-                ItemModel itemModel = dataItem.getCurrentDataItem();
+                ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataItem);
                 if (itemModel != null) {
                     itemModel.calcFormError(null, null);
                 }
             }
         }
         for (DataModel dataItem : data.getData()) {
-            ItemModel itemModel = dataItem.getCurrentDataItem();
+            ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataItem);
             if (itemModel != null) {
                 switch (dataItem.getDataIndex()) {
                     case 1:

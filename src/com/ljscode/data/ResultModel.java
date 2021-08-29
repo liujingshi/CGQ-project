@@ -1,5 +1,6 @@
 package com.ljscode.data;
 
+import com.ljscode.util.BeanUtil;
 import com.ljscode.util.DatasetUtil;
 import com.ljscode.util.MathUtil;
 import org.jfree.data.xy.XYSeries;
@@ -16,12 +17,12 @@ public class ResultModel {
     private String measuringStand; // 测量台份
     private String operator; // 操作人员
     private int surveyTimes; // 测量次数
-    private List<DataModel> data; // 数据
+    private ArrayList<DataModel> data; // 数据
 
     public XYSeriesCollection CreatePolarData() {
         XYSeriesCollection dataset = new XYSeriesCollection();
         for (DataModel dataModel : data) {
-            ItemModel itemModel = dataModel.getCurrentDataItem();
+            ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataModel);
             if (itemModel != null) {
                 XYSeries goals = new XYSeries(dataModel.getDataName());
                 for (Map.Entry<Double, Double> entry : itemModel.getTheoryDataCylinder().entrySet()) {
@@ -49,7 +50,7 @@ public class ResultModel {
         data.add(data0);
     }
 
-    public ResultModel(String dataId, String dataName, Date createTime, double theoryRadius, String measuringStand, String operator, int surveyTimes, List<DataModel> data) {
+    public ResultModel(String dataId, String dataName, Date createTime, double theoryRadius, String measuringStand, String operator, int surveyTimes, ArrayList<DataModel> data) {
         this.dataId = dataId;
         this.dataName = dataName;
         this.createTime = createTime;
@@ -125,7 +126,7 @@ public class ResultModel {
         return dataModelStream.orElse(null);
     }
 
-    public void setData(List<DataModel> data) {
+    public void setData(ArrayList<DataModel> data) {
         this.data = data;
     }
 

@@ -17,7 +17,7 @@ public class Main {
      * @param args 参数
      */
     public static void main(String[] args) {
-        BaseUSBReader.Link(true);
+//        BaseUSBReader.Link(false);
         MainFrame mainFrame = new MainFrame(); // 创建主窗体对象
         mainFrame.showMe(); // 显示主窗体
     }

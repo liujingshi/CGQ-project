@@ -63,7 +63,7 @@ public abstract class BaseChart {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.addValue(cylinder, "传感器校准", "柱面传感器");
         dataset.addValue(endFace, "传感器校准", "端面传感器");
-        dataset.addValue(deg, "传感器校准", "角度传感器");
+        dataset.addValue(deg, "传感器校准", "角度编码器");
         JFreeChart chart = ChartFactory.createBarChart("", "", "", dataset,
                 PlotOrientation.VERTICAL, false, false, false);
         CategoryPlot plot = chart.getCategoryPlot();
@@ -79,7 +79,7 @@ public abstract class BaseChart {
         plot.getDomainAxis().setTickLabelFont(font);
         plot.getRangeAxis().setLabelFont(font);
         plot.getRangeAxis().setTickLabelFont(font);
-        plot.getRangeAxis().setRange(-5.00, 5.00);
+        plot.getRangeAxis().setRange(-400.00, 400.00);
         plot.setRenderer(barRenderer);
         return chart;
     }
