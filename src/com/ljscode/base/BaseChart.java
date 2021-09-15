@@ -79,7 +79,7 @@ public abstract class BaseChart {
         plot.getDomainAxis().setTickLabelFont(font);
         plot.getRangeAxis().setLabelFont(font);
         plot.getRangeAxis().setTickLabelFont(font);
-        plot.getRangeAxis().setRange(-400.00, 400.00);
+        plot.getRangeAxis().setRange(-100.00, 100.00);
         plot.setRenderer(barRenderer);
         return chart;
     }

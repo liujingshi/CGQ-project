@@ -6,6 +6,7 @@ import com.ljscode.base.BaseUSBListener;
 import com.ljscode.base.BaseUSBReader;
 import com.ljscode.bean.LineChartInfo;
 import com.ljscode.bean.RangeConfig;
+import com.ljscode.bean.ZeroConfig;
 import com.ljscode.component.*;
 import com.ljscode.data.*;
 import com.ljscode.util.BeanUtil;
@@ -39,20 +40,27 @@ public class EndFaceTabPanel extends TabPanel {
     private String mode; // 模式 item arr
     private TestLineChart eLineChart;
     private TestLineChart cLineChart;
+    private boolean isRead;
+    private final TextLabel pointNum;
+    private Set<Double> hasDef;
 
     public EndFaceTabPanel() {
         super();
+        isRead = false;
         defaultDeg = new ArrayList<>();
-        for (int cDeg = 0; cDeg < 1024; cDeg += 1) {
-            defaultDeg.add((double) cDeg * 360d / 1024d);
+        hasDef = new HashSet<>();
+        for (int cDeg = 0; cDeg < 2048; cDeg += 1) {
+            defaultDeg.add((double) cDeg * 360d / 2048d);
         }
         RangeConfig rangeConfig = ConfigUtil.GetRangeConfig();
-        this.lineChartInfoCylinder = new LineChartInfo("柱面数据实时图", rangeConfig.getCylinderStart(), rangeConfig.getCylinderEnd(), -800, 800, data, "Cylinder");
-        this.lineChartInfoEndFace = new LineChartInfo("端面数据实时图", rangeConfig.getEndFaceStart(), rangeConfig.getEndFaceEnd(), -800, 800, data, "EndFace");
+        this.lineChartInfoCylinder = new LineChartInfo("柱面数据实时图", rangeConfig.getCylinderStart(), rangeConfig.getCylinderEnd(), -100, 100, data, "Cylinder");
+        this.lineChartInfoEndFace = new LineChartInfo("端面数据实时图", rangeConfig.getEndFaceStart(), rangeConfig.getEndFaceEnd(), -100, 100, data, "EndFace");
         int rootX = 30;
         int rootY = 30;
         currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 16, BaseColor.Black);
         this.add(currentDataNameLabel);
+        pointNum = new TextLabel(this.width - 1478, rootY, "0000000", 16, BaseColor.Black);
+        this.add(pointNum);
         this.tree = new DataTree(rootX, rootY + 50, 300, 500, data, selectedItemModel -> {
             if (selectedItemModel == null) {
                 this.eNewBtn.disabled();
@@ -153,33 +161,39 @@ public class EndFaceTabPanel extends TabPanel {
 
     public void startReadUsb(TestLineChart lineChart, LineChartInfo lineChartInfo, boolean isC) {
         this.add(lineChart);
+        ZeroConfig zeroConfig = ConfigUtil.GetZeroConfig();
         new Thread(() -> {
             while (true) {
-                BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
-                    if (!(deg < 0)) {
-                        degLabel.setData(deg);
-                        if (isC) {
-                            cDataLabel.setData(cylinder);
-                        } else {
-                            eDataLabel.setData(endFace);
-                        }
-                        Optional<Double> xDeg = defaultDeg.stream().filter(t -> Math.abs(t - deg) <= 0.001).findFirst();
-                        if (xDeg.isPresent()) {
-                            Double mapDeg = xDeg.get();
-                            lineChartInfo.getRealData().put(mapDeg, isC ? cylinder : endFace);
-                            if (lineChartInfo.getRealData().size() < 999) {
-                                Map<Double, Double> realData = lineChartInfo.getRealData();
-                                for (Double dd : defaultDeg) {
-                                    if (!realData.containsKey(dd)) {
-                                        realData.put(dd, 0d);
-                                    }
-                                }
+                try {
+                    Thread.sleep(5);
+                    if (isRead) {
+                        BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
+                            cylinder = cylinder - zeroConfig.getCylinder();
+                            endFace = endFace - zeroConfig.getEndFace();
+                            degLabel.setData(deg);
+                            if (isC) {
+                                cDataLabel.setData(cylinder);
+                            } else {
+                                eDataLabel.setData(endFace);
                             }
-                            lineChartInfo.calcGoodData();
-                            lineChart.reload(lineChartInfo);
-                        }
+                            Optional<Double> xDeg = defaultDeg.stream().filter(t -> Math.abs(t - deg) <= 0.95).findFirst();
+                            if (xDeg.isPresent()) {
+                                Double mapDeg = xDeg.get();
+                                if (!hasDef.contains(mapDeg) && hasDef.size() < 1024) {
+                                    hasDef.add(mapDeg);
+                                }
+                                lineChartInfo.getRealData().put(mapDeg, isC ? cylinder : endFace);
+                                if (lineChartInfo.getRealData().size() > 50) {
+                                    lineChartInfo.calcGoodData();
+                                }
+                                lineChart.reload(lineChartInfo);
+                                pointNum.setText(Integer.toString(Math.min(hasDef.size(), 1024)));
+                            }
+                        });
                     }
-                });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -198,6 +212,14 @@ public class EndFaceTabPanel extends TabPanel {
     public void setData(ResultModel data) {
         this.data = data;
         changeData();
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     @Override

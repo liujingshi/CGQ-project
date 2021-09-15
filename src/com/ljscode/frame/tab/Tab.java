@@ -174,6 +174,8 @@ public class Tab extends Div {
      */
     private void onClickCheckTab(IconTextBtn tab) {
         changeTab(tab, checkTabPanel);
+        endFaceTabPanel.setRead(false);
+        checkTabPanel.setRead(true);
     }
 
     /**
@@ -203,6 +205,8 @@ public class Tab extends Div {
             newTabBtn.setActiveTrue();
         } else {
             endFaceTabPanel.setData(resultModel);
+            checkTabPanel.setRead(false);
+            endFaceTabPanel.setRead(true);
         }
     }
 

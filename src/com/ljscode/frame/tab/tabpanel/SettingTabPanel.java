@@ -43,15 +43,20 @@ public class SettingTabPanel extends TabPanel {
         });
         this.add(saveBtn);
         Btn linkBtn = new Btn(rootX + 200, this.getHeight() - 60, -1, -1, "连接", Btn.BLUE, e -> {
-            if (BaseUSBReader.Link(true)) {
-                tip.setText("连接成功！");
-                tip.setForeground(BaseColor.Green);
-                tip.setVisible(true);
-            } else {
-                tip.setText("连接失败，请检查设置以及设备连接情况！");
-                tip.setForeground(BaseColor.Red);
-                tip.setVisible(true);
-            }
+            tip.setText("连接中......");
+            tip.setForeground(BaseColor.Blue);
+            tip.setVisible(true);
+            new Thread(() -> {
+                if (BaseUSBReader.Link(false)) {
+                    tip.setText("连接成功！");
+                    tip.setForeground(BaseColor.Green);
+                    tip.setVisible(true);
+                } else {
+                    tip.setText("连接失败，请检查设置以及设备连接情况！");
+                    tip.setForeground(BaseColor.Red);
+                    tip.setVisible(true);
+                }
+            }).start();
         });
         this.add(linkBtn);
     }
@@ -59,7 +64,7 @@ public class SettingTabPanel extends TabPanel {
     public void setPortConfig() {
         usbConfig = ConfigUtil.GetUsbConfig();
         String[] portOptions = {"请选择...", "A", "B", "C", "D"};
-        String[] usbOptions = {"请选择...", "USB1", "USB2", "USB3", "USB4"};
+        String[] usbOptions = {"请选择...", "USB1", "USB2", "USB3", "USB4", "USB5", "USB6"};
         TextLabel cylinderLabel = new TextLabel(rootX, rootY, "柱面传感器", 16, BaseColor.Black);
         this.add(cylinderLabel);
         TextLabel endFaceLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd, "端面传感器", 16, BaseColor.Black);
@@ -125,6 +130,12 @@ public class SettingTabPanel extends TabPanel {
                 case 4:
                     usbConfig.setBpx("USB4");
                     break;
+                case 5:
+                    usbConfig.setBpx("USB5");
+                    break;
+                case 6:
+                    usbConfig.setBpx("USB6");
+                    break;
             }
         });
         this.add(bpxSelect);
@@ -144,6 +155,12 @@ public class SettingTabPanel extends TabPanel {
                     break;
                 case 4:
                     usbConfig.setDeg("USB4");
+                    break;
+                case 5:
+                    usbConfig.setDeg("USB5");
+                    break;
+                case 6:
+                    usbConfig.setDeg("USB6");
                     break;
             }
         });
@@ -198,6 +215,12 @@ public class SettingTabPanel extends TabPanel {
             case "USB4":
                 bpxSelect.setSelectedIndex(4);
                 break;
+            case "USB5":
+                bpxSelect.setSelectedIndex(5);
+                break;
+            case "USB6":
+                bpxSelect.setSelectedIndex(6);
+                break;
         }
         switch (usbConfig.getDeg()) {
             case "":
@@ -214,6 +237,12 @@ public class SettingTabPanel extends TabPanel {
                 break;
             case "USB4":
                 degSelect.setSelectedIndex(4);
+                break;
+            case "USB5":
+                degSelect.setSelectedIndex(5);
+                break;
+            case "USB6":
+                degSelect.setSelectedIndex(6);
                 break;
         }
     }
