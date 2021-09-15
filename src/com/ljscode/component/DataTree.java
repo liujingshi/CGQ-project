@@ -1,10 +1,12 @@
 package com.ljscode.component;
 
+import com.ljscode.base.BaseColor;
 import com.ljscode.base.BaseMouseListener;
 import com.ljscode.data.DataModel;
 import com.ljscode.data.ItemData;
 import com.ljscode.data.ItemModel;
 import com.ljscode.data.ResultModel;
+import com.ljscode.util.FontUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -45,8 +47,8 @@ public class DataTree extends JTree {
                     event1.mouseClicked((DataModel) object);
                 }
             }
-
         });
+        this.setFont(FontUtil.LoadFont(18));
     }
 
     /**

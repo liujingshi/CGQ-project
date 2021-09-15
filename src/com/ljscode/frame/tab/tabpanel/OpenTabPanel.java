@@ -29,17 +29,17 @@ public class OpenTabPanel extends TabPanel {
         super();
         int rootX = 30;
         int rootY = 30;
-        TextLabel textLabel = new TextLabel(rootX, rootY, "检测时间区间", 16, BaseColor.Black);
+        TextLabel textLabel = new TextLabel(rootX, rootY, "检测时间区间", 32, BaseColor.Black);
         this.add(textLabel);
-        InputGroup startTime = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceSm, BaseConfig.InputGroupWidth,
+        InputGroup startTime = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceLg, BaseConfig.InputGroupWidth,
                 BaseConfig.InputHeight, "开始时间：", "2021-05-09");
         this.add(startTime);
         DatePicker.datePicker(startTime.getInput());
-        InputGroup endTime = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceSm * 2, BaseConfig.InputGroupWidth,
+        InputGroup endTime = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceLg * 2, BaseConfig.InputGroupWidth,
                 BaseConfig.InputHeight, "结束时间：", "2021-05-16");
         this.add(endTime);
         DatePicker.datePicker(endTime.getInput());
-        InputGroup dataName = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceSm * 2 + BaseConfig.InputGroupSpaceMd,
+        InputGroup dataName = new InputGroup(rootX, rootY + BaseConfig.InputGroupSpaceLg * 3,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight, "数据名称：", "请输入数据名称...");
         this.add(dataName);
         ListView<ResultModel> list = new ListView<>(this.width - 16 - 400, 30, 400, 460, select -> {
@@ -47,7 +47,7 @@ public class OpenTabPanel extends TabPanel {
             openBtn.unDisabled();
         });
         this.add(list);
-        Btn searchBtn = new Btn(rootX, rootY + BaseConfig.InputGroupSpaceSm * 3 + BaseConfig.InputGroupSpaceMd,
+        Btn searchBtn = new Btn(rootX, rootY + BaseConfig.InputGroupSpaceLg * 4,
                 0, 0, "查询", Btn.BLUE, e -> {
             openBtn.disabled();
             String startTimeStr = startTime.getValue();

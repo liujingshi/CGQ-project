@@ -43,8 +43,8 @@ public class Tab extends Div {
      * 构造方法
      */
     public Tab() {
-        super(1, BaseConfig.ScaleHeight(0.104),
-                BaseConfig.FrameWidth - 2, BaseConfig.FrameHeight - BaseConfig.ScaleHeight(0.104) - 1,
+        super(1, 80,
+                BaseConfig.FrameWidth - 2, BaseConfig.FrameHeight - 81,
                 BaseColor.Gray);
         setTab();
     }

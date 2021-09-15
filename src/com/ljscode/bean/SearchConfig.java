@@ -5,8 +5,13 @@ public class SearchConfig extends BaseBean {
     private String name;
     private String startTimeStr;
     private String endTimeStr;
+    private String date;
 
     public SearchConfig() {
+        name = "";
+        startTimeStr = "";
+        endTimeStr = "";
+        date = "";
     }
 
     public SearchConfig(String name, String startTimeStr, String endTimeStr) {
@@ -37,5 +42,13 @@ public class SearchConfig extends BaseBean {
 
     public void setEndTimeStr(String endTimeStr) {
         this.endTimeStr = endTimeStr;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

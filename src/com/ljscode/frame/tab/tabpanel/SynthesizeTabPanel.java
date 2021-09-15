@@ -51,97 +51,87 @@ public class SynthesizeTabPanel extends TabPanel {
         super();
         int rootX = 30;
         int rootY = 30;
-        currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 16, BaseColor.Black);
+        currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 32, BaseColor.Black);
         this.add(currentDataNameLabel);
 
-        TextLabel label1 = new TextLabel(30, 70, "第1级测量数据", 16, BaseColor.Black);
+        float fontsize = 24;
+        int space = 120;
+        int fSpace = 40;
+        int left1 = 30;
+        int left2 = 250;
+        int left3 = 470;
+        int left4 = 690;
+
+        TextLabel label1 = new TextLabel(left1, space - fSpace, "第1级测量数据", fontsize, BaseColor.Black);
         this.add(label1);
-        yd1 = new DataLabel(30, 100, 16, "圆度", 0, 3, "μm");
+        yd1 = new DataLabel(left1, space, fontsize, "圆度", 0, 3, "μm");
         this.add(yd1);
-        pxd1 = new DataLabel(210, 100, 16, "平行度", 0, 3, "μm");
+        pxd1 = new DataLabel(left2, space, fontsize, "平行度", 0, 3, "μm");
         this.add(pxd1);
-        pmd1 = new DataLabel(390, 100, 16, "平面度", 0, 3, "μm");
+        pmd1 = new DataLabel(left3, space, fontsize, "平面度", 0, 3, "μm");
         this.add(pmd1);
-        txd1 = new DataLabel(570, 100, 16, "同心度", 0, 3, "μm");
+        txd1 = new DataLabel(left4, space, fontsize, "同心度", 0, 3, "μm");
         this.add(txd1);
 
-        TextLabel label2 = new TextLabel(30, 140, "第2级测量数据", 16, BaseColor.Black);
+        TextLabel label2 = new TextLabel(left1, space*2-fSpace, "第2级测量数据", fontsize, BaseColor.Black);
         this.add(label2);
-        yd2 = new DataLabel(30, 170, 16, "圆度", 0, 3, "μm");
+        yd2 = new DataLabel(left1, space*2, fontsize, "圆度", 0, 3, "μm");
         this.add(yd2);
-        pxd2 = new DataLabel(210, 170, 16, "平行度", 0, 3, "μm");
+        pxd2 = new DataLabel(left2, space*2, fontsize, "平行度", 0, 3, "μm");
         this.add(pxd2);
-        pmd2 = new DataLabel(390, 170, 16, "平面度", 0, 3, "μm");
+        pmd2 = new DataLabel(left3, space*2, fontsize, "平面度", 0, 3, "μm");
         this.add(pmd2);
-        txd2 = new DataLabel(570, 170, 16, "同心度", 0, 3, "μm");
+        txd2 = new DataLabel(left4, space*2, fontsize, "同心度", 0, 3, "μm");
         this.add(txd2);
 
-        TextLabel label3 = new TextLabel(30, 210, "第3级测量数据", 16, BaseColor.Black);
+        TextLabel label3 = new TextLabel(left1, space*3-fSpace, "第3级测量数据", fontsize, BaseColor.Black);
         this.add(label3);
-        yd3 = new DataLabel(30, 240, 16, "圆度", 0, 3, "μm");
+        yd3 = new DataLabel(left1, space*3, fontsize, "圆度", 0, 3, "μm");
         this.add(yd3);
-        pxd3 = new DataLabel(210, 240, 16, "平行度", 0, 3, "μm");
+        pxd3 = new DataLabel(left2, space*3, fontsize, "平行度", 0, 3, "μm");
         this.add(pxd3);
-        pmd3 = new DataLabel(390, 240, 16, "平面度", 0, 3, "μm");
+        pmd3 = new DataLabel(left3, space*3, fontsize, "平面度", 0, 3, "μm");
         this.add(pmd3);
-        txd3 = new DataLabel(570, 240, 16, "同心度", 0, 3, "μm");
+        txd3 = new DataLabel(left4, space*3, fontsize, "同心度", 0, 3, "μm");
         this.add(txd3);
 
-        TextLabel label4 = new TextLabel(30, 280, "第4级测量数据", 16, BaseColor.Black);
+        TextLabel label4 = new TextLabel(left1, space*4-fSpace, "第4级测量数据", fontsize, BaseColor.Black);
         this.add(label4);
-        yd4 = new DataLabel(30, 310, 16, "圆度", 0, 3, "μm");
+        yd4 = new DataLabel(left1, space*4, fontsize, "圆度", 0, 3, "μm");
         this.add(yd4);
-        pxd4 = new DataLabel(210, 310, 16, "平行度", 0, 3, "μm");
+        pxd4 = new DataLabel(left2, space*4, fontsize, "平行度", 0, 3, "μm");
         this.add(pxd4);
-        pmd4 = new DataLabel(390, 310, 16, "平面度", 0, 3, "μm");
+        pmd4 = new DataLabel(left3, space*4, fontsize, "平面度", 0, 3, "μm");
         this.add(pmd4);
-        txd4 = new DataLabel(570, 310, 16, "同心度", 0, 3, "μm");
+        txd4 = new DataLabel(left4, space*4, fontsize, "同心度", 0, 3, "μm");
         this.add(txd4);
 
-        TextLabel label5 = new TextLabel(30, 350, "第5级测量数据", 16, BaseColor.Black);
+        TextLabel label5 = new TextLabel(left1, space*5-fSpace, "第5级测量数据", fontsize, BaseColor.Black);
         this.add(label5);
-        yd5 = new DataLabel(30, 380, 16, "圆度", 0, 3, "μm");
+        yd5 = new DataLabel(left1, space*5, fontsize, "圆度", 0, 3, "μm");
         this.add(yd5);
-        pxd5 = new DataLabel(210, 380, 16, "平行度", 0, 3, "μm");
+        pxd5 = new DataLabel(left2, space*5, fontsize, "平行度", 0, 3, "μm");
         this.add(pxd5);
-        pmd5 = new DataLabel(390, 380, 16, "平面度", 0, 3, "μm");
+        pmd5 = new DataLabel(left3, space*5, fontsize, "平面度", 0, 3, "μm");
         this.add(pmd5);
-        txd5 = new DataLabel(570, 380, 16, "同心度", 0, 3, "μm");
+        txd5 = new DataLabel(left4, space*5, fontsize, "同心度", 0, 3, "μm");
         this.add(txd5);
 
-        TextLabel label0 = new TextLabel(30, 420, "椎壁测量数据", 16, BaseColor.Black);
+        TextLabel label0 = new TextLabel(left1, space*6-fSpace, "椎壁测量数据", fontsize, BaseColor.Black);
         this.add(label0);
-        yd0 = new DataLabel(30, 450, 16, "圆度", 0, 3, "μm");
+        yd0 = new DataLabel(left1, space*6, fontsize, "圆度", 0, 3, "μm");
         this.add(yd0);
-        pxd0 = new DataLabel(210, 450, 16, "平行度", 0, 3, "μm");
+        pxd0 = new DataLabel(left2, space*6, fontsize, "平行度", 0, 3, "μm");
         this.add(pxd0);
-        pmd0 = new DataLabel(390, 450, 16, "平面度", 0, 3, "μm");
+        pmd0 = new DataLabel(left3, space*6, fontsize, "平面度", 0, 3, "μm");
         this.add(pmd0);
-        txd0 = new DataLabel(570, 450, 16, "同心度", 0, 3, "μm");
+        txd0 = new DataLabel(left4, space*6, fontsize, "同心度", 0, 3, "μm");
         this.add(txd0);
-
-        // 表头（列名）
-        Object[] columnNames = {"数据名称", "轴心距(中心)", "轴心距(首次)", "平行度(地面)", "平行度(首次)"};
-
-        // 表格所有行数据
-        Object[][] rowData = {
-                {"第1次测量数据", 0, 0, 0, 0},
-                {"第2次测量数据", 0, 0, 0, 0},
-                {"第3次测量数据", 0, 0, 0, 0},
-                {"第4次测量数据", 0, 0, 0, 0},
-                {"内部测量数据", 0, 0, 0, 0}
-        };
-        JTable table = new JTable(rowData, columnNames);
-        table.setBounds(rootX, rootY + 90, 400, 400);
-        JTableHeader jTableHeader = table.getTableHeader();
-        jTableHeader.setBounds(rootX, rootY + 60, 400, 30);
-//        this.add(jTableHeader);
-//        this.add(table);
     }
 
     public void showChart() {
         if (polarChart == null) {
-            this.polarChart = new TestPolarChart(this.width - 16 - 500, 30, 500, 500, data);
+            this.polarChart = new TestPolarChart(this.width - 16 - 800, 30, 800, 800, data);
             this.add(polarChart);
         } else {
             polarChart.reload(data);

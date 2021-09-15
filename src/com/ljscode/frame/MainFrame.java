@@ -36,7 +36,7 @@ public class MainFrame extends BaseFrame {
         this.add(body);
 
         // 顶部标题框
-        Div titleBox = new Div(0, 0, BaseConfig.FrameWidth, BaseConfig.ScaleHeight(0.104), BaseColor.Blue);
+        Div titleBox = new Div(0, 0, BaseConfig.FrameWidth, 80, BaseColor.Blue);
         body.add(titleBox);
         // logo
         Img logo = new Img(10, 10, 60, 60, "res/img/icon/logo.png");

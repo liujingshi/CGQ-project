@@ -1,12 +1,11 @@
 package com.ljscode.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.ljscode.bean.MainDb;
 import com.ljscode.bean.SearchConfig;
 import com.ljscode.data.ResultModel;
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -203,6 +202,16 @@ public abstract class DbUtil {
      * @return 数据列表
      */
     public static List<ResultModel> FindBySearchConfig(SearchConfig searchConfig) {
+        return GetByMainDbset(FindMainBySearchConfig(searchConfig));
+    }
+
+    /**
+     * 通过搜索配置进行查询
+     *
+     * @param searchConfig 搜索配置
+     * @return 数据列表
+     */
+    public static List<MainDb> FindMainBySearchConfig(SearchConfig searchConfig) {
         List<MainDb> mainDb = GetMainAll();
         mainDb.removeIf(mainData -> {
             boolean result = !mainData.getDataName().contains(searchConfig.getName());
@@ -224,8 +233,18 @@ public abstract class DbUtil {
                     }
                 }
             }
+            String nowDateStr = searchConfig.getDate();
+            if (!nowDateStr.equals("")) {
+                Date nowTime = DateUtil.ToDate(nowDateStr);
+                if (nowTime != null) {
+                    Date nowTime1 = DateUtil.AddDay(nowTime, 1);
+                    if (DateUtil.LessThan(mainData.getCreateTime(), nowTime) || DateUtil.GreaterThan(mainData.getCreateTime(), nowTime1)) {
+                        result = true;
+                    }
+                }
+            }
             return result;
         });
-        return GetByMainDbset(mainDb);
+        return mainDb;
     }
 }

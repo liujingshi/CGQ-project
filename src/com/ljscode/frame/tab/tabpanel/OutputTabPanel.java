@@ -28,7 +28,7 @@ public class OutputTabPanel extends TabPanel {
                 }
             }
         });
-        Btn lcw = new Btn(30, 100, 0, 0, "保存", Btn.BLUE, e -> {
+        Btn lcw = new Btn(30, 120, 0, 0, "保存", Btn.BLUE, e -> {
             FileSelect fileSelect = new FileSelect("另存为", "确定", ".test", data.getName(), this);
             String path = fileSelect.read();
             if (!path.equals("")) {

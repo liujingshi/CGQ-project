@@ -25,7 +25,7 @@ public class Btn extends TextLabel {
     /**
      * 字体大小
      */
-    private static final float fontSize = 16L;
+    private static final float fontSize = 32L;
 
     private static final Color disabledColor = BaseColor.PlaceholderGray;
     private boolean disabled;

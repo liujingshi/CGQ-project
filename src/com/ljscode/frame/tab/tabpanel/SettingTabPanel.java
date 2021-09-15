@@ -30,10 +30,10 @@ public class SettingTabPanel extends TabPanel {
         rootY = 50;
         setPortConfig();
         setRangeConfig();
-        TextLabel tip = new TextLabel(rootX, rootY + 220, 340, 17, "保存成功！", 16, BaseColor.Green);
+        TextLabel tip = new TextLabel(rootX, rootY + 220, 340, 35, "保存成功！", 32, BaseColor.Green);
         tip.setVisible(false);
         this.add(tip);
-        Btn saveBtn = new Btn(rootX, this.getHeight() - 60, -1, -1, "保存", Btn.BLUE, e -> {
+        Btn saveBtn = new Btn(rootX, this.getHeight() - 90, -1, -1, "保存", Btn.BLUE, e -> {
             tip.setText("保存成功！");
             tip.setForeground(BaseColor.Green);
             tip.setVisible(true);
@@ -42,7 +42,7 @@ public class SettingTabPanel extends TabPanel {
             ConfigUtil.SetRangeConfig(rangeConfig);
         });
         this.add(saveBtn);
-        Btn linkBtn = new Btn(rootX + 200, this.getHeight() - 60, -1, -1, "连接", Btn.BLUE, e -> {
+        Btn linkBtn = new Btn(rootX + 200, this.getHeight() - 90, -1, -1, "连接", Btn.BLUE, e -> {
             tip.setText("连接中......");
             tip.setForeground(BaseColor.Blue);
             tip.setVisible(true);
@@ -65,15 +65,15 @@ public class SettingTabPanel extends TabPanel {
         usbConfig = ConfigUtil.GetUsbConfig();
         String[] portOptions = {"请选择...", "A", "B", "C", "D"};
         String[] usbOptions = {"请选择...", "USB1", "USB2", "USB3", "USB4", "USB5", "USB6"};
-        TextLabel cylinderLabel = new TextLabel(rootX, rootY, "柱面传感器", 16, BaseColor.Black);
+        TextLabel cylinderLabel = new TextLabel(rootX, rootY, "柱面传感器", 32, BaseColor.Black);
         this.add(cylinderLabel);
-        TextLabel endFaceLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd, "端面传感器", 16, BaseColor.Black);
+        TextLabel endFaceLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceLg, "端面传感器", 32, BaseColor.Black);
         this.add(endFaceLabel);
-        TextLabel bpxLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd * 2, "BPX黑盒", 16, BaseColor.Black);
+        TextLabel bpxLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceLg * 2, "BPX黑盒", 32, BaseColor.Black);
         this.add(bpxLabel);
-        TextLabel degLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceMd * 3, "角度编码器", 16, BaseColor.Black);
+        TextLabel degLabel = new TextLabel(rootX, rootY + BaseConfig.InputGroupSpaceLg * 3, "角度编码器", 32, BaseColor.Black);
         this.add(degLabel);
-        Select cylinderSelect = new Select(rootX + 120, rootY, 200, 20, portOptions, index -> {
+        Select cylinderSelect = new Select(rootX + 170, rootY, 200, 32, portOptions, index -> {
             switch (index) {
                 case 0:
                     usbConfig.setCylinder("");
@@ -93,7 +93,7 @@ public class SettingTabPanel extends TabPanel {
             }
         });
         this.add(cylinderSelect);
-        Select endFaceSelect = new Select(rootX + 120, rootY + BaseConfig.InputGroupSpaceMd, 200, 20, portOptions, index -> {
+        Select endFaceSelect = new Select(rootX + 170, rootY + BaseConfig.InputGroupSpaceLg, 200, 32, portOptions, index -> {
             switch (index) {
                 case 0:
                     usbConfig.setEndFace("");
@@ -113,7 +113,7 @@ public class SettingTabPanel extends TabPanel {
             }
         });
         this.add(endFaceSelect);
-        Select bpxSelect = new Select(rootX + 120, rootY + BaseConfig.InputGroupSpaceMd * 2, 200, 20, usbOptions, index -> {
+        Select bpxSelect = new Select(rootX + 170, rootY + BaseConfig.InputGroupSpaceLg * 2, 200, 32, usbOptions, index -> {
             switch (index) {
                 case 0:
                     usbConfig.setBpx("");
@@ -139,7 +139,7 @@ public class SettingTabPanel extends TabPanel {
             }
         });
         this.add(bpxSelect);
-        Select degSelect = new Select(rootX + 120, rootY + BaseConfig.InputGroupSpaceMd * 3, 200, 20, usbOptions, index -> {
+        Select degSelect = new Select(rootX + 170, rootY + BaseConfig.InputGroupSpaceLg * 3, 200, 32, usbOptions, index -> {
             switch (index) {
                 case 0:
                     usbConfig.setDeg("");
@@ -249,73 +249,75 @@ public class SettingTabPanel extends TabPanel {
 
     public void setRangeConfig() {
         rangeConfig = ConfigUtil.GetRangeConfig();
-        InputGroup cylinderInputStart = new InputGroup(rootX + 400, rootY,
+        int rootXStep1 = 500;
+        int rootXStep2 = 1120;
+        InputGroup cylinderInputStart = new InputGroup(rootX + rootXStep1, rootY,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "柱面理论期间（微米）：", "请输入...");
         cylinderInputStart.limit(new BaseOnlyInputNumber());
         cylinderInputStart.setValue(Double.toString(rangeConfig.getCylinderStart()));
         this.add(cylinderInputStart);
-        InputGroup cylinderInputEnd = new InputGroup(rootX + 820, rootY,
+        InputGroup cylinderInputEnd = new InputGroup(rootX + rootXStep2, rootY,
                 BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
                 "~", "请输入...");
         cylinderInputEnd.limit(new BaseOnlyInputNumber());
         cylinderInputEnd.setValue(Double.toString(rangeConfig.getCylinderEnd()));
         this.add(cylinderInputEnd);
-        InputGroup endFaceInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd,
+        InputGroup endFaceInputStart = new InputGroup(rootX + rootXStep1, rootY + BaseConfig.InputGroupSpaceLg,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "端面理论期间（微米）：", "请输入...");
         endFaceInputStart.limit(new BaseOnlyInputNumber());
         endFaceInputStart.setValue(Double.toString(rangeConfig.getEndFaceStart()));
         this.add(endFaceInputStart);
-        InputGroup endFaceInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd,
+        InputGroup endFaceInputEnd = new InputGroup(rootX + rootXStep2, rootY + BaseConfig.InputGroupSpaceLg,
                 BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
                 "~", "请输入...");
         endFaceInputEnd.limit(new BaseOnlyInputNumber());
         endFaceInputEnd.setValue(Double.toString(rangeConfig.getEndFaceEnd()));
         this.add(endFaceInputEnd);
-        InputGroup roundnessInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 2,
+        InputGroup roundnessInputStart = new InputGroup(rootX + rootXStep1, rootY + BaseConfig.InputGroupSpaceLg * 2,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "圆度理论期间（微米）：", "请输入...");
         roundnessInputStart.limit(new BaseOnlyInputNumber());
         roundnessInputStart.setValue(Double.toString(rangeConfig.getRoundnessStart()));
         this.add(roundnessInputStart);
-        InputGroup roundnessInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 2,
+        InputGroup roundnessInputEnd = new InputGroup(rootX + rootXStep2, rootY + BaseConfig.InputGroupSpaceLg * 2,
                 BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
                 "~", "请输入...");
         roundnessInputEnd.limit(new BaseOnlyInputNumber());
         roundnessInputEnd.setValue(Double.toString(rangeConfig.getRoundnessEnd()));
         this.add(roundnessInputEnd);
-        InputGroup flatnessInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 3,
+        InputGroup flatnessInputStart = new InputGroup(rootX + rootXStep1, rootY + BaseConfig.InputGroupSpaceLg * 3,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "平面度理论期间（微米）：", "请输入...");
         flatnessInputStart.limit(new BaseOnlyInputNumber());
         flatnessInputStart.setValue(Double.toString(rangeConfig.getFlatnessStart()));
         this.add(flatnessInputStart);
-        InputGroup flatnessInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 3,
+        InputGroup flatnessInputEnd = new InputGroup(rootX + rootXStep2, rootY + BaseConfig.InputGroupSpaceLg * 3,
                 BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
                 "~", "请输入...");
         flatnessInputEnd.limit(new BaseOnlyInputNumber());
         flatnessInputEnd.setValue(Double.toString(rangeConfig.getFlatnessEnd()));
         this.add(flatnessInputEnd);
-        InputGroup axisFromInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 4,
+        InputGroup axisFromInputStart = new InputGroup(rootX + rootXStep1, rootY + BaseConfig.InputGroupSpaceLg * 4,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "同轴度理论期间（微米）：", "请输入...");
         axisFromInputStart.limit(new BaseOnlyInputNumber());
         axisFromInputStart.setValue(Double.toString(rangeConfig.getAxisFromStart()));
         this.add(axisFromInputStart);
-        InputGroup axisFromInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 4,
+        InputGroup axisFromInputEnd = new InputGroup(rootX + rootXStep2, rootY + BaseConfig.InputGroupSpaceLg * 4,
                 BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
                 "~", "请输入...");
         axisFromInputEnd.limit(new BaseOnlyInputNumber());
         axisFromInputEnd.setValue(Double.toString(rangeConfig.getAxisFromEnd()));
         this.add(axisFromInputEnd);
-        InputGroup parallelismInputStart = new InputGroup(rootX + 400, rootY + BaseConfig.InputGroupSpaceMd * 5,
+        InputGroup parallelismInputStart = new InputGroup(rootX + rootXStep1, rootY + BaseConfig.InputGroupSpaceLg * 5,
                 BaseConfig.InputGroupWidth, BaseConfig.InputHeight,
                 "平行度理论期间（微米）：", "请输入...");
         parallelismInputStart.limit(new BaseOnlyInputNumber());
         parallelismInputStart.setValue(Double.toString(rangeConfig.getParallelismStart()));
         this.add(parallelismInputStart);
-        InputGroup parallelismInputEnd = new InputGroup(rootX + 820, rootY + BaseConfig.InputGroupSpaceMd * 5,
+        InputGroup parallelismInputEnd = new InputGroup(rootX + rootXStep2, rootY + BaseConfig.InputGroupSpaceLg * 5,
                 BaseConfig.InputGroupWidthSm, BaseConfig.InputHeight,
                 "~", "请输入...");
         parallelismInputEnd.limit(new BaseOnlyInputNumber());

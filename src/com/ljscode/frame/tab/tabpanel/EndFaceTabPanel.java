@@ -42,6 +42,8 @@ public class EndFaceTabPanel extends TabPanel {
     private TestLineChart cLineChart;
     private boolean isRead;
     private final TextLabel pointNum;
+    private final TextLabel degNum;
+    private final TextLabel errorNum;
     private Set<Double> hasDef;
 
     public EndFaceTabPanel() {
@@ -57,10 +59,14 @@ public class EndFaceTabPanel extends TabPanel {
         this.lineChartInfoEndFace = new LineChartInfo("端面数据实时图", rangeConfig.getEndFaceStart(), rangeConfig.getEndFaceEnd(), -100, 100, data, "EndFace");
         int rootX = 30;
         int rootY = 30;
-        currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 16, BaseColor.Black);
+        currentDataNameLabel = new TextLabel(rootX, rootY, "2021-05-09日测量数据", 32, BaseColor.Black);
         this.add(currentDataNameLabel);
-        pointNum = new TextLabel(this.width - 1478, rootY, "0000000", 16, BaseColor.Black);
+        degNum = new TextLabel(rootX, rootY + 620, "已经旋转的角度：360 / 360", 32, BaseColor.Black);
+        this.add(degNum);
+        pointNum = new TextLabel(rootX, rootY + 670, "已经采集的点位数量：1024 / 1024", 32, BaseColor.Black);
         this.add(pointNum);
+        errorNum = new TextLabel(rootX, rootY + 720, "超出标准范围的点位数量：1024", 32, BaseColor.Black);
+        this.add(errorNum);
         this.tree = new DataTree(rootX, rootY + 50, 300, 500, data, selectedItemModel -> {
             if (selectedItemModel == null) {
                 this.eNewBtn.disabled();
@@ -80,19 +86,19 @@ public class EndFaceTabPanel extends TabPanel {
         tree.blur(e -> {
             eNewBtn.disabled();
         });
-        this.e1TipBox = new TipBox(this.width - 1170, 652, 230, 80);
+        this.e1TipBox = new TipBox(this.width - 1370, 750, 230, 80);
         this.add(e1TipBox);
         e1TipBox.setContent("旋钮1", false);
-        this.c1TipBox = new TipBox(this.width - 554, 652, 230, 80);
+        this.c1TipBox = new TipBox(this.width - 1124, 750, 230, 80);
         this.add(c1TipBox);
         c1TipBox.setContent("旋钮2", true);
-        this.e2TipBox = new TipBox(this.width - 924, 652, 230, 80);
+        this.e2TipBox = new TipBox(this.width - 554, 750, 230, 80);
         this.add(e2TipBox);
         e2TipBox.setContent("旋钮3", false);
-        this.c2TipBox = new TipBox(this.width - 308, 652, 230, 80);
+        this.c2TipBox = new TipBox(this.width - 308, 750, 230, 80);
         this.add(c2TipBox);
         c2TipBox.setContent("旋钮4", true);
-        this.eNewBtn = new Btn(this.width - 1478, 250, 230, 60, "保存数据", Btn.BLUE, e -> {
+        this.eNewBtn = new Btn(rootX, rootY + 550, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectedItemData != null || selectedData != null) {
                 if (mode.equals("item") && selectedItemData != null) {
                     selectedItemData.setRealDataCylinder(lineChartInfoCylinder.getRealData());
@@ -135,18 +141,18 @@ public class EndFaceTabPanel extends TabPanel {
 //        this.add(left2);
 //        this.add(right1);
 //        this.add(right2);
-        this.degLabel = new DataLabel(this.width - 704, 596, 24, "角度", 36, 3, "°");
+        this.degLabel = new DataLabel(this.width - 876, 700, 32, "角度", 36, 3, "°");
         this.add(degLabel);
-        this.eDataLabel = new DataLabel(this.width - 396, 596, 24, "数据", 1.73F, 3, "μm");
+        this.eDataLabel = new DataLabel(this.width - 456, 700, 32, "数据", 1.73F, 3, "μm");
         this.add(eDataLabel);
-        this.cDataLabel = new DataLabel(this.width - 1012, 596, 24, "数据", 1.73F, 3, "μm");
+        this.cDataLabel = new DataLabel(this.width - 1312, 700, 32, "数据", 1.73F, 3, "μm");
         this.add(cDataLabel);
     }
 
     public void showEChart() {
         if (eLineChart == null) {
             lineChartInfoEndFace.setResultModel(data);
-            eLineChart = new TestLineChart(this.width - 616, 30, 600, 500, lineChartInfoEndFace);
+            eLineChart = new TestLineChart(this.width - 816, 30, 800, 600, lineChartInfoEndFace);
             startReadUsb(eLineChart, lineChartInfoEndFace, false);
         }
     }
@@ -154,7 +160,7 @@ public class EndFaceTabPanel extends TabPanel {
     public void showCChart() {
         if (cLineChart == null) {
             lineChartInfoCylinder.setResultModel(data);
-            cLineChart = new TestLineChart(this.width - 1232, 30, 600, 500, lineChartInfoCylinder);
+            cLineChart = new TestLineChart(this.width - 1632, 30, 800, 600, lineChartInfoCylinder);
             startReadUsb(cLineChart, lineChartInfoCylinder, true);
         }
     }

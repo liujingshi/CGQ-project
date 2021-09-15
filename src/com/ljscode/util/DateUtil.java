@@ -2,11 +2,13 @@ package com.ljscode.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class DateUtil {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final Calendar calendar = Calendar.getInstance();
 
     public static Date ToDate(String dateStr) {
         Date date = null;
@@ -42,4 +44,9 @@ public abstract class DateUtil {
         return date1.compareTo(date2) >= 0;
     }
 
+    public static Date AddDay(Date date, int num) {
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + num);
+        return calendar.getTime();
+    }
 }

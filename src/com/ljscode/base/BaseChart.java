@@ -32,7 +32,7 @@ public abstract class BaseChart {
     /**
      * 字体
      */
-    public static Font font = FontUtil.font;
+    public static Font font = FontUtil.LoadFont(32);
 
     /**
      * 设置XYPlot字体

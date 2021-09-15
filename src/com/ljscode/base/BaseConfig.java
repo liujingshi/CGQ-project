@@ -83,15 +83,19 @@ public class BaseConfig {
     /**
      * 文本框的高度
      */
-    public static int InputHeight = 24; // 文本框的高度
+    public static int InputHeight = 40; // 文本框的高度
     /**
      * 文本框组的宽度
      */
-    public static int InputGroupWidth = 400; // 文本框组的宽度
+    public static int InputGroupWidth = 600; // 文本框组的宽度
     /**
      * 文本框组的宽度
      */
     public static int InputGroupWidthSm = 200; // 文本框组的宽度
+    /**
+     * 文本框组的宽度
+     */
+    public static int InputGroupWidthLg = 1000; // 文本框组的宽度
     /**
      * 文本框组间距(小)
      */
