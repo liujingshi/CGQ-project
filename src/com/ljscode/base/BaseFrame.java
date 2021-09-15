@@ -1,6 +1,7 @@
 package com.ljscode.base;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * 窗体基类
@@ -63,6 +64,13 @@ public class BaseFrame extends JFrame {
         } else {  // 不是主窗体只进行销毁
             dispose();
         }
+    }
+
+    /**
+     * 最小化窗体
+     */
+    public void min() {
+        this.setExtendedState(Frame.ICONIFIED);
     }
 
     /**

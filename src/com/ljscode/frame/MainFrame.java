@@ -7,6 +7,7 @@ import com.ljscode.component.Div;
 import com.ljscode.component.Img;
 import com.ljscode.component.TextLabel;
 import com.ljscode.frame.btn.CloseBtn;
+import com.ljscode.frame.btn.MinBtn;
 import com.ljscode.frame.tab.Tab;
 
 /**
@@ -43,6 +44,9 @@ public class MainFrame extends BaseFrame {
         // 关闭按钮
         CloseBtn closeBtn = new CloseBtn(this);
         titleBox.add(closeBtn);
+        // 最小化按钮
+        MinBtn minBtn = new MinBtn(this);
+        titleBox.add(minBtn);
         // 标题文字
         TextLabel title = new TextLabel(90, 20, BaseConfig.Title, 33, BaseColor.Write);
         titleBox.add(title);

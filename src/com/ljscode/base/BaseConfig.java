@@ -34,11 +34,11 @@ public class BaseConfig {
     /**
      * 窗体宽度
      */
-    public static int FrameWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() - 100; // 窗体宽度
+    public static int FrameWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(); // 窗体宽度
     /**
      * 窗体高度
      */
-    public static int FrameHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 100; // 窗体高度
+    public static int FrameHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight(); // 窗体高度
     /**
      * tab按钮宽度
      */
