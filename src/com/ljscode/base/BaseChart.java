@@ -6,6 +6,7 @@ import com.ljscode.component.BarCustomRender;
 import com.ljscode.data.*;
 import com.ljscode.util.FontUtil;
 import com.ljscode.util.MathUtil;
+import org.jfree.chart.ChartColor;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
@@ -14,7 +15,9 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.PolarPlot;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.DefaultPolarItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -32,7 +35,7 @@ public abstract class BaseChart {
     /**
      * 字体
      */
-    public static Font font = FontUtil.LoadFont(32);
+    public static Font font = FontUtil.LoadFont(24);
 
     /**
      * 设置XYPlot字体
@@ -79,8 +82,26 @@ public abstract class BaseChart {
         plot.getDomainAxis().setTickLabelFont(font);
         plot.getRangeAxis().setLabelFont(font);
         plot.getRangeAxis().setTickLabelFont(font);
-        plot.getRangeAxis().setRange(-100.00, 100.00);
-        plot.setRenderer(barRenderer);
+        plot.getRangeAxis().setRange(-10.00, 10.00);
+        plot.setRenderer(0, barRenderer);
+        plot.setRangeGridlinePaint(ChartColor.BLACK);
+
+        LineAndShapeRenderer lineRenderer = new LineAndShapeRenderer();
+        plot.setRenderer(1, lineRenderer);
+        lineRenderer.setBaseShapesVisible(false);
+        lineRenderer.setSeriesPaint(0, ChartColor.RED);
+        lineRenderer.setSeriesPaint(1, ChartColor.RED);
+
+        DefaultCategoryDataset datasetLine = new DefaultCategoryDataset();
+        datasetLine.addValue(-1, "标准区间-", "柱面传感器");
+        datasetLine.addValue(-1, "标准区间-", "端面传感器");
+        datasetLine.addValue(-1, "标准区间-", "角度编码器");
+        datasetLine.addValue(1, "标准区间+", "柱面传感器");
+        datasetLine.addValue(1, "标准区间+", "端面传感器");
+        datasetLine.addValue(1, "标准区间+", "角度编码器");
+        plot.setDataset(0, dataset);
+        plot.setDataset(1, datasetLine);
+
         return chart;
     }
 
@@ -183,6 +204,12 @@ public abstract class BaseChart {
                 PlotOrientation.VERTICAL, true, true, false);
         XYPlot plot = SetXYChartFont(chart);
         plot.getRangeAxis().setRange(lineChartInfo.getRangeLower(), lineChartInfo.getRangeUpper());
+        plot.setRangeGridlinePaint(ChartColor.BLACK);
+        XYItemRenderer renderer = plot.getRenderer();
+        renderer.setSeriesPaint(0, ChartColor.RED);
+        renderer.setSeriesPaint(1, ChartColor.RED);
+        renderer.setSeriesPaint(2, ChartColor.GRAY);
+        renderer.setSeriesPaint(3, ChartColor.GREEN);
         return chart;
     }
 
@@ -262,10 +289,13 @@ public abstract class BaseChart {
         chart.getLegend().setItemFont(font);
         PolarPlot plot = (PolarPlot) chart.getPlot();
         plot.getAxis().setLabelFont(font);
-        plot.getAxis().setRange(0, 30);
+        plot.getAxis().setRange(0, 100);
         DefaultPolarItemRenderer renderer = new DefaultPolarItemRenderer();
         renderer.setShapesVisible(false);
         plot.setRenderer(renderer);
+        plot.setAngleGridlinePaint(ChartColor.BLACK);
+        plot.setRadiusGridlinePaint(ChartColor.BLACK);
+        plot.setAngleLabelFont(font);
         return chart;
     }
 }

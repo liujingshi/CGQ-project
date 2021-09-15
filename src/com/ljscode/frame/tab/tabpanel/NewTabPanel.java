@@ -87,7 +87,7 @@ public class NewTabPanel extends TabPanel {
         String title = String.format("%s第%d次测量数据", nowDate, nowTimes);
         inputGroup.setValue(title);
         times.setValue(Integer.toString(nowTimes));
-        inr.setValue(Integer.toString(10));
+        inr.setValue(Integer.toString(50));
     }
 
     public ResultModel getData() {

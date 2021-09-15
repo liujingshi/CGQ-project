@@ -1,7 +1,10 @@
 package com.ljscode.component;
 
+import com.ljscode.base.BaseColor;
+import org.jfree.chart.ChartColor;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Plot;
 
 /**
  * 图表容器
@@ -15,6 +18,9 @@ public class ChartBox extends ChartPanel {
      */
     public ChartBox(JFreeChart chart) {
         super(chart);
+        chart.setBorderPaint(ChartColor.WHITE);
+        Plot plot = chart.getPlot();
+        plot.setBackgroundPaint(ChartColor.WHITE);
     }
 
     /**

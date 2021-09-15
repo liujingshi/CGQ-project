@@ -39,7 +39,7 @@ public class CheckChart extends ChartBox {
         dataset.addValue(deg, "传感器校准", "角度编码器");
         JFreeChart chart = this.getChart();
         CategoryPlot plot = chart.getCategoryPlot();
-        plot.setDataset(dataset);
+        plot.setDataset(0, dataset);
     }
 
 }
