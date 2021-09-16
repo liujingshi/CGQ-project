@@ -172,31 +172,37 @@ public class SynthesizeTabPanel extends TabPanel {
                         pmd1.setData(itemModel.getFlatness());
                         txd1.setData(itemModel.getAxisFrom());
                         pxd1.setData(itemModel.getParallelism());
+                        break;
                     case 2:
                         yd2.setData(itemModel.getRoundness());
                         pmd2.setData(itemModel.getFlatness());
                         txd2.setData(itemModel.getAxisFrom());
                         pxd2.setData(itemModel.getParallelism());
+                        break;
                     case 3:
                         yd3.setData(itemModel.getRoundness());
                         pmd3.setData(itemModel.getFlatness());
                         txd3.setData(itemModel.getAxisFrom());
                         pxd3.setData(itemModel.getParallelism());
+                        break;
                     case 4:
                         yd4.setData(itemModel.getRoundness());
                         pmd4.setData(itemModel.getFlatness());
                         txd4.setData(itemModel.getAxisFrom());
                         pxd4.setData(itemModel.getParallelism());
+                        break;
                     case 5:
                         yd5.setData(itemModel.getRoundness());
                         pmd5.setData(itemModel.getFlatness());
                         txd5.setData(itemModel.getAxisFrom());
                         pxd5.setData(itemModel.getParallelism());
+                        break;
                     case 6:
                         yd0.setData(itemModel.getRoundness());
                         pmd0.setData(itemModel.getFlatness());
                         txd0.setData(itemModel.getAxisFrom());
                         pxd0.setData(itemModel.getParallelism());
+                        break;
                 }
             }
         }
