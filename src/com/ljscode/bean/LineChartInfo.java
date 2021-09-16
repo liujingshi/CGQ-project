@@ -61,7 +61,7 @@ public class LineChartInfo extends BaseBean {
         dataset.addSeries(rangeEndGoals);
         dataset.addSeries(realGoals);
         dataset.addSeries(goodGoals);
-        DataModel level1Data = resultModel.getLevel1Data();
+        DataModel level1Data = BeanUtil.GetLevel1Data(resultModel);
         if (level1Data != null && BeanUtil.GetCurrentItemModel(level1Data) != null) {
             Map<Integer, Double> level1GoodData = null;
             if (mode.equals("EndFace")) {

@@ -1,16 +1,17 @@
 package com.ljscode.bean;
 
-import com.ljscode.data.TestData;
+import com.ljscode.data.ResultModel;
+import com.ljscode.data.ResultModel;
 
 public class OutputDataset extends BaseBean {
 
     private MainData mainData;
-    private TestData testData;
+    private ResultModel testData;
 
     public OutputDataset() {
     }
 
-    public OutputDataset(MainData mainData, TestData testData) {
+    public OutputDataset(MainData mainData, ResultModel testData) {
         this.mainData = mainData;
         this.testData = testData;
     }
@@ -23,11 +24,11 @@ public class OutputDataset extends BaseBean {
         this.mainData = mainData;
     }
 
-    public TestData getTestData() {
+    public ResultModel getResultModel() {
         return testData;
     }
 
-    public void setTestData(TestData testData) {
+    public void setResultModel(ResultModel testData) {
         this.testData = testData;
     }
 }

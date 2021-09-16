@@ -140,7 +140,7 @@ public class SynthesizeTabPanel extends TabPanel {
     }
 
     public void setAllData() {
-        DataModel level1Data = data.getLevel1Data();
+        DataModel level1Data = BeanUtil.GetLevel1Data(data);
         if (level1Data != null) {
             ItemModel level1ItemData = BeanUtil.GetCurrentItemModel(level1Data);
             if (level1ItemData != null) {

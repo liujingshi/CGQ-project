@@ -4,7 +4,8 @@ import com.ljscode.base.BaseMouseListener;
 import com.ljscode.bean.OutputDataset;
 import com.ljscode.component.Btn;
 import com.ljscode.component.FileSelect;
-import com.ljscode.data.TestData;
+import com.ljscode.data.ResultModel;
+import com.ljscode.data.ResultModel;
 import com.ljscode.util.OutputUtil;
 
 /**
@@ -12,8 +13,8 @@ import com.ljscode.util.OutputUtil;
  */
 public class OutputTabPanel extends TabPanel {
 
-    private TestData data;
-    private BaseMouseListener<TestData> event;
+    private ResultModel data;
+    private BaseMouseListener<ResultModel> event;
 
     public OutputTabPanel() {
         super();
@@ -23,13 +24,13 @@ public class OutputTabPanel extends TabPanel {
             if (!path.equals("")) {
                 OutputDataset outputDataset = OutputUtil.ReadOutputDataset(path);
                 if (outputDataset != null) {
-                    data = outputDataset.getTestData();
+                    data = outputDataset.getResultModel();
                     event.mouseClicked(data);
                 }
             }
         });
         Btn lcw = new Btn(30, 120, 0, 0, "保存", Btn.BLUE, e -> {
-            FileSelect fileSelect = new FileSelect("另存为", "确定", ".test", data.getName(), this);
+            FileSelect fileSelect = new FileSelect("另存为", "确定", ".test", data.getDataName(), this);
             String path = fileSelect.read();
             if (!path.equals("")) {
                 OutputUtil.SaveOutputDataset(data, path);
@@ -39,11 +40,11 @@ public class OutputTabPanel extends TabPanel {
         this.add(lcw);
     }
 
-    public void setData(TestData data) {
+    public void setData(ResultModel data) {
         this.data = data;
     }
 
-    public void setEvent(BaseMouseListener<TestData> event) {
+    public void setEvent(BaseMouseListener<ResultModel> event) {
         this.event = event;
     }
 }

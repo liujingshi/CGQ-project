@@ -15,6 +15,7 @@ public class SearchConfig extends BaseBean {
     }
 
     public SearchConfig(String name, String startTimeStr, String endTimeStr) {
+        this();
         this.name = name;
         this.startTimeStr = startTimeStr;
         this.endTimeStr = endTimeStr;

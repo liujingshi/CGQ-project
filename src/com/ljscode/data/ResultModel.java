@@ -121,11 +121,6 @@ public class ResultModel {
         return data;
     }
 
-    public DataModel getLevel1Data() {
-        Optional<DataModel> dataModelStream = data.stream().filter(t -> t.getDataIndex() == 1).findFirst();
-        return dataModelStream.orElse(null);
-    }
-
     public void setData(ArrayList<DataModel> data) {
         this.data = data;
     }

@@ -146,9 +146,9 @@ public class Tab extends Div {
      */
     private void onClickOutputTab(IconTextBtn tab) {
         changeTab(tab, outputTabPanel);
-        outputTabPanel.setData(currentData);
+        outputTabPanel.setData(resultModel);
         outputTabPanel.setEvent(data -> {
-            this.currentData = data;
+            this.resultModel = data;
             onClickSynthesizeTab(synthesizeTabBtn);
         });
 //        if (currentData == null) { // 需要新建
