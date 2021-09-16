@@ -11,12 +11,12 @@ public class ItemModel {
     private String dataName; // 数据名称 第1次测量数据 椎壁测量数据
     private Date createTime; // 创建时间
     private int dataIndex; // 测量次数 数据排序
-    private HashMap<Double, Double> realDataCylinder; // 真实数据 柱面 侧面
+    private HashMap<Integer, Double> realDataCylinder; // 真实数据 柱面 侧面
     private ArrayList<Double> leastSquareMethodParamCylinder; // 最小二乘法参数 柱面 侧面
-    private HashMap<Double, Double> theoryDataCylinder; // 理论数据 柱面 侧面
-    private HashMap<Double, Double> realDataEndFace; // 真实数据 端面 顶面
+    private HashMap<Integer, Double> theoryDataCylinder; // 理论数据 柱面 侧面
+    private HashMap<Integer, Double> realDataEndFace; // 真实数据 端面 顶面
     private ArrayList<Double> leastSquareMethodParamEndFace; // 最小二乘法参数 端面 顶面
-    private HashMap<Double, Double> theoryDataEndFace; // 理论数据 端面 顶面
+    private HashMap<Integer, Double> theoryDataEndFace; // 理论数据 端面 顶面
     private double roundness; // 圆度
     private double flatness; // 平面度
     private double axisFrom; // 同心度
@@ -36,25 +36,25 @@ public class ItemModel {
         }
         theoryDataCylinder.clear(); // 理论数据
         theoryDataEndFace.clear(); // 理论数据
-        for (Map.Entry<Double, Double> entry : realDataCylinder.entrySet()) {
-            theoryDataCylinder.put(entry.getKey(), leastSquareMethodCylinder.fit(entry.getKey())); // 保存理论数据
+        for (int i = 0; i < 4096; i+=3) {
+            theoryDataCylinder.put(i, leastSquareMethodCylinder.fit(i)); // 保存理论数据
         }
-        for (Map.Entry<Double, Double> entry : realDataEndFace.entrySet()) {
-            theoryDataEndFace.put(entry.getKey(), leastSquareMethodEndFace.fit(entry.getKey())); // 保存理论数据
+        for (int i = 0; i < 4096; i+=3) {
+            theoryDataEndFace.put(i, leastSquareMethodEndFace.fit(i)); // 保存理论数据
         }
     }
 
     // 计算形位误差
-    public void calcFormError(Map<Double, Double> oneLevelRealDataCylinder, Map<Double, Double> oneLevelRealDataEndFace) {
+    public void calcFormError(Map<Integer, Double> oneLevelTheoryDataCylinder, Map<Integer, Double> oneLevelTheoryDataEndFace) {
         double roundnessBeat = MathUtil.calcBeat(realDataCylinder, theoryDataCylinder);
         roundness = roundnessBeat * 2;
         flatness = MathUtil.calcBeat(realDataEndFace, theoryDataEndFace);
-        if (oneLevelRealDataCylinder != null && oneLevelRealDataCylinder.size() == realDataCylinder.size()) {
-            double axisFromBeat = MathUtil.calcBeat(realDataCylinder, oneLevelRealDataCylinder);
+        if (oneLevelTheoryDataCylinder != null && oneLevelTheoryDataCylinder.size() == theoryDataCylinder.size()) {
+            double axisFromBeat = MathUtil.calcBeat(theoryDataCylinder, oneLevelTheoryDataCylinder);
             axisFrom = axisFromBeat * 2;
         }
-        if (oneLevelRealDataEndFace != null && oneLevelRealDataEndFace.size() == realDataEndFace.size()) {
-            parallelism = MathUtil.calcBeat(realDataEndFace, oneLevelRealDataEndFace);
+        if (oneLevelTheoryDataEndFace != null && oneLevelTheoryDataEndFace.size() == theoryDataEndFace.size()) {
+            parallelism = MathUtil.calcBeat(theoryDataEndFace, oneLevelTheoryDataEndFace);
         }
     }
 
@@ -79,7 +79,7 @@ public class ItemModel {
         this.dataName = String.format("第%d次测量数据", this.dataIndex);
     }
 
-    public ItemModel(String dataId, String dataName, Date createTime, int dataIndex, HashMap<Double, Double> realDataCylinder, ArrayList<Double> leastSquareMethodParamCylinder, HashMap<Double, Double> theoryDataCylinder, HashMap<Double, Double> realDataEndFace, ArrayList<Double> leastSquareMethodParamEndFace, HashMap<Double, Double> theoryDataEndFace, double roundness, double flatness, double axisFrom, double parallelism) {
+    public ItemModel(String dataId, String dataName, Date createTime, int dataIndex, HashMap<Integer, Double> realDataCylinder, ArrayList<Double> leastSquareMethodParamCylinder, HashMap<Integer, Double> theoryDataCylinder, HashMap<Integer, Double> realDataEndFace, ArrayList<Double> leastSquareMethodParamEndFace, HashMap<Integer, Double> theoryDataEndFace, double roundness, double flatness, double axisFrom, double parallelism) {
         this.dataId = dataId;
         this.dataName = dataName;
         this.createTime = createTime;
@@ -128,11 +128,11 @@ public class ItemModel {
         this.dataIndex = dataIndex;
     }
 
-    public HashMap<Double, Double> getRealDataCylinder() {
+    public HashMap<Integer, Double> getRealDataCylinder() {
         return realDataCylinder;
     }
 
-    public void setRealDataCylinder(HashMap<Double, Double> realDataCylinder) {
+    public void setRealDataCylinder(HashMap<Integer, Double> realDataCylinder) {
         this.realDataCylinder.clear();
         this.realDataCylinder.putAll(realDataCylinder);
     }
@@ -145,19 +145,19 @@ public class ItemModel {
         this.leastSquareMethodParamCylinder = leastSquareMethodParamCylinder;
     }
 
-    public HashMap<Double, Double> getTheoryDataCylinder() {
+    public HashMap<Integer, Double> getTheoryDataCylinder() {
         return theoryDataCylinder;
     }
 
-    public void setTheoryDataCylinder(HashMap<Double, Double> theoryDataCylinder) {
+    public void setTheoryDataCylinder(HashMap<Integer, Double> theoryDataCylinder) {
         this.theoryDataCylinder = theoryDataCylinder;
     }
 
-    public HashMap<Double, Double> getRealDataEndFace() {
+    public HashMap<Integer, Double> getRealDataEndFace() {
         return realDataEndFace;
     }
 
-    public void setRealDataEndFace(HashMap<Double, Double> realDataEndFace) {
+    public void setRealDataEndFace(HashMap<Integer, Double> realDataEndFace) {
         this.realDataEndFace.clear();
         this.realDataEndFace.putAll(realDataEndFace);
     }
@@ -170,11 +170,11 @@ public class ItemModel {
         this.leastSquareMethodParamEndFace = leastSquareMethodParamEndFace;
     }
 
-    public HashMap<Double, Double> getTheoryDataEndFace() {
+    public HashMap<Integer, Double> getTheoryDataEndFace() {
         return theoryDataEndFace;
     }
 
-    public void setTheoryDataEndFace(HashMap<Double, Double> theoryDataEndFace) {
+    public void setTheoryDataEndFace(HashMap<Integer, Double> theoryDataEndFace) {
         this.theoryDataEndFace = theoryDataEndFace;
     }
 

@@ -32,12 +32,12 @@ public abstract class MathUtil {
         return new LeastSquareMethod(xData, yData, ORDER);
     }
 
-    public static LeastSquareMethod CreateLeastSquareMethod(Map<Double, Double> realData) {
+    public static LeastSquareMethod CreateLeastSquareMethod(Map<Integer, Double> realData) {
         int size = realData.size();
         double[] angle = new double[size];
         double[] data = new double[size];
         int i = 0;
-        for (Map.Entry<Double, Double> entry : realData.entrySet()) {
+        for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
             angle[i] = entry.getKey();
             data[i] = entry.getValue();
             i++;
@@ -45,9 +45,13 @@ public abstract class MathUtil {
         return new LeastSquareMethod(angle, data, ORDER);
     }
 
-    public static double calcBeat(Map<Double, Double> aData, Map<Double, Double> bData) {
+    public static double calcBeat(Map<Integer, Double> aData, Map<Integer, Double> bData) {
         double beat = -999999999;
-        for (Map.Entry<Double, Double> entry : aData.entrySet()) {
+        System.out.println(aData.size());
+        System.out.println(bData.size());
+        for (Map.Entry<Integer, Double> entry : aData.entrySet()) {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
             double aValue = entry.getValue();
             double bValue = bData.get(entry.getKey());
             double iBeat = Math.abs(aValue - bValue);

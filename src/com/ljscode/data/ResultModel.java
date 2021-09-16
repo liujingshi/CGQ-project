@@ -25,7 +25,7 @@ public class ResultModel {
             ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataModel);
             if (itemModel != null) {
                 XYSeries goals = new XYSeries(dataModel.getDataName());
-                for (Map.Entry<Double, Double> entry : itemModel.getTheoryDataCylinder().entrySet()) {
+                for (Map.Entry<Integer, Double> entry : itemModel.getTheoryDataCylinder().entrySet()) {
                     goals.add(entry.getKey(), (Double) (entry.getValue() + theoryRadius));
                 }
                 dataset.addSeries(goals);
