@@ -40,11 +40,16 @@ public class EndFaceTabPanel extends TabPanel {
     private boolean isRead;
     private final TextLabel pointNum;
     private final TextLabel degNum;
-    private final TextLabel errorNum;
+    private final TextLabel errorNum1;
+    private final TextLabel errorNum2;
+    private double prevDeg;
+    private double totalDeg;
     private Set<Double> hasDef;
 
     public EndFaceTabPanel() {
         super();
+        prevDeg = -1;
+        totalDeg = 0;
         isRead = false;
         defaultDeg = new ArrayList<>();
         hasDef = new HashSet<>();
@@ -62,8 +67,10 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(degNum);
         pointNum = new TextLabel(rootX, rootY + 670, "已经采集的点位数量：1024 / 1024", 32, BaseColor.Black);
         this.add(pointNum);
-        errorNum = new TextLabel(rootX, rootY + 720, "超出标准范围的点位数量：1024", 32, BaseColor.Black);
-        this.add(errorNum);
+        errorNum1 = new TextLabel(rootX, rootY + 720, "柱面超出标准范围数量：1024", 32, BaseColor.Black);
+        this.add(errorNum1);
+        errorNum2 = new TextLabel(rootX, rootY + 770, "端面超出标准范围数量：1024", 32, BaseColor.Black);
+        this.add(errorNum2);
         this.tree = new DataTree(rootX, rootY + 50, 300, 500, data, selectedItemModel -> {
             if (selectedItemModel == null) {
                 this.eNewBtn.disabled();
@@ -83,6 +90,7 @@ public class EndFaceTabPanel extends TabPanel {
         tree.blur(e -> {
             eNewBtn.disabled();
         });
+
         this.e1TipBox = new TipBox(this.width - 1370, 750, 230, 80);
         this.add(e1TipBox);
         e1TipBox.setContent("旋钮1", false);
@@ -95,6 +103,7 @@ public class EndFaceTabPanel extends TabPanel {
         this.c2TipBox = new TipBox(this.width - 308, 750, 230, 80);
         this.add(c2TipBox);
         c2TipBox.setContent("旋钮4", true);
+
         this.eNewBtn = new Btn(rootX, rootY + 550, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectedItemData != null || selectedData != null) {
                 if (mode.equals("item") && selectedItemData != null) {
@@ -128,22 +137,6 @@ public class EndFaceTabPanel extends TabPanel {
         });
         this.add(rBtn);
 
-        Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
-            BaseUSBListener.RotateEndFace(1, false);
-        });
-        Btn left2 = new Btn(rootX + 290, rootY + 230, 80, 80, "2Left", Btn.GREEN, e -> {
-            BaseUSBListener.RotateEndFace(2, false);
-        });
-        Btn right1 = new Btn(rootX + 200, rootY + 320, 80, 80, "1Right", Btn.GREEN, e -> {
-            BaseUSBListener.RotateEndFace(1, true);
-        });
-        Btn right2 = new Btn(rootX + 290, rootY + 320, 80, 80, "2Right", Btn.GREEN, e -> {
-            BaseUSBListener.RotateEndFace(2, true);
-        });
-//        this.add(left1);
-//        this.add(left2);
-//        this.add(right1);
-//        this.add(right2);
         this.degLabel = new DataLabel(this.width - 876, 700, 32, "角度", 36, 3, "°");
         this.add(degLabel);
         this.eDataLabel = new DataLabel(this.width - 456, 700, 32, "数据", 1.73F, 3, "μm");
@@ -180,10 +173,25 @@ public class EndFaceTabPanel extends TabPanel {
                             cylinder = cylinder - zeroConfig.getCylinder();
                             endFace = endFace - zeroConfig.getEndFace();
                             degLabel.setData(deg);
+
+                            if (prevDeg < 0) {
+                                prevDeg = deg;
+                            } else {
+                                double xDeg = deg - prevDeg;
+                                if (xDeg < 0) {
+                                    xDeg = deg + 360 - prevDeg;
+                                }
+                                prevDeg = deg;
+                                totalDeg += xDeg;
+                            }
+                            degNum.setText(String.format("已经旋转的角度：%d / 360", Math.min((int)totalDeg, 360)));
+
                             if (isC) {
                                 cDataLabel.setData(cylinder);
+                                errorNum1.setText(String.format("柱面超出标准范围数量：%d", lineChartInfo.getErrorPointNumber()));
                             } else {
                                 eDataLabel.setData(endFace);
+                                errorNum2.setText(String.format("端面超出标准范围数量：%d", lineChartInfo.getErrorPointNumber()));
                             }
                             Optional<Double> xDeg = defaultDeg.stream().filter(t -> Math.abs(t - deg) <= 0.95).findFirst();
                             if (xDeg.isPresent()) {
@@ -196,7 +204,7 @@ public class EndFaceTabPanel extends TabPanel {
                                     lineChartInfo.calcGoodData();
                                 }
                                 lineChart.reload(lineChartInfo);
-                                pointNum.setText(Integer.toString(Math.min(hasDef.size(), 1024)));
+                                pointNum.setText(String.format("已经采集的点位数量：%d / 1024", Math.min(hasDef.size(), 1024)));
                             }
                         });
                     }

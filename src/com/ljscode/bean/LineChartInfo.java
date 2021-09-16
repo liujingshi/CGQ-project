@@ -4,6 +4,7 @@ import com.ljscode.data.DataModel;
 import com.ljscode.data.LeastSquareMethod;
 import com.ljscode.data.ResultModel;
 import com.ljscode.util.BeanUtil;
+import com.ljscode.util.ConfigUtil;
 import com.ljscode.util.DatasetUtil;
 import com.ljscode.util.MathUtil;
 import org.jfree.data.xy.XYSeries;
@@ -23,6 +24,26 @@ public class LineChartInfo extends BaseBean {
     private HashMap<Double, Double> goodData; // 理想数据
     private ArrayList<Double> leastSquareMethodParam; // 最小二乘法参数
     private String mode; // 柱面 端面 EndFace
+
+    public int getErrorPointNumber() {
+        RangeConfig rangeConfig = ConfigUtil.GetRangeConfig();
+        double start = 0;
+        double end = 0;
+        if (mode.equals("EndFace")) {
+            start = rangeConfig.getEndFaceStart();
+            end = rangeConfig.getEndFaceEnd();
+        } else {
+            start = rangeConfig.getCylinderStart();
+            end = rangeConfig.getCylinderEnd();
+        }
+        int result = 0;
+        for (Map.Entry<Double, Double> entry : realData.entrySet()) {
+            if (entry.getValue() < start || entry.getValue() > end) {
+                result++;
+            }
+        }
+        return result;
+    }
 
     public XYSeriesCollection CreateLineData() {
         XYSeriesCollection dataset = new XYSeriesCollection();

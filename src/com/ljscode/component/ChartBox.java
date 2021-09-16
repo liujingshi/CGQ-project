@@ -18,9 +18,13 @@ public class ChartBox extends ChartPanel {
      */
     public ChartBox(JFreeChart chart) {
         super(chart);
-        chart.setBorderPaint(ChartColor.WHITE);
+//        chart.setBackgroundPaint(ChartColor.WHITE);
+//        chart.setBackgroundImageAlpha(0);
         Plot plot = chart.getPlot();
         plot.setBackgroundPaint(ChartColor.WHITE);
+        plot.setBackgroundAlpha(0);
+        this.setBackground(null);
+        this.setOpaque(false);
     }
 
     /**
