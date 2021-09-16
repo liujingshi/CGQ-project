@@ -50,11 +50,14 @@ public class CheckTabPanel extends TabPanel {
                     Thread.sleep(5);
                     if (isRead) {
                         BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
-                            degV = deg;
+
+                            double trueDeg = deg * 360d / 4096d;
+
+                            degV = trueDeg;
                             cylinderV = cylinder;
                             endFaceV = endFace;
-                            checkChart.reload(cylinder, endFace, deg);
-                            degLabel.setData(deg);
+                            checkChart.reload(cylinder, endFace, degV);
+                            degLabel.setData(degV);
                             cylinderLabel.setData(cylinder);
                             endFaceLabel.setData(endFace);
                         });

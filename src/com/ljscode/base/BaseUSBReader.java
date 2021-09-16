@@ -21,7 +21,7 @@ public abstract class BaseUSBReader {
     private static final String BPXOrder = "r,0,0x02,0x28,0xFF\r";
     private static final String BPXOrders = "r,0x2000,5,0x24,0xFF,0xFF,0x00,0x28\r";
 
-    private static double degData;
+    private static int degData;
     private static double cylinderData;
     private static double endFaceData;
 
@@ -42,7 +42,7 @@ public abstract class BaseUSBReader {
             }
             Double[] readValue = dataCompound.read();
             if (readValue != null) {
-                event.ReadUSBData(Math.abs(readValue[0]), readValue[1], readValue[2]);
+                event.ReadUSBData((int)Math.abs(readValue[0]), readValue[1], readValue[2]);
             }
         }
     }
@@ -117,8 +117,6 @@ public abstract class BaseUSBReader {
                         e.printStackTrace();
                     }
                 }
-//
-//                StartRead();
             } catch (PortInUseException e) {
                 e.printStackTrace();
             }
@@ -134,20 +132,6 @@ public abstract class BaseUSBReader {
                 while (!(plcReader.clearStartTime() && bpxReader.clearStartTime())) {}
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-        }).start();
-    }
-
-    public static void StartRead() {
-        new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(20);
-                    BaseUSBListener.sendToPort(BaseUSBReader.portBPX, BaseUSBReader.BPXOrder.getBytes());
-                    BaseUSBListener.sendToPort(BaseUSBReader.portPLC, BaseUSBReader.PLCOrder);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }).start();
     }
@@ -201,84 +185,6 @@ public abstract class BaseUSBReader {
                 e.printStackTrace();
             }
         });
-    }
-
-    public static void AnalyzeBPXData(StringBuffer data) {
-        UsbConfig usbConfig = ConfigUtil.GetUsbConfig();
-        String[] arr = data.toString().split("\r\n");
-        boolean hasR = false;
-        double deg = 0;
-        double cylinder = 0;
-        double endFace = 0;
-        Map<String, String> usbPortMapping = new HashMap<>();
-        usbPortMapping.put("A", "0x00");
-        usbPortMapping.put("B", "0x01");
-        usbPortMapping.put("C", "0x02");
-        usbPortMapping.put("D", "0x03");
-        for (String nStr : arr) {
-            String[] nArr = nStr.split(",");
-            if (nArr[0].equals("r")) {
-                hasR = true;
-                String portStr = nArr[4];
-                String data0x = nArr[5].substring(2) + nArr[6].substring(2) + nArr[7].substring(2); // 补码16进制
-                String data2x = ParseSystemUtil.hexString2binaryString(data0x); // 补码
-                String data2xY = ""; // 源码
-                boolean isNegative = false;
-                if (data2x.charAt(0) == '1') {
-                    StringBuilder tmp = new StringBuilder();
-                    tmp.append("0");
-                    for (int i = 1; i < data2x.length(); i++) {
-                        tmp.append(data2x.charAt(i) == '1' ? '0' : '1');
-                    }
-                    data2xY = tmp.toString();
-                    isNegative = true;
-                } else {
-                    data2xY = data2x;
-                }
-                int data10x1 = Integer.parseInt(data2xY.substring(0, 4), 2);
-                double data10x2 = ParseSystemUtil.bin2DecXiao(data2xY.substring(4));
-                double data10x = data10x1 + data10x2;
-                data10x = isNegative ? 0 - data10x : data10x;
-                String cylinderPortStr = usbPortMapping.get(usbConfig.getCylinder());
-                String endFacePortStr = usbPortMapping.get(usbConfig.getEndFace());
-                if (portStr.equals(cylinderPortStr)) {
-                    cylinder = data10x * 1000;
-                }
-                if (portStr.equals(endFacePortStr)) {
-                    endFace = data10x * 1000;
-                }
-            }
-        }
-        if (hasR) {
-            BaseUSBReader.cylinderData = cylinder;
-            BaseUSBReader.endFaceData = endFace;
-        }
-    }
-
-    public static void AnalyzePLCData(StringBuffer data) {
-        String[] nArr = data.toString().split(" ");
-        if (nArr[0].equals("01") && nArr[1].equals("03") && nArr[2].equals("08")) {
-            String data0x = nArr[3] + nArr[4] + nArr[5] + nArr[6];
-            String data2x = ParseSystemUtil.hexString2binaryString(data0x); // 补码
-            String data2xY = ""; // 源码
-            boolean isNegative = false;
-            if (data2x.charAt(0) == '1') {
-                StringBuilder tmp = new StringBuilder();
-                tmp.append("0");
-                for (int i = 1; i < data2x.length(); i++) {
-                    tmp.append(data2x.charAt(i) == '1' ? '0' : '1');
-                }
-                data2xY = tmp.toString();
-                isNegative = true;
-            } else {
-                data2xY = data2x;
-            }
-            int data10x1 = Integer.parseInt(data2xY, 2);
-            double tDeg = (double)data10x1 * 360d / 4096d;
-            if (data10x1 <= 4096 && data10x1 >= -0.96) {
-                BaseUSBReader.degData = isNegative ? -tDeg : tDeg;
-            }
-        }
     }
 
     public static boolean Link(boolean adc) {

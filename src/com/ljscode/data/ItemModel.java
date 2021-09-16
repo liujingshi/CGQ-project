@@ -14,9 +14,11 @@ public class ItemModel {
     private HashMap<Integer, Double> realDataCylinder; // 真实数据 柱面 侧面
     private ArrayList<Double> leastSquareMethodParamCylinder; // 最小二乘法参数 柱面 侧面
     private HashMap<Integer, Double> theoryDataCylinder; // 理论数据 柱面 侧面
+    private HashMap<Integer, Double> theoryRealDataCylinder; // 理论真实数据 柱面 侧面
     private HashMap<Integer, Double> realDataEndFace; // 真实数据 端面 顶面
     private ArrayList<Double> leastSquareMethodParamEndFace; // 最小二乘法参数 端面 顶面
     private HashMap<Integer, Double> theoryDataEndFace; // 理论数据 端面 顶面
+    private HashMap<Integer, Double> theoryRealDataEndFace; // 理论真实数据 端面 侧面
     private double roundness; // 圆度
     private double flatness; // 平面度
     private double axisFrom; // 同心度
@@ -36,6 +38,12 @@ public class ItemModel {
         }
         theoryDataCylinder.clear(); // 理论数据
         theoryDataEndFace.clear(); // 理论数据
+        for (Map.Entry<Integer, Double> entry : realDataCylinder.entrySet()) {
+            theoryRealDataCylinder.put(entry.getKey(), leastSquareMethodCylinder.fit(entry.getKey())); // 保存理论真实数据
+        }
+        for (Map.Entry<Integer, Double> entry : realDataEndFace.entrySet()) {
+            theoryRealDataEndFace.put(entry.getKey(), leastSquareMethodEndFace.fit(entry.getKey())); // 保存理论真实数据
+        }
         for (int i = 0; i < 4096; i+=3) {
             theoryDataCylinder.put(i, leastSquareMethodCylinder.fit(i)); // 保存理论数据
         }
@@ -46,9 +54,9 @@ public class ItemModel {
 
     // 计算形位误差
     public void calcFormError(Map<Integer, Double> oneLevelTheoryDataCylinder, Map<Integer, Double> oneLevelTheoryDataEndFace) {
-        double roundnessBeat = MathUtil.calcBeat(realDataCylinder, theoryDataCylinder);
+        double roundnessBeat = MathUtil.calcBeat(realDataCylinder, theoryRealDataCylinder);
         roundness = roundnessBeat * 2;
-        flatness = MathUtil.calcBeat(realDataEndFace, theoryDataEndFace);
+        flatness = MathUtil.calcBeat(realDataEndFace, theoryRealDataEndFace);
         if (oneLevelTheoryDataCylinder != null && oneLevelTheoryDataCylinder.size() == theoryDataCylinder.size()) {
             double axisFromBeat = MathUtil.calcBeat(theoryDataCylinder, oneLevelTheoryDataCylinder);
             axisFrom = axisFromBeat * 2;
@@ -67,6 +75,8 @@ public class ItemModel {
         realDataEndFace = new HashMap<>();
         leastSquareMethodParamEndFace = new ArrayList<>();
         theoryDataEndFace = new HashMap<>();
+        theoryRealDataEndFace = new HashMap<>();
+        theoryRealDataCylinder = new HashMap<>();
         roundness = 0;
         flatness = 0;
         axisFrom = 0;
@@ -79,7 +89,12 @@ public class ItemModel {
         this.dataName = String.format("第%d次测量数据", this.dataIndex);
     }
 
-    public ItemModel(String dataId, String dataName, Date createTime, int dataIndex, HashMap<Integer, Double> realDataCylinder, ArrayList<Double> leastSquareMethodParamCylinder, HashMap<Integer, Double> theoryDataCylinder, HashMap<Integer, Double> realDataEndFace, ArrayList<Double> leastSquareMethodParamEndFace, HashMap<Integer, Double> theoryDataEndFace, double roundness, double flatness, double axisFrom, double parallelism) {
+    public ItemModel(String dataId, String dataName, Date createTime, int dataIndex,
+                     HashMap<Integer, Double> realDataCylinder, ArrayList<Double> leastSquareMethodParamCylinder,
+                     HashMap<Integer, Double> theoryDataCylinder, HashMap<Integer, Double> realDataEndFace,
+                     ArrayList<Double> leastSquareMethodParamEndFace, HashMap<Integer, Double> theoryDataEndFace,
+                     HashMap<Integer, Double> theoryRealDataEndFace, HashMap<Integer, Double> theoryRealDataCylinder,
+                     double roundness, double flatness, double axisFrom, double parallelism) {
         this.dataId = dataId;
         this.dataName = dataName;
         this.createTime = createTime;
@@ -90,6 +105,8 @@ public class ItemModel {
         this.realDataEndFace = realDataEndFace;
         this.leastSquareMethodParamEndFace = leastSquareMethodParamEndFace;
         this.theoryDataEndFace = theoryDataEndFace;
+        this.theoryRealDataEndFace = theoryRealDataEndFace;
+        this.theoryRealDataCylinder = theoryRealDataCylinder;
         this.roundness = roundness;
         this.flatness = flatness;
         this.axisFrom = axisFrom;
@@ -208,6 +225,22 @@ public class ItemModel {
 
     public void setParallelism(double parallelism) {
         this.parallelism = parallelism;
+    }
+
+    public HashMap<Integer, Double> getTheoryRealDataCylinder() {
+        return theoryRealDataCylinder;
+    }
+
+    public void setTheoryRealDataCylinder(HashMap<Integer, Double> theoryRealDataCylinder) {
+        this.theoryRealDataCylinder = theoryRealDataCylinder;
+    }
+
+    public HashMap<Integer, Double> getTheoryRealDataEndFace() {
+        return theoryRealDataEndFace;
+    }
+
+    public void setTheoryRealDataEndFace(HashMap<Integer, Double> theoryRealDataEndFace) {
+        this.theoryRealDataEndFace = theoryRealDataEndFace;
     }
 
     @Override

@@ -47,11 +47,7 @@ public abstract class MathUtil {
 
     public static double calcBeat(Map<Integer, Double> aData, Map<Integer, Double> bData) {
         double beat = -999999999;
-        System.out.println(aData.size());
-        System.out.println(bData.size());
         for (Map.Entry<Integer, Double> entry : aData.entrySet()) {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
             double aValue = entry.getValue();
             double bValue = bData.get(entry.getKey());
             double iBeat = Math.abs(aValue - bValue);

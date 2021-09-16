@@ -280,7 +280,7 @@ public abstract class BaseUSBListener {
     }
 
     public static void ReadUSBData(BaseReadUSBData event) {
-        event.ReadUSBData(degData, cylinderData, endFaceData);
+//        event.ReadUSBData(degData, cylinderData, endFaceData);
 //        new Thread(() -> {
 //            while (Lock) {
 //                try {
@@ -386,8 +386,8 @@ public abstract class BaseUSBListener {
                 }
             }
         }
-        if (hasR && event != null)
-            event.ReadUSBData(deg, cylinder, endFace);
+        if (hasR && event != null) {}
+//            event.ReadUSBData(deg, cylinder, endFace);
     }
 
     public static void InitUSELister() {

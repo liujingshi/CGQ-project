@@ -210,6 +210,7 @@ public abstract class BaseChart {
         renderer.setSeriesPaint(1, ChartColor.RED);
         renderer.setSeriesPaint(2, ChartColor.GRAY);
         renderer.setSeriesPaint(3, ChartColor.GREEN);
+        renderer.setSeriesPaint(4, ChartColor.YELLOW);
         return chart;
     }
 

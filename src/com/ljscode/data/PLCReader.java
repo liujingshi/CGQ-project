@@ -65,7 +65,7 @@ public class PLCReader {
             this.value = dValue;
             // 发送给数据合成者
             if (startTime > 0) {
-                dataCompound.send(dTimestamp - startTime, dValue * 360 / 4096);
+                dataCompound.send(dTimestamp - startTime, dValue);
             }
         }
     }

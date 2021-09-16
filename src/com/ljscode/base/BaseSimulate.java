@@ -5,7 +5,7 @@ import com.ljscode.data.DataCompound;
 public abstract class BaseSimulate {
 
     public static DataCompound dataCompound;
-    public static double deg;
+    public static int deg;
     public static double cylinder;
     public static double endFace;
     public static double time;
@@ -25,8 +25,8 @@ public abstract class BaseSimulate {
                 try {
                     Thread.sleep(20);
                     if (isRun) {
-                        double d = deg + Math.random() * 0.5;
-                        if (d > 360) {
+                        int d = deg + (int)(Math.random() * 10);
+                        if (d >= 4096) {
                             deg = 0;
                         } else {
                             deg = d;
@@ -45,8 +45,8 @@ public abstract class BaseSimulate {
                 try {
                     Thread.sleep(40);
                     time += 40;
-                    cylinder = 40 * Math.sin(Math.toRadians(deg) + (Math.random() * 1 - 0.5));
-                    endFace = 30 * Math.sin(Math.toRadians(deg) + (Math.random() * 1 - 0.5));
+                    cylinder = 40 * Math.sin(Math.toRadians(deg * 360d / 4096d) + (Math.random() * 1 - 0.5));
+                    endFace = 30 * Math.sin(Math.toRadians(deg * 360d / 4096d) + (Math.random() * 1 - 0.5));
                     dataCompound.send(time, deg);
                     dataCompound.send(time, cylinder, endFace);
                 } catch (InterruptedException e) {

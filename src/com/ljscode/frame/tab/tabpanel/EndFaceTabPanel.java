@@ -18,7 +18,6 @@ import java.util.*;
  */
 public class EndFaceTabPanel extends TabPanel {
 
-    private final List<Double> defaultDeg;
     private final TextLabel currentDataNameLabel;
     private final LineChartInfo lineChartInfoCylinder;
     private final LineChartInfo lineChartInfoEndFace;
@@ -44,18 +43,14 @@ public class EndFaceTabPanel extends TabPanel {
     private final TextLabel errorNum2;
     private double prevDeg;
     private double totalDeg;
-    private Set<Double> hasDef;
+    private Set<Integer> hasDef;
 
     public EndFaceTabPanel() {
         super();
         prevDeg = -1;
         totalDeg = 0;
         isRead = false;
-        defaultDeg = new ArrayList<>();
         hasDef = new HashSet<>();
-        for (int cDeg = 0; cDeg < 2048; cDeg += 1) {
-            defaultDeg.add((double) cDeg * 360d / 2048d);
-        }
         RangeConfig rangeConfig = ConfigUtil.GetRangeConfig();
         this.lineChartInfoCylinder = new LineChartInfo("柱面数据实时图", rangeConfig.getCylinderStart(), rangeConfig.getCylinderEnd(), -100, 100, data, "Cylinder");
         this.lineChartInfoEndFace = new LineChartInfo("端面数据实时图", rangeConfig.getEndFaceStart(), rangeConfig.getEndFaceEnd(), -100, 100, data, "EndFace");
@@ -172,16 +167,19 @@ public class EndFaceTabPanel extends TabPanel {
                         BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
                             cylinder = cylinder - zeroConfig.getCylinder();
                             endFace = endFace - zeroConfig.getEndFace();
-                            degLabel.setData(deg);
+
+                            double trueReg = deg * 360d / 4096d;
+
+                            degLabel.setData(trueReg);
 
                             if (prevDeg < 0) {
-                                prevDeg = deg;
+                                prevDeg = trueReg;
                             } else {
-                                double xDeg = deg - prevDeg;
+                                double xDeg = trueReg - prevDeg;
                                 if (xDeg < 0) {
-                                    xDeg = deg + 360 - prevDeg;
+                                    xDeg = trueReg + 360 - prevDeg;
                                 }
-                                prevDeg = deg;
+                                prevDeg = trueReg;
                                 totalDeg += xDeg;
                             }
                             degNum.setText(String.format("已经旋转的角度：%d / 360", Math.min((int)totalDeg, 360)));
@@ -193,19 +191,18 @@ public class EndFaceTabPanel extends TabPanel {
                                 eDataLabel.setData(endFace);
                                 errorNum2.setText(String.format("端面超出标准范围数量：%d", lineChartInfo.getErrorPointNumber()));
                             }
-                            Optional<Double> xDeg = defaultDeg.stream().filter(t -> Math.abs(t - deg) <= 0.95).findFirst();
-                            if (xDeg.isPresent()) {
-                                Double mapDeg = xDeg.get();
-                                if (!hasDef.contains(mapDeg) && hasDef.size() < 1024) {
-                                    hasDef.add(mapDeg);
-                                }
-                                lineChartInfo.getRealData().put(mapDeg, isC ? cylinder : endFace);
-                                if (lineChartInfo.getRealData().size() > 50) {
-                                    lineChartInfo.calcGoodData();
-                                }
-                                lineChart.reload(lineChartInfo);
-                                pointNum.setText(String.format("已经采集的点位数量：%d / 1024", Math.min(hasDef.size(), 1024)));
+
+                            if (!hasDef.contains(deg) && hasDef.size() < 1024) {
+                                hasDef.add(deg);
                             }
+
+                            lineChartInfo.getRealData().put(deg, isC ? cylinder : endFace);
+                            if (lineChartInfo.getRealData().size() > 50) {
+                                lineChartInfo.calcGoodData();
+                            }
+                            lineChart.reload(lineChartInfo);
+                            pointNum.setText(String.format("已经采集的点位数量：%d / 1024", Math.min(hasDef.size(), 1024)));
+
                         });
                     }
                 } catch (InterruptedException e) {

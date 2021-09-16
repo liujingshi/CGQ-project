@@ -26,7 +26,7 @@ public class ResultModel {
             if (itemModel != null) {
                 XYSeries goals = new XYSeries(dataModel.getDataName());
                 for (Map.Entry<Integer, Double> entry : itemModel.getTheoryDataCylinder().entrySet()) {
-                    goals.add(entry.getKey(), (Double) (entry.getValue() + theoryRadius));
+                    goals.add(entry.getKey()  * 360d / 4096d, (Double) (entry.getValue() + theoryRadius));
                 }
                 dataset.addSeries(goals);
             }
