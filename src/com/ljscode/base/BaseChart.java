@@ -82,7 +82,7 @@ public abstract class BaseChart {
         plot.getDomainAxis().setTickLabelFont(font);
         plot.getRangeAxis().setLabelFont(font);
         plot.getRangeAxis().setTickLabelFont(font);
-        plot.getRangeAxis().setRange(-10.00, 10.00);
+        plot.getRangeAxis().setRange(-50.00, 50.00);
         plot.setRenderer(0, barRenderer);
         plot.setRangeGridlinePaint(ChartColor.BLACK);
 

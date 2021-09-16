@@ -283,24 +283,9 @@ public abstract class BaseUSBReader {
 
     public static boolean Link(boolean adc) {
         if (adc) {
-            float cylinder1 = 300;
-            float endFace1 = 300;
-            new Thread(() -> {
-                while (true) {
-                    for (int i = 0; i <= 4096; i++) {
-                        try {
-                            Thread.sleep(5);
-                            degData = (double)i * 360d / 4096d;
-                            double data1 = (cylinder1 * Math.sin(Math.toRadians(degData) + (Math.random() * cylinder1 / 800 - cylinder1 / 1600)));
-                            double data2 = (endFace1 * Math.sin(Math.toRadians(degData) + (Math.random() * endFace1 / 800 - endFace1 / 1600)));
-                            cylinderData = data1;
-                            endFaceData = data2;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
+            dataCompound = new DataCompound();
+            BaseSimulate.dataCompound = dataCompound;
+            BaseSimulate.start();
             return true;
         } else {
             return Link();

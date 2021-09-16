@@ -1,9 +1,6 @@
 package com.ljscode.frame.tab.tabpanel;
 
-import com.ljscode.base.BaseColor;
-import com.ljscode.base.BaseConfig;
-import com.ljscode.base.BaseUSBListener;
-import com.ljscode.base.BaseUSBReader;
+import com.ljscode.base.*;
 import com.ljscode.bean.LineChartInfo;
 import com.ljscode.bean.RangeConfig;
 import com.ljscode.bean.ZeroConfig;
@@ -125,6 +122,12 @@ public class EndFaceTabPanel extends TabPanel {
         });
         this.add(eNewBtn);
         eNewBtn.disabled();
+
+        Btn rBtn = new Btn(rootX + 230, rootY + 550, 230, 60, "转动圆盘", Btn.GREEN, e -> {
+            BaseSimulate.isRun = !BaseSimulate.isRun;
+        });
+        this.add(rBtn);
+
         Btn left1 = new Btn(rootX + 200, rootY + 230, 80, 80, "1Left", Btn.GREEN, e -> {
             BaseUSBListener.RotateEndFace(1, false);
         });
