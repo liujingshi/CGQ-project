@@ -6,6 +6,7 @@ import com.ljscode.bean.RangeConfig;
 import com.ljscode.bean.ZeroConfig;
 import com.ljscode.component.*;
 import com.ljscode.data.*;
+import com.ljscode.frame.ErrorListFrame;
 import com.ljscode.util.BeanUtil;
 import com.ljscode.util.ConfigUtil;
 import com.ljscode.util.DatasetUtil;
@@ -39,8 +40,8 @@ public class EndFaceTabPanel extends TabPanel {
     private boolean isRead;
     private final TextLabel pointNum;
     private final TextLabel degNum;
-    private final TextLabel errorNum1;
-    private final TextLabel errorNum2;
+    private final Btn errorNum1;
+    private final Btn errorNum2;
     private double prevDeg;
     private double totalDeg;
     private Set<Integer> hasDef;
@@ -62,9 +63,15 @@ public class EndFaceTabPanel extends TabPanel {
         this.add(degNum);
         pointNum = new TextLabel(rootX, rootY + 670, "已经采集的点位数量：1024 / 1024", 32, BaseColor.Black);
         this.add(pointNum);
-        errorNum1 = new TextLabel(rootX, rootY + 720, "柱面超出标准范围数量：1024", 32, BaseColor.Black);
+        errorNum1 = new Btn(rootX, rootY + 720, 450, 60, "柱面超出标准范围数量：1024", Btn.RED, e -> {
+            ErrorListFrame errorListFrame = new ErrorListFrame("柱面超出标准范围的点", lineChartInfoCylinder);
+            errorListFrame.showMe();
+        });
         this.add(errorNum1);
-        errorNum2 = new TextLabel(rootX, rootY + 770, "端面超出标准范围数量：1024", 32, BaseColor.Black);
+        errorNum2 = new Btn(rootX, rootY + 790, 450, 60, "端面超出标准范围数量：1024", Btn.RED, e -> {
+            ErrorListFrame errorListFrame = new ErrorListFrame("端面超出标准范围的点", lineChartInfoEndFace);
+            errorListFrame.showMe();
+        });
         this.add(errorNum2);
         this.tree = new DataTree(rootX, rootY + 50, 300, 500, data, selectedItemModel -> {
             if (selectedItemModel == null) {
@@ -86,18 +93,21 @@ public class EndFaceTabPanel extends TabPanel {
             eNewBtn.disabled();
         });
 
-        this.e1TipBox = new TipBox(this.width - 1370, 750, 230, 80);
-        this.add(e1TipBox);
-        e1TipBox.setContent("旋钮1", false);
-        this.c1TipBox = new TipBox(this.width - 1124, 750, 230, 80);
+
+        this.c1TipBox = new TipBox(this.width - 1370, 750, 230, 80);
         this.add(c1TipBox);
-        c1TipBox.setContent("旋钮2", true);
-        this.e2TipBox = new TipBox(this.width - 554, 750, 230, 80);
-        this.add(e2TipBox);
-        e2TipBox.setContent("旋钮3", false);
-        this.c2TipBox = new TipBox(this.width - 308, 750, 230, 80);
+        c1TipBox.setContent("旋钮1", true);
+        this.c2TipBox = new TipBox(this.width - 1124, 750, 230, 80);
         this.add(c2TipBox);
-        c2TipBox.setContent("旋钮4", true);
+        c2TipBox.setContent("旋钮2", true);
+
+        this.e1TipBox = new TipBox(this.width - 554, 750, 230, 80);
+        this.add(e1TipBox);
+        e1TipBox.setContent("旋钮3", false);
+        this.e2TipBox = new TipBox(this.width - 308, 750, 230, 80);
+        this.add(e2TipBox);
+        e2TipBox.setContent("旋钮4", false);
+
 
         this.eNewBtn = new Btn(rootX, rootY + 550, 230, 60, "保存数据", Btn.BLUE, e -> {
             if (selectedItemData != null || selectedData != null) {
@@ -199,6 +209,14 @@ public class EndFaceTabPanel extends TabPanel {
                             lineChartInfo.getRealData().put(deg, isC ? cylinder : endFace);
                             if (lineChartInfo.getRealData().size() > 50) {
                                 lineChartInfo.calcGoodData();
+                                boolean[] guide = lineChartInfo.getGuide();
+                                if (isC) {
+                                    c1TipBox.setContent("旋钮1", guide[0]);
+                                    c2TipBox.setContent("旋钮2", guide[1]);
+                                } else {
+                                    e1TipBox.setContent("旋钮3", guide[0]);
+                                    e2TipBox.setContent("旋钮4", guide[1]);
+                                }
                             }
                             lineChart.reload(lineChartInfo);
                             pointNum.setText(String.format("已经采集的点位数量：%d / 1024", Math.min(hasDef.size(), 1024)));

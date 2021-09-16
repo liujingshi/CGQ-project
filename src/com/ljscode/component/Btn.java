@@ -21,6 +21,14 @@ public class Btn extends TextLabel {
      * 绿色
      */
     public static final String GREEN = "Green";
+    /**
+     * 黄色
+     */
+    public static final String YELLOW = "YELLOW";
+    /**
+     * 红色
+     */
+    public static final String RED = "RED";
 
     /**
      * 字体大小
@@ -63,7 +71,15 @@ public class Btn extends TextLabel {
             case Btn.GREEN:
                 this.color = BaseColor.Green;
                 this.hoverColor = BaseColor.HoverGreen;
-            break;
+                break;
+            case Btn.YELLOW:
+                this.color = BaseColor.Yellow;
+                this.hoverColor = BaseColor.HoverYellow;
+                break;
+            case Btn.RED:
+                this.color = BaseColor.Red;
+                this.hoverColor = BaseColor.HoverRed;
+                break;
         }
         this.setOpaque(true);
         this.setBackground(this.color);

@@ -19,7 +19,7 @@ public class TabPanel extends Div {
      */
     public TabPanel() {
         super(0, BaseConfig.TabBtnHeight, BaseConfig.FrameWidth - 10,
-                BaseConfig.FrameHeight - BaseConfig.ScaleHeight(0.104) - 9 - BaseConfig.TabBtnHeight, BaseColor.Write);
+                BaseConfig.FrameHeight - 81 - 9 - BaseConfig.TabBtnHeight, BaseColor.Write);
         this.hideMe();
         this.width = this.getWidth();
         this.height = this.getHeight();

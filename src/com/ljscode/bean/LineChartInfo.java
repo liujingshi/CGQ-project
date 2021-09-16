@@ -25,6 +25,23 @@ public class LineChartInfo extends BaseBean {
     private ArrayList<Double> leastSquareMethodParam; // 最小二乘法参数
     private String mode; // 柱面 端面 EndFace
 
+    public boolean[] getGuide() {
+        if (leastSquareMethodParam.size() == 0) {
+            calcGoodData();
+        }
+        boolean[] result = {false, false};
+        if (leastSquareMethodParam.get(0) * 100000 > 0 && leastSquareMethodParam.get(0) * 100000 > 100000) {
+            result[1] = false;
+        } else if (leastSquareMethodParam.get(0) * 100000 < 0 && leastSquareMethodParam.get(0) * 100000 < -100000) {
+            result[1] = true;
+        } else if (leastSquareMethodParam.get(2) * 100000 > 0 && leastSquareMethodParam.get(3) * 100000 < 0 && leastSquareMethodParam.get(4) * 100000 > 0 && leastSquareMethodParam.get(5) * 100000 < 0) {
+            result[0] = false;
+        } else if (leastSquareMethodParam.get(2) * 100000 < 0 && leastSquareMethodParam.get(3) * 100000 > 0 && leastSquareMethodParam.get(4) * 100000 < 0 && leastSquareMethodParam.get(5) * 100000 > 0) {
+            result[0] = true;
+        }
+        return result;
+    }
+
     public int getErrorPointNumber() {
         RangeConfig rangeConfig = ConfigUtil.GetRangeConfig();
         double start = 0;
@@ -40,6 +57,26 @@ public class LineChartInfo extends BaseBean {
         for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
             if (entry.getValue() < start || entry.getValue() > end) {
                 result++;
+            }
+        }
+        return result;
+    }
+
+    public List<Object[]> getErrorPoint() {
+        RangeConfig rangeConfig = ConfigUtil.GetRangeConfig();
+        double start = 0;
+        double end = 0;
+        if (mode.equals("EndFace")) {
+            start = rangeConfig.getEndFaceStart();
+            end = rangeConfig.getEndFaceEnd();
+        } else {
+            start = rangeConfig.getCylinderStart();
+            end = rangeConfig.getCylinderEnd();
+        }
+        List<Object[]> result = new ArrayList<>();
+        for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
+            if (entry.getValue() < start || entry.getValue() > end) {
+                result.add(new Object[]{entry.getKey() * 360d / 4096d, entry.getValue(), entry.getValue() < start ? start - entry.getValue() : entry.getValue() - end});
             }
         }
         return result;

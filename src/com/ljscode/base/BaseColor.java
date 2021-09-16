@@ -38,7 +38,7 @@ public class BaseColor {
     /**
      * 深红色
      */
-    public static Color HoverRed = color(new int[]{217, 0, 27}); // Hover红色
+    public static Color HoverRed = color(new int[]{168, 7, 26}); // Hover红色
     /**
      * 白色
      */
