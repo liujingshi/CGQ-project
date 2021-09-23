@@ -140,7 +140,7 @@ public class EndFaceTabPanel extends TabPanel {
         Btn rBtn = new Btn(rootX + 230, rootY + 550, 230, 60, "转动圆盘", Btn.GREEN, e -> {
             BaseSimulate.isRun = !BaseSimulate.isRun;
         });
-        this.add(rBtn);
+//        this.add(rBtn);
 
         this.degLabel = new DataLabel(this.width - 876, 700, 32, "角度", 36, 3, "°");
         this.add(degLabel);

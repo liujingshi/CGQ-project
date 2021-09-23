@@ -47,10 +47,15 @@ public class SettingTabPanel extends TabPanel {
             tip.setForeground(BaseColor.Blue);
             tip.setVisible(true);
             new Thread(() -> {
-                if (BaseUSBReader.Link(true)) {
-                    tip.setText("连接成功！");
-                    tip.setForeground(BaseColor.Green);
-                    tip.setVisible(true);
+                if (BaseUSBReader.Link(false)) {
+                    try {
+                        Thread.sleep(6000);
+                        tip.setText("连接成功！");
+                        tip.setForeground(BaseColor.Green);
+                        tip.setVisible(true);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                 } else {
                     tip.setText("连接失败，请检查设置以及设备连接情况！");
                     tip.setForeground(BaseColor.Red);
