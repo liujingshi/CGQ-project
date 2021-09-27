@@ -192,6 +192,7 @@ public abstract class BaseUSBReader {
             dataCompound = new DataCompound();
             BaseSimulate.dataCompound = dataCompound;
             BaseSimulate.start();
+            BaseSimulate.isRun = true;
             return true;
         } else {
             return Link();

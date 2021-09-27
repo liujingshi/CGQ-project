@@ -30,7 +30,7 @@ public class BaseConfig {
     /**
      * 标题
      */
-    public static String Title = "低压涡轮盘心跳动测量系统"; // 标题
+    public static String Title = "低压涡轮转静子装配工艺装备测试系统"; // 标题
     /**
      * 窗体宽度
      */

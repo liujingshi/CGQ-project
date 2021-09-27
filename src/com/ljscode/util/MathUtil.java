@@ -45,6 +45,11 @@ public abstract class MathUtil {
         return new LeastSquareMethod(angle, data, ORDER);
     }
 
+    public static LeastSquareMethod CreateLeastSquareMethod(List<Double> c) {
+        return new LeastSquareMethod(c);
+    }
+
+
     public static double calcBeat(Map<Integer, Double> aData, Map<Integer, Double> bData) {
         double beat = -999999999;
         for (Map.Entry<Integer, Double> entry : aData.entrySet()) {

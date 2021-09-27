@@ -19,6 +19,11 @@ public class ErrorListFrame extends BaseFrame {
     private void setContent(LineChartInfo lineChartInfo) {
         List<Object[]> errorList = lineChartInfo.getErrorPoint();
 
+        JScrollPane jScrollPane = new JScrollPane();
+        jScrollPane.setLayout(null);
+        jScrollPane.setBounds(0, 0, this.getWidth(), this.getHeight());
+        this.add(jScrollPane);
+
         // 表头（列名）
         Object[] columnNames = {"角度", "数据(μm)", "距离标准(μm)"};
 
@@ -33,8 +38,8 @@ public class ErrorListFrame extends BaseFrame {
         table.setBounds(0, 0, 800, 600);
         JTableHeader jTableHeader = table.getTableHeader();
         jTableHeader.setBounds(0, 0, 800, 30);
-        this.add(jTableHeader);
-        this.add(table);
+        jScrollPane.add(jTableHeader);
+        jScrollPane.add(table);
     }
 
 }

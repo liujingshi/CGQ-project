@@ -1,5 +1,7 @@
 package com.ljscode.data;
 
+import java.util.List;
+
 /**
  * 最小二乘法
  */
@@ -10,6 +12,17 @@ public class LeastSquareMethod {
     private final double[] weight;
     private final int n;
     private double[] coefficient;
+
+    public LeastSquareMethod(List<Double> coefficient) {
+        n= 6;
+        x = new double[] {};
+        y = new double[] {};
+        weight = new double[] {};
+        this.coefficient = new double[6];
+        for (int i = 0; i < coefficient.size() && i < 6; i++) {
+            this.coefficient[i] = coefficient.get(i);
+        }
+    }
 
     /**
      * 构造方法
@@ -59,6 +72,10 @@ public class LeastSquareMethod {
      */
     public double[] getCoefficient() {
         return coefficient;
+    }
+
+    public void setCoefficient(double[] coefficient) {
+        this.coefficient = coefficient;
     }
 
     /**

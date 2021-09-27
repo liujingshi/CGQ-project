@@ -19,38 +19,41 @@ import java.util.*;
  */
 public class EndFaceTabPanel extends TabPanel {
 
-    private final TextLabel currentDataNameLabel;
-    private final LineChartInfo lineChartInfoCylinder;
-    private final LineChartInfo lineChartInfoEndFace;
-    private final DataTree tree;
-    private final TipBox e1TipBox;
-    private final TipBox c1TipBox;
-    private final TipBox e2TipBox;
-    private final TipBox c2TipBox;
-    private final DataLabel degLabel;
-    private final DataLabel eDataLabel;
-    private final DataLabel cDataLabel;
-    private Btn eNewBtn;
+    private final TextLabel currentDataNameLabel; // 数据名称
+    private final LineChartInfo lineChartInfoCylinder; // 柱面数据
+    private final LineChartInfo lineChartInfoEndFace; // 端面数据
+    private final DataTree tree; // 数据数
+    private final TipBox e1TipBox; // 提示e1
+    private final TipBox c1TipBox; // 提示c1
+    private final TipBox e2TipBox; // 提示e2
+    private final TipBox c2TipBox; // 提示c2
+    private final DataLabel degLabel; // 角度label
+    private final DataLabel eDataLabel; // 端面label
+    private final DataLabel cDataLabel; // 柱面label
+    private Btn eNewBtn; // 新建按钮
     private ResultModel data; // 数据
-    private ItemModel selectedItemData;
-    private DataModel selectedData;
+    private ItemModel selectedItemData; // 选择的数据
+    private DataModel selectedData; // 选择的数据集
     private String mode; // 模式 item arr
-    private TestLineChart eLineChart;
-    private TestLineChart cLineChart;
+    private TestLineChart eLineChart; // 端面Chart
+    private TestLineChart cLineChart; // 柱面Chart
     private boolean isRead;
-    private final TextLabel pointNum;
-    private final TextLabel degNum;
-    private final Btn errorNum1;
-    private final Btn errorNum2;
-    private double prevDeg;
-    private double totalDeg;
-    private Set<Integer> hasDef;
+    private final TextLabel pointNum; // 点数已采集
+    private final TextLabel degNum; // 角度已采集
+    private final Btn errorNum1; // 错误1按钮
+    private final Btn errorNum2; // 错误2按钮
+    private double prevDeg; // 前一个角度
+    private double totalDeg; // 总角度
+    private Set<Integer> hasDef; // 已经采集的角度
+    private Btn isOneBtn; // 相对1级盘 按钮
+    private boolean isOne; // 相对1级盘？
 
     public EndFaceTabPanel() {
         super();
         prevDeg = -1;
         totalDeg = 0;
         isRead = false;
+        isOne = false;
         hasDef = new HashSet<>();
         RangeConfig rangeConfig = ConfigUtil.GetRangeConfig();
         this.lineChartInfoCylinder = new LineChartInfo("柱面数据实时图", rangeConfig.getCylinderStart(), rangeConfig.getCylinderEnd(), -100, 100, data, "Cylinder");
@@ -142,12 +145,42 @@ public class EndFaceTabPanel extends TabPanel {
         });
 //        this.add(rBtn);
 
+        Btn zeroBtn = new Btn(this.width / 2 + 80, this.height - 122, 230, 60, "清空数据", Btn.RED, e -> {
+            clear();
+        });
+        this.add(zeroBtn);
+
+        isOneBtn = new Btn(this.width / 2 + 20, this.height - 322, 230, 60, "相对回转轴线", Btn.GREEN, e -> {
+            if (isOne) {
+                isOneBtn.setText("相对回转轴线");
+                isOne = false;
+            } else {
+                ItemModel oneData = BeanUtil.GetLevel1ItemData(data);
+                if (oneData != null) {
+                    isOneBtn.setText("相对1级盘");
+                    isOne = true;
+                }
+            }
+        });
+        this.add(isOneBtn);
+
         this.degLabel = new DataLabel(this.width - 876, 700, 32, "角度", 36, 3, "°");
         this.add(degLabel);
         this.eDataLabel = new DataLabel(this.width - 456, 700, 32, "数据", 1.73F, 3, "μm");
         this.add(eDataLabel);
         this.cDataLabel = new DataLabel(this.width - 1312, 700, 32, "数据", 1.73F, 3, "μm");
         this.add(cDataLabel);
+    }
+
+    public void clear() {
+        eNewBtn.disabled();
+        hasDef.clear();
+        prevDeg = -1;
+        totalDeg = 0;
+        isOne = false;
+        isOneBtn.setText("相对回转轴线");
+        lineChartInfoCylinder.clear();
+        lineChartInfoEndFace.clear();
     }
 
     public void showEChart() {
@@ -177,6 +210,8 @@ public class EndFaceTabPanel extends TabPanel {
                         BaseUSBReader.ReadUSBData((deg, cylinder, endFace) -> {
                             cylinder = cylinder - zeroConfig.getCylinder();
                             endFace = endFace - zeroConfig.getEndFace();
+
+                            lineChartInfo.setOne(isOne);
 
                             double trueReg = deg * 360d / 4096d;
 

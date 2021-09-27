@@ -23,4 +23,12 @@ public abstract class BeanUtil {
         return dataModelStream.orElse(null);
     }
 
+    public static ItemModel GetLevel1ItemData(ResultModel resultModel) {
+        DataModel dataModel = GetLevel1Data(resultModel);
+        if (dataModel != null) {
+            return GetCurrentItemModel(dataModel);
+        }
+        return null;
+    }
+
 }

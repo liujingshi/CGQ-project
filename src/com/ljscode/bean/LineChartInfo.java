@@ -1,6 +1,7 @@
 package com.ljscode.bean;
 
 import com.ljscode.data.DataModel;
+import com.ljscode.data.ItemModel;
 import com.ljscode.data.LeastSquareMethod;
 import com.ljscode.data.ResultModel;
 import com.ljscode.util.BeanUtil;
@@ -20,23 +21,28 @@ public class LineChartInfo extends BaseBean {
     private double rangeLower; // y轴范围低
     private double rangeUpper; // y轴范围高
     private HashMap<Integer, Double> realData; // 实时数据
+    private HashMap<Integer, Double> realOneData; // 实时数据
     private ResultModel resultModel; // 当前数据
     private HashMap<Integer, Double> goodData; // 理想数据
+    private HashMap<Integer, Double> goodOneData; // 理想数据
     private ArrayList<Double> leastSquareMethodParam; // 最小二乘法参数
+    private ArrayList<Double> leastSquareMethodParamOne; // 最小二乘法参数
     private String mode; // 柱面 端面 EndFace
+    private boolean isOne;
 
     public boolean[] getGuide() {
-        if (leastSquareMethodParam.size() == 0) {
+        ArrayList<Double> params = isOne ? leastSquareMethodParamOne : leastSquareMethodParam;
+        if (params.size() == 0) {
             calcGoodData();
         }
         boolean[] result = {false, false};
-        if (leastSquareMethodParam.get(0) * 100000 > 0 && leastSquareMethodParam.get(0) * 100000 > 100000) {
+        if (params.get(0) * 100000 > 0 && params.get(0) * 100000 > 100000) {
             result[1] = false;
-        } else if (leastSquareMethodParam.get(0) * 100000 < 0 && leastSquareMethodParam.get(0) * 100000 < -100000) {
+        } else if (params.get(0) * 100000 < 0 && params.get(0) * 100000 < -100000) {
             result[1] = true;
-        } else if (leastSquareMethodParam.get(2) * 100000 > 0 && leastSquareMethodParam.get(3) * 100000 < 0 && leastSquareMethodParam.get(4) * 100000 > 0 && leastSquareMethodParam.get(5) * 100000 < 0) {
+        } else if (params.get(2) * 100000 > 0 && params.get(3) * 100000 < 0 && params.get(4) * 100000 > 0 && params.get(5) * 100000 < 0) {
             result[0] = false;
-        } else if (leastSquareMethodParam.get(2) * 100000 < 0 && leastSquareMethodParam.get(3) * 100000 > 0 && leastSquareMethodParam.get(4) * 100000 < 0 && leastSquareMethodParam.get(5) * 100000 > 0) {
+        } else if (params.get(2) * 100000 < 0 && params.get(3) * 100000 > 0 && params.get(4) * 100000 < 0 && params.get(5) * 100000 > 0) {
             result[0] = true;
         }
         return result;
@@ -54,7 +60,7 @@ public class LineChartInfo extends BaseBean {
             end = rangeConfig.getCylinderEnd();
         }
         int result = 0;
-        for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
+        for (Map.Entry<Integer, Double> entry : (isOne ? realOneData : realData).entrySet()) {
             if (entry.getValue() < start || entry.getValue() > end) {
                 result++;
             }
@@ -74,7 +80,7 @@ public class LineChartInfo extends BaseBean {
             end = rangeConfig.getCylinderEnd();
         }
         List<Object[]> result = new ArrayList<>();
-        for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
+        for (Map.Entry<Integer, Double> entry : (isOne ? realOneData : realData).entrySet()) {
             if (entry.getValue() < start || entry.getValue() > end) {
                 result.add(new Object[]{entry.getKey() * 360d / 4096d, entry.getValue(), entry.getValue() < start ? start - entry.getValue() : entry.getValue() - end});
             }
@@ -88,33 +94,39 @@ public class LineChartInfo extends BaseBean {
         XYSeries rangeEndGoals = new XYSeries("理论区间止");
         XYSeries realGoals = new XYSeries("真实数据");
         XYSeries goodGoals = new XYSeries("拟合数据");
-        for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
+        for (Map.Entry<Integer, Double> entry : (isOne ? realOneData : realData).entrySet()) {
             rangeStartGoals.add(entry.getKey() * 360d / 4096d, (Double) rangeStart);
             rangeEndGoals.add(entry.getKey() * 360d / 4096d, (Double) rangeEnd);
             realGoals.add(entry.getKey() * 360d / 4096d, entry.getValue());
-            goodGoals.add(entry.getKey() * 360d / 4096d, goodData.get(entry.getKey()));
+            goodGoals.add(entry.getKey() * 360d / 4096d, (isOne ? goodOneData : goodData).get(entry.getKey()));
         }
         dataset.addSeries(rangeStartGoals);
         dataset.addSeries(rangeEndGoals);
         dataset.addSeries(realGoals);
         dataset.addSeries(goodGoals);
-        DataModel level1Data = BeanUtil.GetLevel1Data(resultModel);
-        if (level1Data != null && BeanUtil.GetCurrentItemModel(level1Data) != null) {
-            Map<Integer, Double> level1GoodData = null;
-            if (mode.equals("EndFace")) {
-                level1GoodData = BeanUtil.GetCurrentItemModel(level1Data).getTheoryDataEndFace();
-            } else {
-                level1GoodData = BeanUtil.GetCurrentItemModel(level1Data).getTheoryDataCylinder();
-            }
-            if (level1GoodData != null && level1GoodData.size() > 0) {
-                XYSeries level1Goals = new XYSeries(level1Data.getDataName());
-                for (Map.Entry<Integer, Double> entry : level1GoodData.entrySet()) {
-                    level1Goals.add(entry.getKey() * 360d / 4096d, entry.getValue());
-                }
-                dataset.addSeries(level1Goals);
-            }
-        }
+//        DataModel level1Data = BeanUtil.GetLevel1Data(resultModel);
+//        if (level1Data != null && BeanUtil.GetCurrentItemModel(level1Data) != null) {
+//            Map<Integer, Double> level1GoodData = null;
+//            if (mode.equals("EndFace")) {
+//                level1GoodData = BeanUtil.GetCurrentItemModel(level1Data).getTheoryDataEndFace();
+//            } else {
+//                level1GoodData = BeanUtil.GetCurrentItemModel(level1Data).getTheoryDataCylinder();
+//            }
+//            if (level1GoodData != null && level1GoodData.size() > 0) {
+//                XYSeries level1Goals = new XYSeries(level1Data.getDataName());
+//                for (Map.Entry<Integer, Double> entry : level1GoodData.entrySet()) {
+//                    level1Goals.add(entry.getKey() * 360d / 4096d, entry.getValue());
+//                }
+//                dataset.addSeries(level1Goals);
+//            }
+//        }
         return dataset;
+    }
+
+    public void clear() {
+        realData.clear();
+        goodData.clear();
+        leastSquareMethodParam.clear();
     }
 
     // 计算理论数据
@@ -128,12 +140,33 @@ public class LineChartInfo extends BaseBean {
         for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
             goodData.put(entry.getKey(), leastSquareMethod.fit(entry.getKey())); // 保存理论数据
         }
+
+        ItemModel oneData = BeanUtil.GetLevel1ItemData(resultModel);
+        if (oneData != null) {
+            LeastSquareMethod leastSquareMethodOne = mode.equals("EndFace") ? MathUtil.CreateLeastSquareMethod(oneData.getLeastSquareMethodParamEndFace()) : MathUtil.CreateLeastSquareMethod(oneData.getLeastSquareMethodParamCylinder());
+            for (Map.Entry<Integer, Double> entry : realData.entrySet()) {
+                realOneData.put(entry.getKey(), entry.getValue() - leastSquareMethodOne.fit(entry.getKey())); // 保存理论数据
+            }
+
+            leastSquareMethod = MathUtil.CreateLeastSquareMethod(realOneData);
+            leastSquareMethodParamOne.clear();
+            for (double param : leastSquareMethod.getCoefficient()) {
+                leastSquareMethodParamOne.add(param);
+            }
+            goodOneData.clear();
+            for (Map.Entry<Integer, Double> entry : realOneData.entrySet()) {
+                goodOneData.put(entry.getKey(), leastSquareMethod.fit(entry.getKey()));
+            }
+        }
     }
 
     public LineChartInfo() {
         realData = new HashMap<>();
+        realOneData = new HashMap<>();
         leastSquareMethodParam = new ArrayList<>();
+        leastSquareMethodParamOne = new ArrayList<>();
         goodData = new HashMap<>();
+        goodOneData = new HashMap<>();
     }
 
     public LineChartInfo(String title, double rangeStart, double rangeEnd, double rangeLower, double rangeUpper, ResultModel resultModel, String mode) {
@@ -240,5 +273,37 @@ public class LineChartInfo extends BaseBean {
 
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    public HashMap<Integer, Double> getRealOneData() {
+        return realOneData;
+    }
+
+    public void setRealOneData(HashMap<Integer, Double> realOneData) {
+        this.realOneData = realOneData;
+    }
+
+    public HashMap<Integer, Double> getGoodOneData() {
+        return goodOneData;
+    }
+
+    public void setGoodOneData(HashMap<Integer, Double> goodOneData) {
+        this.goodOneData = goodOneData;
+    }
+
+    public boolean isOne() {
+        return isOne;
+    }
+
+    public void setOne(boolean one) {
+        isOne = one;
+    }
+
+    public ArrayList<Double> getLeastSquareMethodParamOne() {
+        return leastSquareMethodParamOne;
+    }
+
+    public void setLeastSquareMethodParamOne(ArrayList<Double> leastSquareMethodParamOne) {
+        this.leastSquareMethodParamOne = leastSquareMethodParamOne;
     }
 }
