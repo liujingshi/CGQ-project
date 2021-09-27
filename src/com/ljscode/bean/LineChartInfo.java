@@ -125,8 +125,11 @@ public class LineChartInfo extends BaseBean {
 
     public void clear() {
         realData.clear();
+        realOneData.clear();
         goodData.clear();
+        goodOneData.clear();
         leastSquareMethodParam.clear();
+        leastSquareMethodParamOne.clear();
     }
 
     // 计算理论数据

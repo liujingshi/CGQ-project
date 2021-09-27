@@ -45,8 +45,8 @@ public abstract class BaseSimulate {
                 try {
                     Thread.sleep(40);
                     time += 40;
-                    cylinder = 40 * Math.sin(Math.toRadians(deg * 360d / 4096d) + (Math.random() * 1 - 0.5));
-                    endFace = 30 * Math.sin(Math.toRadians(deg * 360d / 4096d) + (Math.random() * 1 - 0.5));
+                    cylinder = 40 * Math.cos(Math.toRadians(deg * 360d / 4096d) + (Math.random() * 1 - 0.5));
+                    endFace = 30 * Math.cos(Math.toRadians(deg * 360d / 4096d) + (Math.random() * 1 - 0.5));
                     dataCompound.send(time, deg);
                     dataCompound.send(time, cylinder, endFace);
                 } catch (InterruptedException e) {
