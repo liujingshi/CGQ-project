@@ -26,7 +26,37 @@ public class ResultModel {
             if (itemModel != null) {
                 XYSeries goals = new XYSeries(dataModel.getDataName());
                 for (Map.Entry<Integer, Double> entry : itemModel.getTheoryDataCylinder().entrySet()) {
-                    goals.add(entry.getKey()  * 360d / 4096d, (Double) (entry.getValue() + theoryRadius));
+                    goals.add(entry.getKey() * 360d / 4096d, (Double) (entry.getValue() + theoryRadius));
+                }
+                dataset.addSeries(goals);
+            }
+        }
+        return dataset;
+    }
+
+    public XYSeriesCollection CreatePolarDataCalc() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        for (DataModel dataModel : data) {
+            ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataModel);
+            if (itemModel != null) {
+                XYSeries goals = new XYSeries(dataModel.getDataName());
+                int rc = 50;
+                List<double[]> points = new ArrayList<>();
+                for (Map.Entry<Integer, Double> entry : itemModel.getRealDataCylinder().entrySet()) {
+                    points.add(new double[] { (rc+entry.getValue())*Math.cos(Math.PI*entry.getKey()/2048d), (rc+entry.getValue())*Math.sin(Math.PI*entry.getKey()/2048d) });
+                }
+                LeastSquareMethod leastSquareMethod = new LeastSquareMethod(points, 0);
+                double minX = leastSquareMethod.angleA - rc;
+                double maxX = leastSquareMethod.angleA + rc;
+                List<double[]> downList = new ArrayList<>();
+                for (double x = minX+0.1; x < maxX; x+=0.1) {
+                    double y1 = Math.sqrt(Math.pow(leastSquareMethod.angleR, 2)-Math.pow(x-leastSquareMethod.angleA, 2)) + leastSquareMethod.angleB;
+                    double y2 = leastSquareMethod.angleB - Math.sqrt(Math.pow(leastSquareMethod.angleR, 2)-Math.pow(x-leastSquareMethod.angleA, 2));
+                    goals.add(Math.atan2(y1, x) * 180 / Math.PI, Math.sqrt(y1*y1+x*x));
+                    downList.add(new double[] { Math.atan2(y2, x) * 180 / Math.PI, Math.sqrt(y2*y2+x*x) });
+                }
+                for (int i = downList.size() - 1; i >= 0; i--) {
+                    goals.add(downList.get(i)[0], downList.get(i)[1]);
                 }
                 dataset.addSeries(goals);
             }

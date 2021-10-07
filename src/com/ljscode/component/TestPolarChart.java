@@ -43,7 +43,8 @@ public class TestPolarChart extends ChartBox {
     }
 
     public void reload(ResultModel data) {
-        XYDataset dataset = data.CreatePolarData();
+//        XYDataset dataset = data.CreatePolarData();
+        XYDataset dataset = data.CreatePolarDataCalc();
         JFreeChart chart = this.getChart();
         PolarPlot plot = (PolarPlot) chart.getPlot();
         plot.setDataset(dataset);

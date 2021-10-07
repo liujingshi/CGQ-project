@@ -280,7 +280,8 @@ public abstract class BaseChart {
     }
 
     public static JFreeChart CreatePolarChart(ResultModel resultModel) {
-        XYSeriesCollection dataset = resultModel.CreatePolarData();
+//        XYSeriesCollection dataset = resultModel.CreatePolarData();
+        XYSeriesCollection dataset = resultModel.CreatePolarDataCalc();
         JFreeChart chart = ChartFactory.createPolarChart("综合数据", dataset, true, true, false);
         return setPolarFont(chart);
     }

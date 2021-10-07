@@ -53,16 +53,24 @@ public class ItemModel {
     }
 
     // 计算形位误差
-    public void calcFormError(Map<Integer, Double> oneLevelTheoryDataCylinder, Map<Integer, Double> oneLevelTheoryDataEndFace) {
-        double roundnessBeat = MathUtil.calcBeat(realDataCylinder, theoryRealDataCylinder);
-        roundness = roundnessBeat * 2;
-        flatness = MathUtil.calcBeat(realDataEndFace, theoryRealDataEndFace);
-        if (oneLevelTheoryDataCylinder != null && oneLevelTheoryDataCylinder.size() == theoryDataCylinder.size()) {
-            double axisFromBeat = MathUtil.calcBeat(theoryDataCylinder, oneLevelTheoryDataCylinder);
-            axisFrom = axisFromBeat * 2;
+    public void calcFormError(Map<Integer, Double> oneLevelRealDataCylinder, Map<Integer, Double> oneLevelRealDataEndFace) {
+//        double roundnessBeat = MathUtil.calcBeat(realDataCylinder, theoryRealDataCylinder);
+//        roundness = roundnessBeat * 2;
+//        flatness = MathUtil.calcBeat(realDataEndFace, theoryRealDataEndFace);
+//        if (oneLevelTheoryDataCylinder != null && oneLevelTheoryDataCylinder.size() == theoryDataCylinder.size()) {
+//            double axisFromBeat = MathUtil.calcBeat(theoryDataCylinder, oneLevelTheoryDataCylinder);
+//            axisFrom = axisFromBeat * 2;
+//        }
+//        if (oneLevelTheoryDataEndFace != null && oneLevelTheoryDataEndFace.size() == theoryDataEndFace.size()) {
+//            parallelism = MathUtil.calcBeat(theoryDataEndFace, oneLevelTheoryDataEndFace);
+//        }
+        roundness = MathUtil.calcAngleBeat(realDataCylinder);
+        if (oneLevelRealDataCylinder != null) {
+            axisFrom = MathUtil.calcAngleBeat(realDataCylinder, oneLevelRealDataCylinder);
         }
-        if (oneLevelTheoryDataEndFace != null && oneLevelTheoryDataEndFace.size() == theoryDataEndFace.size()) {
-            parallelism = MathUtil.calcBeat(theoryDataEndFace, oneLevelTheoryDataEndFace);
+        flatness = MathUtil.calcPlantBeat(realDataEndFace);
+        if (oneLevelRealDataEndFace != null) {
+            parallelism = MathUtil.calcPlantBeat(realDataEndFace, oneLevelRealDataEndFace, true);
         }
     }
 

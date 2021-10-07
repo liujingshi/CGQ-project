@@ -148,7 +148,7 @@ public class SynthesizeTabPanel extends TabPanel {
                     if (dataItem.getDataIndex() != 1) {
                         ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataItem);
                         if (itemModel != null) {
-                            itemModel.calcFormError(level1ItemData.getTheoryDataCylinder(), level1ItemData.getTheoryDataEndFace());
+                            itemModel.calcFormError(level1ItemData.getRealDataCylinder(), level1ItemData.getRealDataEndFace());
                         }
                     } else {
                         level1ItemData.calcFormError(null, null);

@@ -7,12 +7,216 @@ import java.util.List;
  */
 public class LeastSquareMethod {
 
-    private final double[] x;
-    private final double[] y;
-    private final double[] weight;
-    private final int n;
+    private double[] x;
+    private double[] y;
+    private double[] weight;
+    private int n;
     private double[] coefficient;
+    public double angleA;
+    public double angleB;
+    public double angleR;
+    public double planeA;
+    public double planeB;
+    public double planeC;
+    public double planeD;
 
+    public LeastSquareMethod(List<double[]> points, int angle) {
+        angleA = 0d;
+        angleB = 0d;
+        angleR = 0d;
+
+        double sum_x = 0d, sum_y = 0d;
+        double sum_x2 = 0d, sum_y2 = 0d;
+        double sum_x3 = 0d, sum_y3 = 0d;
+        double sum_xy = 0d, sum_x1y2 = 0d, sum_x2y1 = 0d;
+
+        int N = points.size();
+        for (double[] point : points) {
+            double x = point[0];
+            double y = point[1];
+            double x2 = x * x;
+            double y2 = y * y;
+            sum_x += x;
+            sum_y += y;
+            sum_x2 += x2;
+            sum_y2 += y2;
+            sum_x3 += x2 * x;
+            sum_y3 += y2 * y;
+            sum_xy += x * y;
+            sum_x1y2 += x * y2;
+            sum_x2y1 += x2 * y;
+        }
+
+        double C, D, E, G, H;
+        double a, b, c;
+
+        C = N * sum_x2 - sum_x * sum_x;
+        D = N * sum_xy - sum_x * sum_y;
+        E = N * sum_x3 + N * sum_x1y2 - (sum_x2 + sum_y2) * sum_x;
+        G = N * sum_y2 - sum_y * sum_y;
+        H = N * sum_x2y1 + N * sum_y3 - (sum_x2 + sum_y2) * sum_y;
+        a = (H * D - E * G) / (C * G - D * D);
+        b = (H * C - E * D) / (D * D - G * C);
+        c = -(a * sum_x + b * sum_y + sum_x2 + sum_y2) / N;
+
+        angleA = a / (-2);
+        angleB = b / (-2);
+        angleR = Math.sqrt(a * a + b * b - 4 * c) / 2;
+    }
+
+    public LeastSquareMethod(List<double[]> points, boolean plane) {
+        double[] x = new double[points.size()];
+        double[] y = new double[points.size()];
+        double[] z = new double[points.size()];
+        for (int i = 0; i < points.size(); i++) {
+            x[i] = points.get(i)[0];
+            y[i] = points.get(i)[1];
+            z[i] = points.get(i)[2];
+        }
+        int n = x.length;
+        double[][] A = new double[n][3];
+        double[][] E = new double[n][1];
+        for (int i = 0; i < n; i++)
+        {
+            A[i][0] = x[i] - z[i];
+            A[i][1] = y[i] - z[i];
+            A[i][2] = 1;
+            E[i][0] = -z[i];
+        }
+        double[][] AT = MatrixInver(A);
+        double[][] ATxA = MatrixMultiply(AT, A);
+        double[][] OPPAxTA = MatrixOpp(ATxA);
+        double[][] OPPATAxAT = MatrixMultiply(OPPAxTA, AT);
+        double[][] DP = MatrixMultiply(OPPATAxAT, E);
+        planeA= DP[0][0];
+        planeB = DP[1][0];
+        planeC = 1 - planeA - planeB;
+        planeD = DP[2][0];
+    }
+
+    /// <summary>
+    /// 矩阵转置
+    /// </summary>
+    /// <param name="matrix"></param>
+    /// <returns></returns>
+    private static double[][] MatrixInver(double[][] matrix)
+    {
+        double[][] result = new double[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix[0].length; i++)
+            for (int j = 0; j < matrix.length; j++)
+                result[i][j] = matrix[j][i];
+        return result;
+    }
+    
+    /// <summary>
+    /// 矩阵相乘
+    /// </summary>
+    /// <param name="matrixA"></param>
+    /// <param name="matrixB"></param>
+    /// <returns></returns>
+    private static double[][] MatrixMultiply(double[][] matrixA,double[][] matrixB)
+    {
+        double[][] result = new double[matrixA.length][matrixB[0].length];
+        for (int i = 0; i < matrixA.length; i++)
+        {
+            for (int j = 0; j < matrixB[0].length; j++)
+            {
+                result[i][j] = 0;
+                for (int k = 0; k < matrixB.length; k++)
+                {
+                    result[i][j] += matrixA[i][k] * matrixB[k][j];
+                }
+            }
+        }
+        return result;
+    }
+    
+    /// <summary>
+    /// 矩阵的逆
+    /// </summary>
+    /// <param name="matrix"></param>
+    /// <returns></returns>
+    private static double[][] MatrixOpp(double[][]matrix)
+    {
+        double X = 1 / MatrixSurplus(matrix);
+        double[][]matrixB = new double[matrix.length][matrix[0].length];
+        double[][]matrixSP = new double[matrix.length][matrix[0].length];
+        double[][]matrixAB = new double[matrix.length][matrix[0].length];
+
+        for (int i = 0; i < matrix.length; i++)
+            for (int j = 0; j < matrix[0].length; j++)
+            {
+                for (int m = 0; m < matrix.length; m++)
+                    for (int n = 0; n < matrix[0].length; n++)
+                        matrixB[m][n] = matrix[m][n];
+                {
+                    for (int x = 0; x < matrix[0].length; x++)
+                        matrixB[i][x] = 0;
+                    for (int y = 0; y < matrix.length; y++)
+                        matrixB[y][j] = 0;
+                    matrixB[i][j] = 1;
+                    matrixSP[i][j] = MatrixSurplus(matrixB);
+                    matrixAB[i][j] = X * matrixSP[i][j];
+                }
+            }
+        return MatrixInver(matrixAB);
+    }
+    
+    /// <summary>
+    /// 矩阵的行列式的值  
+    /// </summary>
+    /// <param name="A"></param>
+    /// <returns></returns>
+    public static double MatrixSurplus(double[][] matrix)
+    {
+        double X = -1;
+        double[][] a = matrix;
+        int i, j, k, p, r, m, n;
+        m = a.length;
+        n = a[0].length;
+        double temp = 1, temp1 = 1, s = 0, s1 = 0;
+
+        if (n == 2)
+        {
+            for (i = 0; i < m; i++)
+                for (j = 0; j < n; j++)
+                    if ((i + j) % 2 > 0) temp1 *= a[i][j];
+                        else temp *= a[i][j];
+            X = temp - temp1;
+        }
+        else
+        {
+            for (k = 0; k < n; k++)
+            {
+                for (i = 0, j = k; i < m && j < n; i++, j++)
+                    temp *= a[i][j];
+                if (m - i > 0)
+                {
+                    for (p = m - i, r = m - 1; p > 0; p--, r--)
+                        temp *= a[r][p - 1];
+                }
+                s += temp;
+                temp = 1;
+            }
+
+            for (k = n - 1; k >= 0; k--)
+            {
+                for (i = 0, j = k; i < m && j >= 0; i++, j--)
+                    temp1 *= a[i][j];
+                if (m - i > 0)
+                {
+                    for (p = m - 1, r = i; r < m; p--, r++)
+                        temp1 *= a[r][p];
+                }
+                s1 += temp1;
+                temp1 = 1;
+            }
+
+            X = s - s1;
+        }
+        return X;
+    }
+    
     public LeastSquareMethod(List<Double> coefficient) {
         n= 6;
         x = new double[] {};
