@@ -36,7 +36,9 @@ public class ResultModel {
 
     public XYSeriesCollection CreatePolarDataCalc() {
         XYSeriesCollection dataset = new XYSeriesCollection();
+        int ii = 0;
         for (DataModel dataModel : data) {
+            ii++;
             ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataModel);
             if (itemModel != null) {
                 XYSeries goals = new XYSeries(dataModel.getDataName());
@@ -49,15 +51,39 @@ public class ResultModel {
                 double minX = leastSquareMethod.angleA - rc;
                 double maxX = leastSquareMethod.angleA + rc;
                 List<double[]> downList = new ArrayList<>();
-                for (double x = minX+0.1; x < maxX; x+=0.1) {
-                    double y1 = Math.sqrt(Math.pow(leastSquareMethod.angleR, 2)-Math.pow(x-leastSquareMethod.angleA, 2)) + leastSquareMethod.angleB;
-                    double y2 = leastSquareMethod.angleB - Math.sqrt(Math.pow(leastSquareMethod.angleR, 2)-Math.pow(x-leastSquareMethod.angleA, 2));
-                    goals.add(Math.atan2(y1, x) * 180 / Math.PI, Math.sqrt(y1*y1+x*x));
-                    downList.add(new double[] { Math.atan2(y2, x) * 180 / Math.PI, Math.sqrt(y2*y2+x*x) });
+                for (double xtd = 0; xtd < 360; xtd += 1) {
+                    double xt = xtd * Math.PI / 180;
+                    double r = -1;
+                    for (double ri = 0; ri < leastSquareMethod.angleR * 2; ri += 0.1) {
+                        if (Math.abs(Math.pow(ri*Math.cos(xt)-leastSquareMethod.angleA, 2) + Math.pow(ri*Math.sin(xt)-leastSquareMethod.angleA, 2) - Math.pow(leastSquareMethod.angleR, 2)) <= 8) {
+                            r = ri;
+                            break;
+                        }
+                    }
+                    if (r >= 0) {
+                        goals.add(xtd, r);
+                    }
                 }
-                for (int i = downList.size() - 1; i >= 0; i--) {
-                    goals.add(downList.get(i)[0], downList.get(i)[1]);
-                }
+//                for (double x = minX+0.1; x < maxX; x+=0.1) {
+//                    double y1 = Math.sqrt(Math.pow(leastSquareMethod.angleR, 2)-Math.pow(x-leastSquareMethod.angleA, 2)) + leastSquareMethod.angleB;
+//                    double y2 = leastSquareMethod.angleB - Math.sqrt(Math.pow(leastSquareMethod.angleR, 2)-Math.pow(x-leastSquareMethod.angleA, 2));
+//                    double a1 = Math.atan2(y1, x) * 180 / Math.PI;
+//                    double o1 = Math.sqrt(y1*y1+x*x);
+//                    if (ii == 3 && x > 30) {
+//                        System.out.println(a1 + "," + o1);
+//                    }
+//                    if (!Double.isNaN(a1) && !Double.isNaN(o1)) {
+//                        goals.add(a1, o1);
+//                    }
+//                    double a2 = Math.atan2(y2, x) * 180 / Math.PI;
+//                    double o2 = Math.sqrt(y2*y2+x*x);
+//                    if (!Double.isNaN(a2) && !Double.isNaN(o2)) {
+//                        downList.add(new double[] { a2, o2 });
+//                    }
+//                }
+//                for (int i = downList.size() - 1; i >= 0; i--) {
+//                    goals.add(downList.get(i)[0], downList.get(i)[1]);
+//                }
                 dataset.addSeries(goals);
             }
         }
