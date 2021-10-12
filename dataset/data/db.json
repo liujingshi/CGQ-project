@@ -136,11 +136,11 @@
     "surveyTimes": 5
   },
   {
-      "createTime": 1633765785880,
-      "dataId": "1417c370-4673-4709-9e38-dcac766dfcaf",
-      "dataName": "2021年10月09日手写数据",
-      "measuringStand": "",
-      "operator": "",
-      "surveyTimes": 5
-    },
+    "createTime": 1633765785880,
+    "dataId": "1417c370-4673-4709-9e38-dcac766dfcaf",
+    "dataName": "2021年10月09日手写数据",
+    "measuringStand": "",
+    "operator": "",
+    "surveyTimes": 5
+  }
 ]

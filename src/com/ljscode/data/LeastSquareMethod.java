@@ -74,24 +74,54 @@ public class LeastSquareMethod {
             z[i] = points.get(i)[2];
         }
         int n = x.length;
-        double[][] A = new double[n][3];
-        double[][] E = new double[n][1];
-        for (int i = 0; i < n; i++)
-        {
-            A[i][0] = x[i] - z[i];
-            A[i][1] = y[i] - z[i];
-            A[i][2] = 1;
-            E[i][0] = -z[i];
+        double xizi = 0;
+        double xiyi = 0;
+        double xi2 = 0;
+        double yizi = 0;
+        double yi2 = 0;
+        double zi = 0;
+        double xi = 0;
+        double yi = 0;
+        for (int i = 0; i < points.size(); i++) {
+            xizi += points.get(i)[0] * points.get(i)[2];
+            xiyi += points.get(i)[0] * points.get(i)[1];
+            xi2 += points.get(i)[0] * points.get(i)[0];
+            yizi += points.get(i)[1] * points.get(i)[2];
+            yi2 += points.get(i)[1] * points.get(i)[1];
+            zi += points.get(i)[2];
+            xi += points.get(i)[0];
+            yi += points.get(i)[1];
         }
-        double[][] AT = MatrixInver(A);
-        double[][] ATxA = MatrixMultiply(AT, A);
-        double[][] OPPAxTA = MatrixOpp(ATxA);
-        double[][] OPPATAxAT = MatrixMultiply(OPPAxTA, AT);
-        double[][] DP = MatrixMultiply(OPPATAxAT, E);
-        planeA= DP[0][0];
-        planeB = DP[1][0];
+        double[][] A = new double[3][];
+        A[0] = new double[] { xi2, xiyi, xi };
+        A[1] = new double[] { 0, yi2, yi };
+        A[2] = new double[] { 0, 0, n };
+//        planeA = xizi / xi2;
+//        planeB = yizi / yi2;
+//        planeC = 1 - planeA - planeB;
+//        planeD = zi / n;
+        planeA = xizi / (xi2 + xiyi + xi);
+        planeB = yizi / (yi2 + yi);
         planeC = 1 - planeA - planeB;
-        planeD = DP[2][0];
+        planeD = zi / n;
+//        double[][] A = new double[n][3];
+//        double[][] E = new double[n][1];
+//        for (int i = 0; i < n; i++)
+//        {
+//            A[i][0] = x[i] - z[i];
+//            A[i][1] = y[i] - z[i];
+//            A[i][2] = 1;
+//            E[i][0] = -z[i];
+//        }
+//        double[][] AT = MatrixInver(A);
+//        double[][] ATxA = MatrixMultiply(AT, A);
+//        double[][] OPPAxTA = MatrixOpp(ATxA);
+//        double[][] OPPATAxAT = MatrixMultiply(OPPAxTA, AT);
+//        double[][] DP = MatrixMultiply(OPPATAxAT, E);
+//        planeA = DP[0][0];
+//        planeB = DP[1][0];
+//        planeC = 1 - planeA - planeB;
+//        planeD = DP[2][0];
     }
 
     /// <summary>

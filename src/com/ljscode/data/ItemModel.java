@@ -66,7 +66,7 @@ public class ItemModel {
 //        }
         roundness = MathUtil.calcAngleBeat(realDataCylinder);
         if (oneLevelRealDataCylinder != null) {
-            axisFrom = MathUtil.calcAngleBeat(realDataCylinder, oneLevelRealDataCylinder);
+            axisFrom = MathUtil.calcAngleBeat(realDataCylinder, oneLevelRealDataCylinder, true);
         }
         flatness = MathUtil.calcPlantBeat(realDataEndFace);
         if (oneLevelRealDataEndFace != null) {

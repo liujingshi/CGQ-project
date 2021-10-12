@@ -9,6 +9,7 @@ import com.ljscode.data.ItemModel;
 import com.ljscode.data.ResultModel;
 import com.ljscode.data.TestData;
 import com.ljscode.util.BeanUtil;
+import com.ljscode.util.MathUtil;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -47,6 +48,26 @@ public class SynthesizeTabPanel extends TabPanel {
     private final DataLabel pmd0;
     private final DataLabel txd0;
 
+    private final DataLabel min2;
+    private final DataLabel max2;
+    private final DataLabel min3;
+    private final DataLabel max3;
+    private final DataLabel min4;
+    private final DataLabel max4;
+    private final DataLabel min5;
+    private final DataLabel max5;
+
+    private final DataLabel min2e;
+    private final DataLabel max2e;
+    private final DataLabel min3e;
+    private final DataLabel max3e;
+    private final DataLabel min4e;
+    private final DataLabel max4e;
+    private final DataLabel min5e;
+    private final DataLabel max5e;
+
+    private DataLabel[] zeros;
+
     public SynthesizeTabPanel() {
         super();
         int rootX = 30;
@@ -55,12 +76,18 @@ public class SynthesizeTabPanel extends TabPanel {
         this.add(currentDataNameLabel);
 
         float fontsize = 24;
-        int space = 120;
+        int space = 130;
         int fSpace = 40;
+        int fSpaceE = 30;
         int left1 = 30;
         int left2 = 250;
         int left3 = 470;
         int left4 = 690;
+        int left5 = 910;
+        int left6 = 1130;
+
+        int leftSpace = 120;
+        int leftSpace5 = 40;
 
         TextLabel label1 = new TextLabel(left1, space - fSpace, "第1级测量数据", fontsize, BaseColor.Black);
         this.add(label1);
@@ -73,6 +100,7 @@ public class SynthesizeTabPanel extends TabPanel {
         txd1 = new DataLabel(left4, space, fontsize, "同心度", 0, 3, "μm");
         this.add(txd1);
 
+
         TextLabel label2 = new TextLabel(left1, space*2-fSpace, "第2级测量数据", fontsize, BaseColor.Black);
         this.add(label2);
         yd2 = new DataLabel(left1, space*2, fontsize, "圆度", 0, 3, "μm");
@@ -83,6 +111,18 @@ public class SynthesizeTabPanel extends TabPanel {
         this.add(pmd2);
         txd2 = new DataLabel(left4, space*2, fontsize, "同心度", 0, 3, "μm");
         this.add(txd2);
+
+        TextLabel label2e = new TextLabel(left1, space*2+fSpaceE, "相对1级：", fontsize, BaseColor.Black);
+        this.add(label2e);
+        min2 = new DataLabel(left2-leftSpace, space*2+fSpaceE, fontsize, "最小柱跳", 0, 3, "μm");
+        this.add(min2);
+        max2 = new DataLabel(left3-leftSpace+leftSpace5, space*2+fSpaceE, fontsize, "最大柱跳", 0, 3, "μm");
+        this.add(max2);
+        min2e = new DataLabel(left4-leftSpace+leftSpace5*2, space*2+fSpaceE, fontsize, "最小端跳", 0, 3, "μm");
+        this.add(min2e);
+        max2e = new DataLabel(left5-leftSpace+leftSpace5*3, space*2+fSpaceE, fontsize, "最大端跳", 0, 3, "μm");
+        this.add(max2e);
+
 
         TextLabel label3 = new TextLabel(left1, space*3-fSpace, "第3级测量数据", fontsize, BaseColor.Black);
         this.add(label3);
@@ -95,6 +135,18 @@ public class SynthesizeTabPanel extends TabPanel {
         txd3 = new DataLabel(left4, space*3, fontsize, "同心度", 0, 3, "μm");
         this.add(txd3);
 
+        TextLabel label3e = new TextLabel(left1, space*3+fSpaceE, "相对1级：", fontsize, BaseColor.Black);
+        this.add(label3e);
+        min3 = new DataLabel(left2-leftSpace, space*3+fSpaceE, fontsize, "最小柱跳", 0, 3, "μm");
+        this.add(min3);
+        max3 = new DataLabel(left3-leftSpace+leftSpace5, space*3+fSpaceE, fontsize, "最大柱跳", 0, 3, "μm");
+        this.add(max3);
+        min3e = new DataLabel(left4-leftSpace+leftSpace5*2, space*3+fSpaceE, fontsize, "最小端跳", 0, 3, "μm");
+        this.add(min3e);
+        max3e = new DataLabel(left5-leftSpace+leftSpace5*3, space*3+fSpaceE, fontsize, "最大端跳", 0, 3, "μm");
+        this.add(max3e);
+
+
         TextLabel label4 = new TextLabel(left1, space*4-fSpace, "第4级测量数据", fontsize, BaseColor.Black);
         this.add(label4);
         yd4 = new DataLabel(left1, space*4, fontsize, "圆度", 0, 3, "μm");
@@ -105,6 +157,18 @@ public class SynthesizeTabPanel extends TabPanel {
         this.add(pmd4);
         txd4 = new DataLabel(left4, space*4, fontsize, "同心度", 0, 3, "μm");
         this.add(txd4);
+
+        TextLabel label4e = new TextLabel(left1, space*4+fSpaceE, "相对1级：", fontsize, BaseColor.Black);
+        this.add(label4e);
+        min4 = new DataLabel(left2-leftSpace, space*4+fSpaceE, fontsize, "最小柱跳", 0, 3, "μm");
+        this.add(min4);
+        max4 = new DataLabel(left3-leftSpace+leftSpace5, space*4+fSpaceE, fontsize, "最大柱跳", 0, 3, "μm");
+        this.add(max4);
+        min4e = new DataLabel(left4-leftSpace+leftSpace5*2, space*4+fSpaceE, fontsize, "最小端跳", 0, 3, "μm");
+        this.add(min4e);
+        max4e = new DataLabel(left5-leftSpace+leftSpace5*3, space*4+fSpaceE, fontsize, "最大端跳", 0, 3, "μm");
+        this.add(max4e);
+
 
         TextLabel label5 = new TextLabel(left1, space*5-fSpace, "第5级测量数据", fontsize, BaseColor.Black);
         this.add(label5);
@@ -117,6 +181,18 @@ public class SynthesizeTabPanel extends TabPanel {
         txd5 = new DataLabel(left4, space*5, fontsize, "同心度", 0, 3, "μm");
         this.add(txd5);
 
+        TextLabel label5e = new TextLabel(left1, space*5+fSpaceE, "相对1级：", fontsize, BaseColor.Black);
+        this.add(label5e);
+        min5 = new DataLabel(left2-leftSpace, space*5+fSpaceE, fontsize, "最小柱跳", 0, 3, "μm");
+        this.add(min5);
+        max5 = new DataLabel(left3-leftSpace+leftSpace5, space*5+fSpaceE, fontsize, "最大柱跳", 0, 3, "μm");
+        this.add(max5);
+        min5e = new DataLabel(left4-leftSpace+leftSpace5*2, space*5+fSpaceE, fontsize, "最小端跳", 0, 3, "μm");
+        this.add(min5e);
+        max5e = new DataLabel(left5-leftSpace+leftSpace5*3, space*5+fSpaceE, fontsize, "最大端跳", 0, 3, "μm");
+        this.add(max5e);
+
+
         TextLabel label0 = new TextLabel(left1, space*6-fSpace, "椎壁测量数据", fontsize, BaseColor.Black);
         this.add(label0);
         yd0 = new DataLabel(left1, space*6, fontsize, "圆度", 0, 3, "μm");
@@ -127,6 +203,19 @@ public class SynthesizeTabPanel extends TabPanel {
         this.add(pmd0);
         txd0 = new DataLabel(left4, space*6, fontsize, "同心度", 0, 3, "μm");
         this.add(txd0);
+
+        zeros = new DataLabel[] {
+                yd1, pxd1, pmd1, txd1,
+                yd2, pxd2, pmd2, txd2,
+                yd3, pxd3, pmd3, txd3,
+                yd4, pxd4, pmd4, txd4,
+                yd5, pxd5, pmd5, txd5,
+                yd0, pxd0, pmd0, txd0,
+                min2, max2, min2e, max2e,
+                min3, max3, min3e, max3e,
+                min4, max4, min4e, max4e,
+                min5, max5, min5e, max5e,
+        };
     }
 
     public void showChart() {
@@ -163,9 +252,13 @@ public class SynthesizeTabPanel extends TabPanel {
                 }
             }
         }
+        for (DataLabel label : zeros) {
+            label.setData(0);
+        }
         for (DataModel dataItem : data.getData()) {
             ItemModel itemModel = BeanUtil.GetCurrentItemModel(dataItem);
             if (itemModel != null) {
+                double[] minMax = MathUtil.CalcMinMax(data, itemModel);
                 switch (dataItem.getDataIndex()) {
                     case 1:
                         yd1.setData(itemModel.getRoundness());
@@ -178,24 +271,48 @@ public class SynthesizeTabPanel extends TabPanel {
                         pmd2.setData(itemModel.getFlatness());
                         txd2.setData(itemModel.getAxisFrom());
                         pxd2.setData(itemModel.getParallelism());
+                        if (minMax != null) {
+                            min2.setData(minMax[0]);
+                            max2.setData(minMax[1]);
+                            min2e.setData(minMax[2]);
+                            max2e.setData(minMax[3]);
+                        }
                         break;
                     case 3:
                         yd3.setData(itemModel.getRoundness());
                         pmd3.setData(itemModel.getFlatness());
                         txd3.setData(itemModel.getAxisFrom());
                         pxd3.setData(itemModel.getParallelism());
+                        if (minMax != null) {
+                            min3.setData(minMax[0]);
+                            max3.setData(minMax[1]);
+                            min3e.setData(minMax[2]);
+                            max3e.setData(minMax[3]);
+                        }
                         break;
                     case 4:
                         yd4.setData(itemModel.getRoundness());
                         pmd4.setData(itemModel.getFlatness());
                         txd4.setData(itemModel.getAxisFrom());
                         pxd4.setData(itemModel.getParallelism());
+                        if (minMax != null) {
+                            min4.setData(minMax[0]);
+                            max4.setData(minMax[1]);
+                            min4e.setData(minMax[2]);
+                            max4e.setData(minMax[3]);
+                        }
                         break;
                     case 5:
                         yd5.setData(itemModel.getRoundness());
                         pmd5.setData(itemModel.getFlatness());
                         txd5.setData(itemModel.getAxisFrom());
                         pxd5.setData(itemModel.getParallelism());
+                        if (minMax != null) {
+                            min5.setData(minMax[0]);
+                            max5.setData(minMax[1]);
+                            min5e.setData(minMax[2]);
+                            max5e.setData(minMax[3]);
+                        }
                         break;
                     case 6:
                         yd0.setData(itemModel.getRoundness());

@@ -47,6 +47,7 @@ public class EndFaceTabPanel extends TabPanel {
     private Set<Integer> hasDef; // 已经采集的角度
     private Btn isOneBtn; // 相对1级盘 按钮
     private boolean isOne; // 相对1级盘？
+    private ZeroConfig zeroConfig;
 
     public EndFaceTabPanel() {
         super();
@@ -147,6 +148,7 @@ public class EndFaceTabPanel extends TabPanel {
 
         Btn zeroBtn = new Btn(this.width / 2 + 80, this.height - 122, 230, 60, "清空数据", Btn.RED, e -> {
             clear();
+            zeroConfig = ConfigUtil.GetZeroConfig();
         });
         this.add(zeroBtn);
 
@@ -201,7 +203,7 @@ public class EndFaceTabPanel extends TabPanel {
 
     public void startReadUsb(TestLineChart lineChart, LineChartInfo lineChartInfo, boolean isC) {
         this.add(lineChart);
-        ZeroConfig zeroConfig = ConfigUtil.GetZeroConfig();
+        zeroConfig = ConfigUtil.GetZeroConfig();
         new Thread(() -> {
             while (true) {
                 try {

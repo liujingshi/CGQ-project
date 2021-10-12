@@ -1,0 +1,158 @@
+{
+  "createTime": 1633765785767,
+  "data": [
+    {
+      "createTime": 1633765785767,
+      "dataId": "bd2bf6d0-e303-407b-a3ee-827803f80b33",
+      "dataIndex": 1,
+      "dataItems": [
+        {
+          "axisFrom": 0,
+          "createTime": 1633765823410,
+          "dataId": "b34643c7-6849-42ea-8b53-f5e5bbf2d2f8",
+          "dataIndex": 1,
+          "dataName": "第1次测量数据",
+          "flatness": 0,
+          "leastSquareMethodParamCylinder": [],
+          "leastSquareMethodParamEndFace": [],
+          "parallelism": 0,
+          "realDataCylinder": {
+                  0: 966.8,
+                  256: 967.9,
+                  512: 968.8,
+                  768: 968.6,
+                  1024: 971.9,
+                  1280: 975.6,
+                  1536: 978.1,
+                  1792: 977.9,
+                  2048: 976.7,
+                  2304: 976.2,
+                  2560: 972.1,
+                  2816: 968.8,
+                  3076: 967.8,
+                  3328: 966.9,
+                  3584: 968.6,
+                  3840: 967.7
+          },
+          "realDataEndFace": {
+            0: 1.5,
+            256: 3.5,
+            512: 19,
+            768: 32,
+            1024: 28,
+            1280: 19,
+            1536: 6,
+            1792: 4,
+            2048: 9,
+            2304: 10,
+            2560: 16,
+            2816: 16,
+            3076: 9,
+            3328: 4.5,
+            3584: -0.5,
+            3840: 1.5
+          },
+          "roundness": 0,
+          "theoryDataCylinder": {},
+          "theoryDataEndFace": {},
+          "theoryRealDataCylinder": {},
+          "theoryRealDataEndFace": {}
+        }
+      ],
+      "dataName": "第1级盘测量数据"
+    },
+    {
+      "createTime": 1633765785767,
+      "dataId": "89e49769-080c-46f9-b1b0-2f9de93b636e",
+      "dataIndex": 2,
+      "dataItems": [
+            {
+                "axisFrom": 0,
+                "createTime": 1633765823555,
+                "dataId": "b34643c7-6849-42ea-8b53-f5e5bbf2d245",
+                "dataIndex": 1,
+                "dataName": "第1次测量数据",
+                "flatness": 0,
+                "leastSquareMethodParamCylinder": [],
+                "leastSquareMethodParamEndFace": [],
+                "parallelism": 0,
+                "realDataCylinder": {
+                  0: 976.0,
+                  256: 982.6,
+                  512: 981.7,
+                  768: 981.4,
+                  1024: 979.9,
+                  1280: 974.6,
+                  1536: 970.8,
+                  1792: 965.7,
+                  2048: 955.0,
+                  2304: 950.6,
+                  2560: 943.5,
+                  2816: 935.9,
+                  3076: 944.9,
+                  3328: 952.6,
+                  3584: 962.1,
+                  3840: 969.2
+                },
+                "realDataEndFace": {
+                  0: 15,
+                  256: 25.5,
+                  512: 30,
+                  768: 32,
+                  1024: 41.5,
+                  1280: 41.5,
+                  1536: 43,
+                  1792: 46.5,
+                  2048: 49.5,
+                  2304: 46.5,
+                  2560: 28,
+                  2816: 16,
+                  3076: 4,
+                  3328: 0,
+                  3584: 0,
+                  3840: 7.5
+                },
+                "roundness": 0,
+                "theoryDataCylinder": {},
+                "theoryDataEndFace": {},
+                "theoryRealDataCylinder": {},
+                "theoryRealDataEndFace": {}
+              }],
+      "dataName": "第2级盘测量数据"
+    },
+    {
+      "createTime": 1633765785767,
+      "dataId": "378a385f-0397-4a66-a555-a6af61327434",
+      "dataIndex": 3,
+      "dataItems": [],
+      "dataName": "第3级盘测量数据"
+    },
+    {
+      "createTime": 1633765785767,
+      "dataId": "65349b07-74c4-4b97-9616-059ddc230c51",
+      "dataIndex": 4,
+      "dataItems": [],
+      "dataName": "第4级盘测量数据"
+    },
+    {
+      "createTime": 1633765785767,
+      "dataId": "8634673d-e878-4711-b2e6-8f71ba448af2",
+      "dataIndex": 5,
+      "dataItems": [],
+      "dataName": "第5级盘测量数据"
+    },
+    {
+      "createTime": 1633765785767,
+      "dataId": "4613ab86-f2d9-42f6-9973-7e2e4b429ca1",
+      "dataIndex": 6,
+      "dataItems": [],
+      "dataName": "椎壁测量数据"
+    }
+  ],
+  "dataId": "1417c370-4673-4709-9e38-dcac766dfcaf",
+  "dataName": "2021年10月09日手写数据",
+  "measuringStand": "",
+  "operator": "",
+  "surveyTimes": 5,
+  "theoryRadius": 50
+}
