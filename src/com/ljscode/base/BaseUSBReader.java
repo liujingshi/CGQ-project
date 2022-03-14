@@ -1,9 +1,7 @@
 package com.ljscode.base;
 
 import com.ljscode.bean.UsbConfig;
-import com.ljscode.data.BPXReader;
-import com.ljscode.data.DataCompound;
-import com.ljscode.data.PLCReader;
+import com.ljscode.data.*;
 import com.ljscode.util.ConfigUtil;
 import com.ljscode.util.ParseSystemUtil;
 import gnu.io.PortInUseException;
@@ -28,9 +26,12 @@ public abstract class BaseUSBReader {
     private static SerialPort portBPX = null;
     private static SerialPort portPLC = null;
 
+    private static Clock clock;
+
     private static DataCompound dataCompound;
     private static BPXReader bpxReader;
     private static PLCReader plcReader;
+    private static DEGReader degReader;
 
     public static void ReadUSBData(BaseReadUSBData event) {
 //        if (BaseUSBReader.portBPX != null && BaseUSBReader.portPLC != null && BaseUSBReader.degData != 0) {
@@ -104,11 +105,14 @@ public abstract class BaseUSBReader {
             return false;
         } else {
             dataCompound = new DataCompound();
+            clock = new Clock();
+            clock.start();
             try {
-                BaseUSBReader.portPLC  = BaseUSBListener.openPort(plcPortStr, 9600);
+//                BaseUSBReader.portPLC  = BaseUSBListener.openPort(plcPortStr, 9600);
                 BaseUSBReader.portBPX  = BaseUSBListener.openPort(bpxPortStr, 9600);
                 InitBPXListener();
-                InitPLCListener();
+//                InitPLCListener();
+                InitDEGListener();
                 for (String order : BaseUSBReader.BPXLinkOrder) {
                     BaseUSBListener.sendToPort(BaseUSBReader.portBPX, order.getBytes());
                     try {
@@ -129,7 +133,8 @@ public abstract class BaseUSBReader {
         new Thread(() -> {
             try {
                 Thread.sleep(1500);
-                while (!(plcReader.clearStartTime() && bpxReader.clearStartTime())) {}
+//                while (!(plcReader.clearStartTime() && bpxReader.clearStartTime())) {}
+                while (!(degReader.clearStartTime() && bpxReader.clearStartTime())) {}
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -185,6 +190,12 @@ public abstract class BaseUSBReader {
                 e.printStackTrace();
             }
         });
+    }
+
+    public static void InitDEGListener() {
+        degReader = new DEGReader(dataCompound, clock);
+
+        // 监听圆盘事件 send
     }
 
     public static boolean Link(boolean adc) {
