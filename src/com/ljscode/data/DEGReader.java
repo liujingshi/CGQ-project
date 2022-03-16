@@ -21,14 +21,15 @@ public class DEGReader {
         return this.timestamp > 0;
     }
 
-    public void send(double data) {
+    public void send(int data) {
         sendDataCompound(data);
     }
 
-    public void sendDataCompound(double data) {
+    public void sendDataCompound(int data) {
         timestamp = clock.get();
-        value = data;
-        dataCompound.send(timestamp - startTime, data);
+        data = data % 448512;
+        value = (double)data * 360.0 / 448512.0;
+        dataCompound.send(timestamp - startTime, value);
     }
 
 }

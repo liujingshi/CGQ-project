@@ -1,5 +1,8 @@
 package com.ljscode.base;
 
+import Automation.BDaq.DaqException;
+import Automation.BDaq.DeviceInformation;
+import Automation.BDaq.EventCounterCtrl;
 import com.ljscode.bean.UsbConfig;
 import com.ljscode.data.*;
 import com.ljscode.util.ConfigUtil;
@@ -7,6 +10,9 @@ import com.ljscode.util.ParseSystemUtil;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +31,7 @@ public abstract class BaseUSBReader {
 
     private static SerialPort portBPX = null;
     private static SerialPort portPLC = null;
+    private static EventCounterCtrl eventCounterCtrl = null;
 
     private static Clock clock;
 
@@ -100,7 +107,7 @@ public abstract class BaseUSBReader {
             return false;
         }
         List<String> mCommList = BaseUSBListener.findPorts();
-        if (mCommList.size() < 2) {
+        if (mCommList.size() < 1) {
             System.out.println("没有搜索到有效串口！");
             return false;
         } else {
@@ -110,6 +117,13 @@ public abstract class BaseUSBReader {
             try {
 //                BaseUSBReader.portPLC  = BaseUSBListener.openPort(plcPortStr, 9600);
                 BaseUSBReader.portBPX  = BaseUSBListener.openPort(bpxPortStr, 9600);
+
+                BaseUSBReader.eventCounterCtrl = new EventCounterCtrl();
+                BaseUSBReader.eventCounterCtrl.setSelectedDevice(new DeviceInformation(""));
+                BaseUSBReader.eventCounterCtrl.setChannelCount(1);
+                BaseUSBReader.eventCounterCtrl.setChannelStart(0);
+                BaseUSBReader.eventCounterCtrl.setEnabled(true);
+
                 InitBPXListener();
 //                InitPLCListener();
                 InitDEGListener();
@@ -121,7 +135,7 @@ public abstract class BaseUSBReader {
                         e.printStackTrace();
                     }
                 }
-            } catch (PortInUseException e) {
+            } catch (PortInUseException | DaqException e) {
                 e.printStackTrace();
             }
         }
@@ -195,7 +209,9 @@ public abstract class BaseUSBReader {
     public static void InitDEGListener() {
         degReader = new DEGReader(dataCompound, clock);
 
+        USB4750Listener usb4750Listener = new USB4750Listener(eventCounterCtrl, degReader);
         // 监听圆盘事件 send
+        new Timer(2000, usb4750Listener).start();
     }
 
     public static boolean Link(boolean adc) {
@@ -208,5 +224,25 @@ public abstract class BaseUSBReader {
         } else {
             return Link();
         }
+    }
+
+
+}
+
+class USB4750Listener implements ActionListener {
+
+    private final EventCounterCtrl eventCounterCtrl;
+    private final DEGReader degReader;
+
+    public USB4750Listener(EventCounterCtrl eventCounterCtrl, DEGReader degReader) {
+        this.eventCounterCtrl = eventCounterCtrl;
+        this.degReader = degReader;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int[] x = {0};
+        eventCounterCtrl.Read(1, x);
+        degReader.send(x[0]);
     }
 }
